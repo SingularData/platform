@@ -1,0 +1,8 @@
+{
+  "port": 10086,
+  "database": {
+    "development": "pg://datarea_admin:1sdf234@localhost:5432/datarea",
+    "production": "null",
+    "travis": "pg://travis:travis@localhost:5432/datarea"
+  }
+}
