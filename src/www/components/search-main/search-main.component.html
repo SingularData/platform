@@ -1,0 +1,10 @@
+<div class="page-content" fxLayout="column" fxLayoutAlign="space-around center">
+  <div>Logo</div>
+  <div>
+    <md-input-container>
+      <input mdInput [(ngModel)]="keywords" placeholder="Find open data from 1,000 data portals">
+    </md-input-container>
+    <button md-raised-button (click)="search(keywords)">Search</button>
+  </div>
+  <div>Comment</div>
+</div>

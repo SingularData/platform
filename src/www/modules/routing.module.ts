@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import SearchMainComponent from '../components/search-main/search-main.component';
+import SearchResultComponent from '../components/search-result/search-result.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/main', pathMatch: 'full' },
-  { path: 'main',  component: SearchMainComponent }
+  { path: '',  component: SearchMainComponent },
+  { path: 'search',  component: SearchResultComponent }
 ];
 
 @NgModule({

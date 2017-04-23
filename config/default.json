@@ -1,5 +1,5 @@
 {
-  "port": 10086,
+  "port": 8082,
   "database": {
     "development": "pg://datarea_admin:1sdf234@localhost:5432/datarea",
     "production": "null",

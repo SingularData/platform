@@ -1,5 +1,5 @@
 import { getLogger } from 'log4js';
-import { getDB } from '../../util/database';
+import { getDB, toCamelCase } from '../../util/database';
 
 const logger = getLogger('search');
 
@@ -77,7 +77,7 @@ export function searchKeywords(req, res) {
     .subscribe((datasets) => {
       res.json({
         success: true,
-        results: datasets
+        results: toCamelCase(datasets)
       });
     }, (error) => {
       logger.error('Unable to search: ', error);

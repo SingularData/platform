@@ -34,7 +34,7 @@ export function initialize() {
 /**
  * Read query file.
  * @param  {String}               path    query file path
- * @return {Observable<String>}           query file
+ * @return {Observable.<String>}          query file
  */
 export function getQuery(path) {
   return Observable.create((observer: Observer<string>) => {
@@ -47,4 +47,28 @@ export function getQuery(path) {
       }
     });
   });
+}
+
+/**
+ * Recursively convert the key name from snake case to camel case.
+ * @param   {Object} object any object or array
+ * @returns {Object}        object or array with camel case keys
+ */
+export function toCamelCase(object: Object): Object {
+  for (let key in object) {
+    if (!object.hasOwnProperty(key)) {
+      continue;
+    }
+
+    if (typeof object[key] === 'object') {
+      toCamelCase(object[key]);
+    }
+
+    if (key.indexOf('_') !== -1) {
+      object[_.camelCase(key)] = object[key];
+      delete object[key];
+    }
+  }
+
+  return object;
 }

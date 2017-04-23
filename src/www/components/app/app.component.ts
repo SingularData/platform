@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
   selector: 'datarea-app',
   template: require('./app.component.html'),
   styles: [
+    require('../../styles/main.less'),
     require('./app.component.less')
   ],
 })

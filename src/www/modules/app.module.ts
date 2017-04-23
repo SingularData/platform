@@ -1,24 +1,31 @@
-import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
 
 import AppComponent from '../components/app/app.component';
-import ToolbarComponent from '../components/toolbar/toolbar.component';
+import SearchMainComponent from '../components/search-main/search-main.component';
+import SearchResultComponent from '../components/search-result/search-result.component';
+
+import SearchService from '../services/search.service';
 
 import RoutingModule from './routing.module';
+import NgCoreModule from './ng-core.module';
+import NgMaterialModule from './ng-material.module';
 
 @NgModule({
   imports: [
-    BrowserModule,
-    FormsModule,
-    RoutingModule
+    NgCoreModule,
+    RoutingModule,
+    NgMaterialModule
   ],
   declarations: [
     AppComponent,
-    ToolbarComponent
+    SearchResultComponent,
+    SearchMainComponent
   ],
-  providers: [],
-  bootstrap: [ AppComponent ]
+  providers: [
+    SearchService
+  ],
+  bootstrap: [
+    AppComponent
+  ]
 })
 export default class AppModule { }

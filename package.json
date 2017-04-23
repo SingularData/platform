@@ -11,9 +11,12 @@
     "build-dev": "webpack --config webpack/webpack.config.dev.js",
     "watch": "webpack --config webpack/webpack.config.dev.js --watch",
     "start": "nodemon public/server.bundle.js --watch",
-    "start-watch": "concurrently \"npm run watch\" \"npm run start\""
+    "start-watch": "concurrently \"npm run watch\" \"npm run start\"",
+    "test": "mocha test/**/*.test.ts --require ts-node/register --require reflect-metadata",
+    "prepush": "npm test && npm run build"
   },
   "dependencies": {
+    "@angular/animations": "^4.0.3",
     "@angular/common": "^4.0.3",
     "@angular/compiler": "^4.0.3",
     "@angular/core": "^4.0.3",
@@ -44,6 +47,8 @@
     "zone.js": "^0.8.8"
   },
   "devDependencies": {
+    "@types/mocha": "^2.2.41",
+    "@types/chai": "^3.5.1",
     "chai": "^3.5.0",
     "concurrently": "^3.4.0",
     "css-loader": "^0.28.0",
@@ -64,6 +69,7 @@
     "style-loader": "^0.16.1",
     "to-string-loader": "^1.1.5",
     "ts-loader": "^2.0.3",
+    "ts-node": "^3.0.2",
     "tslint": "^5.1.0",
     "tslint-loader": "^3.5.2",
     "typescript": "^2.2.2",
