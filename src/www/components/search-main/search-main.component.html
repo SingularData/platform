@@ -1,10 +1,13 @@
-<div class="page-content" fxLayout="column" fxLayoutAlign="space-around center">
-  <div>Logo</div>
+<div class="page-content" fxLayout="column" fxLayoutAlign="center center">
+  <div fxLayout="column" fxLayoutAlign="center center">
+    <div>Datario.io</div>
+    <div>one data network</div>
+  </div>
   <div>
-    <md-input-container>
+    <md-input-container class="search-box">
       <input mdInput [(ngModel)]="keywords" placeholder="Find open data from 1,000 data portals">
     </md-input-container>
     <button md-raised-button (click)="search(keywords)">Search</button>
   </div>
-  <div>Comment</div>
+  <div>Tell me a new data portal!</div>
 </div>
