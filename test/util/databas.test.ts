@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { toCamelCase } from '../../src/util/database';
+import { getQuery, toCamelCase } from '../../src/util/database';
 
 describe('ConversionService', () => {
 
@@ -29,6 +29,18 @@ describe('ConversionService', () => {
       { userId: 1 },
       { userId: 2 }
     ]);
+  });
+
+  it('getQuery() should read a SQL file and return the query.', (done) => {
+    getQuery('./queries/test.sql')
+      .subscribe(
+        (sql) => {
+          expect(sql).to.equal('SELECT 1');
+          done();
+        },
+        () => done(),
+        () => done()
+      );
   });
 
 });
