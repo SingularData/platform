@@ -5,12 +5,14 @@ import { getLogger } from 'log4js';
 import { json } from 'body-parser';
 
 import attachSearchAPI from './api/search/index';
+import attachPortalAPI from './api/portal/index';
 
 const logger = getLogger('app');
 const app = express();
 const port = config.get('port');
 
 attachSearchAPI(app);
+attachPortalAPI(app);
 
 app.use(json())
    .use(express.static('./public/www/'))

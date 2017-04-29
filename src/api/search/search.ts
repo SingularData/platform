@@ -3,7 +3,7 @@ import { getDB, toCamelCase } from '../../util/database';
 
 const logger = getLogger('search');
 
-export function searchKeywords(req, res) {
+export function searchDatasets(req, res) {
   let query = req.query.q;
   let offset = +req.query.offset || 0;
   let limit = +req.query.limit || 30;

@@ -15,5 +15,5 @@ export default function attachSearchAPI(app) {
    * @apiError   {Boolean}  success   Indicating whether the request is sucessful.
    * @apiError   {String}   message   Error message.
    */
-  app.get('/api/search', search.searchKeywords);
+  app.get('/api/search', search.searchDatasets);
 }
