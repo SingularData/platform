@@ -1,1 +1,54 @@
-List all portals
+<div class="page-content" fxLayout="column" fxLayoutAlign="start center" >
+  <h2>
+    Datarea.io is keeping track with {{ portals.length | number }} open data portals
+  </h2>
+
+  <h3>
+    {{ datasetSum | number }} datasets for {{ regionCount | number }} regions
+  </h3>
+
+  <div fxLayout="row" fxLayoutAlign="space-around center"  class="botton-group">
+    <button md-raised-button (click)="switchPage('map')">Map</button>
+    <button md-raised-button (click)="switchPage('list')">List</button>
+  </div>
+
+  <div class="detail-page" [hidden]="detailPage !== 'map'">
+    <div id="portal-map" class="sidebar-map">
+      <div id="portal-map-sidebar" class="sidebar collapsed" [hidden]="!showSidebar">
+          <!-- Nav tabs -->
+          <div class="sidebar-tabs">
+            <ul role="tablist">
+              <li><a href="#portal-map-sidebar-home" role="tab"><i class="fa fa-bars"></i></a></li>
+            </ul>
+          </div>
+
+          <!-- Tab panes -->
+          <div class="sidebar-content">
+            <div id="portal-map-sidebar-home"
+                 class="sidebar-panel"
+                 *ngIf="selectedRegion !== null">
+                <h1 class="sidebar-header">
+                  {{ selectedRegion.name }}
+                  <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+
+                <h2>
+                  {{ selectedRegion.portals.length }} portal(s) in this region
+                </h2>
+
+                <ul class="portal-list">
+                  <li *ngFor="let portal of selectedRegion.portals">
+                    <a target="_blank" href="{{portal.url}}">{{ portal.name }}</a>
+                    <span [hidden]="portal.datasetCount === null">({{ portal.datasetCount | number }})</span>
+                  </li>
+                </ul>
+
+                <button md-raised-button (click)="closeSidebar()">Close</button>
+            </div>
+        </div>
+    </div>
+  <div>
+
+  <div class="detail-page" [hidden]="detailPage !== 'list'">
+  </div>
+</div>

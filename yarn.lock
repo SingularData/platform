@@ -78,6 +78,22 @@
     "@types/express-serve-static-core" "*"
     "@types/serve-static" "*"
 
+"@types/geojson@*":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-1.0.2.tgz#b02d10ab028e2928ac592a051aaa4981a1941d03"
+
+"@types/leaflet-markercluster@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@types/leaflet-markercluster/-/leaflet-markercluster-1.0.3.tgz#64151be453f6490e8751500482deb961064e782c"
+  dependencies:
+    "@types/leaflet" "*"
+
+"@types/leaflet@*", "@types/leaflet@^1.0.60":
+  version "1.0.60"
+  resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-1.0.60.tgz#48b9ca197a78fa5e1bb3aeac614f286c08951834"
+  dependencies:
+    "@types/geojson" "*"
+
 "@types/lodash@^4.14.63":
   version "4.14.63"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.63.tgz#5ac475f55bfdc62bc88c4239dbc482f2f3bead93"
@@ -1793,6 +1809,14 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
+leaflet.markercluster@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.0.5.tgz#12fde61630f4eb3146d92b56a36fdff903d1e023"
+
+leaflet@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.0.3.tgz#1f401b98b45c8192134c6c8d69686253805007c8"
+
 less-loader@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/less-loader/-/less-loader-4.0.3.tgz#d1e6462ca2f090c11248455e14b8dda4616d0521"
@@ -3087,6 +3111,10 @@ sha.js@^2.3.6:
   resolved "https://registry.yarnpkg.com/sha.js/-/sha.js-2.4.8.tgz#37068c2c476b6baf402d14a49c67f597921f634f"
   dependencies:
     inherits "^2.0.1"
+
+sidebar-v2@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/sidebar-v2/-/sidebar-v2-0.3.1.tgz#74e1941124be2aa48a024305a99e36ab3293c23f"
 
 signal-exit@^3.0.0:
   version "3.0.2"

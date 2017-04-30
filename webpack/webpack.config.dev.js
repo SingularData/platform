@@ -27,16 +27,13 @@ let fontend = {
       { test: /\.ts$/, use: ['ts-loader'] },
       { test: /\.html$/, use: ['raw-loader'] },
       { test: /\.less$/, use: ['to-string-loader', 'css-loader', 'less-loader'] },
-      { test: /\.css$/, use: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' })},
+      { test: /\.css$/, use: ExtractTextPlugin.extract({ use: 'css-loader' })},
       { test: /\.(png|gif|jpg)$/, use:[{ loader: 'file-loader', options: { name: 'images/[name].[ext]'} } ]},
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, use:[{ loader: 'file-loader', options: { name: 'fonts/[name].[ext]'} } ]},
       { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, use:[{ loader: 'file-loader', options: { name: 'fonts/[name].[ext]'} } ]},
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, use:[{ loader: 'file-loader', options: { name: 'fonts/[name].[ext]'} } ]},
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, use:[{ loader: 'file-loader', options: { name: 'fonts/[name].[ext]'} } ]},
       { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, use:[{ loader: 'file-loader', options: { name: 'fonts/[name].[ext]'} } ]}
-    ],
-    noParse: [
-      path.join(__dirname, 'node_modules', 'angular2', 'bundles')
     ]
   },
   plugins: [
@@ -49,7 +46,7 @@ let fontend = {
       defaultAttribute: 'defer'
     }),
     new WebpackCleanupPlugin({
-      exclude: ['index.html']
+      exclude: ['index.html', 'fonts/**/*', 'images/**/*']
     })
   ]
 };

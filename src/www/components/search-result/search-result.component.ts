@@ -11,7 +11,7 @@ import SearchService from '../../services/search.service';
     require('./search-result.component.less')
   ],
 })
-export default class SearchResultComponent {
+export default class SearchResultComponent implements OnInit {
 
   constructor(
     private searchService: SearchService,
