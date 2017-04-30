@@ -12,17 +12,36 @@
     <button md-raised-button (click)="switchPage('list')">List</button>
   </div>
 
+  <div class="detail-page scrollable-y" [hidden]="detailPage !== 'list'">
+    <table id="portal-list" class="bordered responsive-table">
+      <thead>
+        <th>Portal Name</th>
+        <th>Region</th>
+        <th>Platform</th>
+        <th>Dataset Count</th>
+        <th>Updated Date</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let portal of portals">
+          <td><a target="_blank" href="{{portal.url}}">{{ portal.name }}</a></td>
+          <td>{{ portal.region }}</td>
+          <td>{{ portal.platform }}</td>
+          <td>{{ portal.datasetCount | number }}</td>
+          <td>{{ portal.updatedDate | date: 'longDate' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <div class="detail-page" [hidden]="detailPage !== 'map'">
     <div id="portal-map" class="sidebar-map">
       <div id="portal-map-sidebar" class="sidebar collapsed" [hidden]="!showSidebar">
-          <!-- Nav tabs -->
           <div class="sidebar-tabs">
             <ul role="tablist">
               <li><a href="#portal-map-sidebar-home" role="tab"><i class="fa fa-bars"></i></a></li>
             </ul>
           </div>
 
-          <!-- Tab panes -->
           <div class="sidebar-content">
             <div id="portal-map-sidebar-home"
                  class="sidebar-panel"
@@ -49,6 +68,5 @@
     </div>
   <div>
 
-  <div class="detail-page" [hidden]="detailPage !== 'list'">
-  </div>
+
 </div>

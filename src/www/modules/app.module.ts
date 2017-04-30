@@ -1,3 +1,15 @@
+/// <reference path="../../typing/sidebar-v2.d.ts"/>
+
+import 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+import 'leaflet.markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+
+import 'sidebar-v2/js/leaflet-sidebar.js';
+import 'sidebar-v2/css/leaflet-sidebar.css';
+
 import { NgModule } from '@angular/core';
 
 import AppComponent from '../components/app/app.component';

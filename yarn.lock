@@ -1407,6 +1407,10 @@ growl@1.9.2:
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/growl/-/growl-1.9.2.tgz#0ea7743715db8d8de2c5ede1775e1b45ac85c02f"
 
+hammerjs@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/hammerjs/-/hammerjs-2.0.8.tgz#04ef77862cff2bb79d30f7692095930222bf60f1"
+
 har-schema@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/har-schema/-/har-schema-1.0.5.tgz#d263135f43307c02c602afc8fe95970c0151369e"
@@ -2107,6 +2111,12 @@ ncname@1.0.x:
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
+
+ng2-md-datatable@^1.3.6:
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/ng2-md-datatable/-/ng2-md-datatable-1.3.6.tgz#a4163860b1816d2b685a71ecb142d91113adf05b"
+  optionalDependencies:
+    hammerjs "^2.0.8"
 
 no-case@^2.2.0:
   version "2.3.1"

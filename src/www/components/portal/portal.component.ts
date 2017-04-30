@@ -1,25 +1,14 @@
-/// <reference path="../../../typing/sidebar-v2.d.ts"/>
-
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { Map } from 'leaflet';
 import * as _ from 'lodash';
-
-import 'leaflet';
-import 'leaflet/dist/leaflet.css';
-
-import 'leaflet.markercluster';
-import 'leaflet.markercluster/dist/MarkerCluster.css';
-import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-
-import 'sidebar-v2/js/leaflet-sidebar.js';
-import 'sidebar-v2/css/leaflet-sidebar.css';
 
 @Component({
   selector: 'portl-page',
   template: require('./portal.component.html'),
   styles: [
     require('../../styles/main.less'),
+    require('../../styles/material-table.less'),
     require('./portal.component.less')
   ],
 })
