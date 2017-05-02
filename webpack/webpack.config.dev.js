@@ -25,10 +25,10 @@ let fontend = {
     rules: [
       { test: /\.ts$/, enforce: 'pre', loader: 'tslint-loader' },
       { test: /\.ts$/, use: ['ts-loader'] },
-      { test: /\.html$/, use: ['raw-loader'] },
+      { test: /\.html$/, use: [{ loader: 'html-loader', options: { minimize: false } }] },
       { test: /\.less$/, use: ['to-string-loader', 'css-loader', 'less-loader'] },
       { test: /\.css$/, use: ExtractTextPlugin.extract({ use: 'css-loader' })},
-      { test: /\.(png|gif|jpg)$/, use:[{ loader: 'file-loader', options: { name: 'images/[name].[ext]'} } ]},
+      { test: /\.(png|gif|jpg|jpeg)$/, use:[{ loader: 'file-loader', options: { name: 'media/images/[name].[ext]'} } ]},
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, use:[{ loader: 'file-loader', options: { name: 'fonts/[name].[ext]'} } ]},
       { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, use:[{ loader: 'file-loader', options: { name: 'fonts/[name].[ext]'} } ]},
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, use:[{ loader: 'file-loader', options: { name: 'fonts/[name].[ext]'} } ]},
