@@ -51,26 +51,4 @@ let fontend = {
   ]
 };
 
-let backend = {
-  target: 'node',
-  externals: [nodeExternals()],
-  entry: {
-    server: path.resolve(__dirname, '../src/server.ts')
-  },
-  output: {
-    path: path.resolve(__dirname, '../public'),
-    filename: '[name].bundle.js',
-    libraryTarget: 'commonjs2'
-  },
-  resolve: {
-    extensions: ['.ts', '.js']
-  },
-  module: {
-    rules: [
-      { test: /\.ts$/, enforce: 'pre', loader: 'tslint-loader' },
-      { test: /\.ts$/, use: ['ts-loader'] }
-    ]
-  }
-};
-
-module.exports = [fontend, backend];
+module.exports = [fontend];
