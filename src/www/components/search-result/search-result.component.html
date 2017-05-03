@@ -1,2 +1,24 @@
-<div class="page-content">
+<div class="page-content" fxLayout="column" fxLayoutAlign="start center">
+  <div class="search-dialog">
+    <md-input-container class="search-box">
+      <input mdInput [(ngModel)]="keywords" placeholder="Find data from 1,000 open data portals">
+    </md-input-container>
+    <button md-raised-button (click)="search(keywords)">
+      <i class="fa fa-search" aria-hidden="true"></i> &nbsp; Search
+    </button>
+  </div>
+  <div class="result-container scrollable-y" fxLayout="column" fxLayoutAlign="start center">
+    <md-card class="search-result" *ngFor="let result of results">
+      <md-card-header>
+        <md-card-title>{{ result.name }}</md-card-title>
+        <md-card-subtitle>{{ result.portal }}</md-card-subtitle>
+      </md-card-header>
+      <md-card-content>
+        <p class="result-description" [innerHTML]="result.description"></p>
+      </md-card-content>
+      <md-card-actions>
+        <span *ngFor="let tag of result.tags">{{ tag }}</span>
+      </md-card-actions>
+    </md-card>
+  </div>
 </div>

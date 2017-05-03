@@ -19,7 +19,7 @@ export default class SearchMainComponent {
     if (keywords === '') {
       return;
     }
-    console.log('test');
+
     this.router.navigateByUrl('/search?q=' + encodeURIComponent(keywords));
   }
 

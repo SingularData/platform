@@ -13,25 +13,44 @@ import SearchService from '../../services/search.service';
 })
 export default class SearchResultComponent implements OnInit {
 
+  private keywords: string;
+  private currentKeywords: string;
+  private results: Array<any>;
+
   constructor(
     private searchService: SearchService,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    this.keywords = '';
+    this.currentKeywords = this.keywords;
+    this.results = [];
+  }
 
   ngOnInit(): void {
     this.route.queryParams
-      .switchMap((params: Params) => this.searchService.search(params['q']))
+      .switchMap((params: Params) => {
+        this.keywords = params['q'];
+        this.currentKeywords = params['q'];
+        return this.searchService.search(params['q']);
+      })
       .subscribe((results) => {
-        console.log(results);
+        this.results = results;
       }, (error) => {
+        this.keywords = '';
+        this.currentKeywords = '';
         console.log(error);
       });
   }
 
   search(keywords) {
+    if (keywords === this.currentKeywords) {
+      return;
+    }
+
     this.searchService.search(keywords)
       .subscribe((results) => {
-        console.log(results);
+        this.results = results;
+        this.currentKeywords = keywords;
       }, (error) => {
         console.log(error);
       });

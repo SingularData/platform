@@ -2,7 +2,7 @@
   <div fxLayout="column" fxLayoutAlign="center center">
     <div class="app-logo" fxLayout="column" fxLayoutAlign="center center">
       <div class="app-title">Datario.io</div>
-      <div class="app-subtitle">one data network</div>
+      <div class="app-subtitle">one open data network</div>
     </div>
   </div>
   <div class="search-dialog">
@@ -10,7 +10,9 @@
       <input mdInput [(ngModel)]="keywords" placeholder="Find data from 1,000 open data portals">
     </md-input-container>
     <div fxLayout="row" fxLayoutAlign="center center">
-      <button md-raised-button (click)="search(keywords)">Search</button>
+      <button md-raised-button (click)="search(keywords)">
+        <i class="fa fa-search" aria-hidden="true"></i> &nbsp; Search
+      </button>
     </div>
   </div>
   <!-- <div>Tell me a new data portal!</div> -->

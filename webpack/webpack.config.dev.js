@@ -46,7 +46,7 @@ let fontend = {
       defaultAttribute: 'defer'
     }),
     new WebpackCleanupPlugin({
-      exclude: ['index.html', 'fonts/**/*', 'images/**/*']
+      exclude: ['index.html', 'fonts/**/*', 'media/images/**/*']
     })
   ]
 };
