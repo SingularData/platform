@@ -8,10 +8,13 @@
     </button>
   </div>
   <div class="result-container scrollable-y" fxLayout="column" fxLayoutAlign="start center">
+
     <md-card class="search-result" *ngFor="let result of results">
       <md-card-header>
-        <md-card-title>{{ result.name }}</md-card-title>
-        <md-card-subtitle>{{ result.portal }}</md-card-subtitle>
+        <md-card-title>
+          <strong>{{ result.name }}</strong>
+        </md-card-title>
+        <md-card-subtitle>{{ result.publisher }}</md-card-subtitle>
       </md-card-header>
       <md-card-content>
         <p class="result-description" [innerHTML]="result.description"></p>
@@ -20,5 +23,16 @@
         <span *ngFor="let tag of result.tags">{{ tag }}</span>
       </md-card-actions>
     </md-card>
+
+    <div class="pagination" fxLayout="row" fxLayoutAlign="space-around center">
+      <button *ngIf="currentPage > 1" md-mini-fab (click)="goToPreviousPage()">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      </button>
+      <span *ngIf="!nextPage && currentPage === 0">{{ currentPage }}</span>
+      <button *ngIf="nextPage" md-mini-fab (click)="goToNextPage()">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+      </button>
+    </div>
+
   </div>
 </div>

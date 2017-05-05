@@ -6,7 +6,7 @@ import { defaults } from 'lodash';
 @Injectable()
 export class SearchService {
 
-  private defaultSearchOptions: SearchOptions;
+  defaultSearchOptions: SearchOptions;
 
   constructor(private http: Http) {
     this.defaultSearchOptions = Object.freeze({
@@ -35,8 +35,19 @@ export class SearchService {
         throw new Error(result.message);
       }
 
-      return result.results;
+      return result;
     });
+  }
+
+  getSearchOptions(page?: number): SearchOptions {
+    if (!page) {
+      page = 1;
+    }
+
+    return {
+      limit: this.defaultSearchOptions.limit,
+      offset: this.defaultSearchOptions.limit * (page - 1)
+    };
   }
 }
 

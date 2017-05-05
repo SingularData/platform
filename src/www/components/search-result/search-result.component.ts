@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+import { cloneDeep } from 'lodash';
 
 import { SearchService } from '../../services/search.service';
 
@@ -16,6 +17,8 @@ export default class SearchResultComponent implements OnInit {
   private keywords: string;
   private currentKeywords: string;
   private results: Array<any>;
+  private nextPage: boolean;
+  private currentPage: number;
 
   constructor(
     private searchService: SearchService,
@@ -24,6 +27,9 @@ export default class SearchResultComponent implements OnInit {
     this.keywords = '';
     this.currentKeywords = this.keywords;
     this.results = [];
+
+    this.currentPage = 1;
+    this.nextPage = false;
   }
 
   ngOnInit(): void {
@@ -33,8 +39,9 @@ export default class SearchResultComponent implements OnInit {
         this.currentKeywords = params['q'];
         return this.searchService.search(params['q']);
       })
-      .subscribe((results) => {
-        this.results = results;
+      .subscribe((result) => {
+        this.results = result.results;
+        this.nextPage = result.nextPage;
       }, (error) => {
         this.keywords = '';
         this.currentKeywords = '';
@@ -42,18 +49,34 @@ export default class SearchResultComponent implements OnInit {
       });
   }
 
-  search(keywords) {
-    if (keywords === this.currentKeywords) {
+  search(keywords: string, page?: number) {
+    if (!page) {
+      page = 1;
+    }
+
+    if (keywords === this.currentKeywords && page === this.currentPage) {
       return;
     }
 
-    this.searchService.search(keywords)
-      .subscribe((results) => {
-        this.results = results;
+    let options = this.searchService.getSearchOptions(page);
+
+    this.searchService.search(keywords, options)
+      .subscribe((result) => {
+        this.results = result.results;
         this.currentKeywords = keywords;
+
+        this.currentPage = page;
+        this.nextPage = result.nextPage;
       }, (error) => {
         console.log(error);
       });
   }
 
+  goToNextPage() {
+    this.search(this.currentKeywords, this.currentPage + 1);
+  }
+
+  goToPreviousPage() {
+    this.search(this.currentKeywords, this.currentPage - 1);
+  }
 }
