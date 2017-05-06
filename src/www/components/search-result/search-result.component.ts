@@ -10,6 +10,7 @@ import { SearchService } from '../../services/search.service';
   styles: [
     require('../../styles/main.less'),
     require('../../styles/tag.less'),
+    require('../../styles/typography.less'),
     require('./search-result.component.less')
   ],
 })
@@ -20,6 +21,7 @@ export default class SearchResultComponent implements OnInit {
   private results: Array<any>;
   private nextPage: boolean;
   private currentPage: number;
+  private searching: boolean;
 
   constructor(
     private searchService: SearchService,
@@ -27,13 +29,16 @@ export default class SearchResultComponent implements OnInit {
   ) {
     this.keywords = '';
     this.currentKeywords = this.keywords;
-    this.results = [];
+    this.results = null;
 
     this.currentPage = 1;
     this.nextPage = false;
+    this.searching = false;
   }
 
   ngOnInit(): void {
+    this.searching = true;
+
     this.route.queryParams
       .switchMap((params: Params) => {
         this.keywords = params['q'];
@@ -43,9 +48,10 @@ export default class SearchResultComponent implements OnInit {
       .subscribe((result) => {
         this.results = result.results;
         this.nextPage = result.nextPage;
+        this.searching = false;
       }, (error) => {
-        this.keywords = '';
-        this.currentKeywords = '';
+        this.keywords = this.currentKeywords = '';
+        this.searching = false;
         console.log(error);
       });
   }
@@ -59,6 +65,9 @@ export default class SearchResultComponent implements OnInit {
       return;
     }
 
+    this.searching = true;
+    this.results = null;
+
     let options = this.searchService.getSearchOptions(page);
 
     this.searchService.search(keywords, options)
@@ -68,8 +77,10 @@ export default class SearchResultComponent implements OnInit {
 
         this.currentPage = page;
         this.nextPage = result.nextPage;
+        this.searching = false;
       }, (error) => {
         console.log(error);
+        this.searching = false;
       });
   }
 

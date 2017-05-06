@@ -10,8 +10,22 @@
       <i class="fa fa-search" aria-hidden="true"></i> &nbsp; Search
     </button>
   </div>
-  <div class="result-container scrollable-y" fxLayout="column" fxLayoutAlign="start center">
 
+  <div *ngIf="searching" fxLayout="column" fxLayoutAlign="center center">
+    <md-spinner></md-spinner>
+    <div class="text-hint">
+      <small>Searching...</small>
+    </div>
+  </div>
+
+  <div *ngIf="!searching && results && results.length === 0" class="text-hint">
+    No result is found about <i>{{ currentKeywords }}</i>.
+  </div>
+
+  <div *ngIf="!searching && results && results.length > 0"
+       class="result-container scrollable-y"
+       fxLayout="column"
+       fxLayoutAlign="start center">
     <md-card class="search-result" *ngFor="let result of results">
       <md-card-header>
         <md-card-title>
@@ -37,6 +51,5 @@
         <i class="fa fa-arrow-right" aria-hidden="true"></i>
       </button>
     </div>
-
   </div>
 </div>
