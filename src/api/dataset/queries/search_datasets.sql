@@ -16,6 +16,7 @@ WITH match AS (
   GROUP BY dtx.dataset_id
 )
 SELECT
+  d.id,
   d.portal_dataset_id,
   d.name,
   d.description,

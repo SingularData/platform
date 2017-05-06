@@ -13,7 +13,7 @@ gulp.task('tslint', () => {
   return gulp.src(src.ts)
     .pipe(cached('tslint', { optimizeMemory: true }))
     .pipe(tslint({ formatter: 'verbose' }))
-    .pipe(tslint.report())
+    .pipe(tslint.report({ emitError: false }));
 });
 
 gulp.task('ts', () => {

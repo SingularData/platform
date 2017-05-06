@@ -4,14 +4,14 @@ import { resolve } from 'path';
 import { getLogger } from 'log4js';
 import { json } from 'body-parser';
 
-import attachSearchAPI from './api/search/index';
+import attachDatasetAPI from './api/dataset/index';
 import attachPortalAPI from './api/portal/index';
 
 const logger = getLogger('app');
 const app = express();
 const port = config.get('port');
 
-attachSearchAPI(app);
+attachDatasetAPI(app);
 attachPortalAPI(app);
 
 app.use(json())

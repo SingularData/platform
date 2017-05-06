@@ -22,7 +22,7 @@ export class SearchService {
 
     options = defaults(options || {}, this.defaultSearchOptions);
 
-    return this.http.get('/api/search', {
+    return this.http.get('/api/dataset/search', {
       params: {
         q: encodeURIComponent(keywords),
         offset: options.offset,
