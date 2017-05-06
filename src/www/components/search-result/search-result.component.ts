@@ -9,6 +9,7 @@ import { SearchService } from '../../services/search.service';
   template: require('./search-result.component.html'),
   styles: [
     require('../../styles/main.less'),
+    require('../../styles/tag.less'),
     require('./search-result.component.less')
   ],
 })
