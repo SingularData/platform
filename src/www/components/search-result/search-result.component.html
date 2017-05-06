@@ -1,9 +1,12 @@
 <div class="page-content" fxLayout="column" fxLayoutAlign="start center">
   <div class="search-dialog">
     <md-input-container class="search-box">
-      <input mdInput [(ngModel)]="keywords" placeholder="Find data from 1,000 open data portals">
+      <input mdInput
+             [(ngModel)]="keywords"
+             (keyup.enter)="search(keywords)" 
+             placeholder="Find data from 1,000 open data portals">
     </md-input-container>
-    <button md-raised-button (click)="search(keywords)">
+    <button md-raised-button (click)="search(keywords)" >
       <i class="fa fa-search" aria-hidden="true"></i> &nbsp; Search
     </button>
   </div>
@@ -28,7 +31,6 @@
       <button *ngIf="currentPage > 1" md-mini-fab (click)="goToPreviousPage()">
         <i class="fa fa-arrow-left" aria-hidden="true"></i>
       </button>
-      <span *ngIf="!nextPage && currentPage === 0">{{ currentPage }}</span>
       <button *ngIf="nextPage" md-mini-fab (click)="goToNextPage()">
         <i class="fa fa-arrow-right" aria-hidden="true"></i>
       </button>

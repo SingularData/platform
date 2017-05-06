@@ -7,7 +7,10 @@
   </div>
   <div class="search-dialog">
     <md-input-container class="search-box">
-      <input mdInput [(ngModel)]="keywords" placeholder="Find data from 1,000 open data portals">
+      <input mdInput
+             [(ngModel)]="keywords"
+             (keyup.enter)="search(keywords)"
+             placeholder="Find data from 1,000 open data portals">
     </md-input-container>
     <div fxLayout="row" fxLayoutAlign="center center">
       <button md-raised-button (click)="search(keywords)">

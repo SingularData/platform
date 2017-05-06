@@ -22,5 +22,4 @@ export default class SearchMainComponent {
 
     this.router.navigateByUrl('/search?q=' + encodeURIComponent(keywords));
   }
-
 }
