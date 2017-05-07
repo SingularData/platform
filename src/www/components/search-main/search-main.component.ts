@@ -20,6 +20,10 @@ export default class SearchMainComponent {
       return;
     }
 
-    this.router.navigateByUrl('/search?q=' + encodeURIComponent(keywords));
+    this.router.navigateByUrl('search', {
+      queryParams: {
+        q: encodeURIComponent(keywords)
+      }
+    });
   }
 }

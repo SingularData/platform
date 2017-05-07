@@ -7,10 +7,10 @@ import SearchMainComponent from '../components/search-main/search-main.component
 import SearchResultComponent from '../components/search-result/search-result.component';
 
 const routes: Routes = [
-  { path: '',  component: SearchMainComponent },
+  { path: 'search',  component: SearchResultComponent },
   { path: 'about', component: AboutPageComponent },
   { path: 'portals', component: PortalPageComponent },
-  { path: 'search',  component: SearchResultComponent }
+  { path: '',  component: SearchMainComponent }
 ];
 
 @NgModule({
