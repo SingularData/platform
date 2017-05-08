@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { Map } from 'leaflet';
-import * as _ from 'lodash';
+import { groupBy } from 'lodash';
 
 @Component({
   selector: 'portl-page',
   template: require('./portal.component.html'),
   styles: [
     require('../../styles/main.less'),
-    require('../../styles/material-table.less'),
     require('./portal.component.less')
   ],
 })
@@ -66,7 +65,7 @@ export default class PortalPageComponent implements OnInit {
         this.mapSidebar = L.control.sidebar('portal-map-sidebar', { position: 'right' }).addTo(this.map);
         this.showSidebar = true;
 
-        let regions = _.groupBy(this.portals, 'region');
+        let regions = groupBy(this.portals, 'region');
         let markerGroup = L.markerClusterGroup();
 
         for (let placeName in regions) {

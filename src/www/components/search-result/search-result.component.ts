@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { cloneDeep } from 'lodash';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { SearchService } from '../../services/search.service';
+import { DatasetService } from '../../services/dataset.service';
 
 @Component({
   selector: 'search-result',
   template: require('./search-result.component.html'),
   styles: [
     require('../../styles/main.less'),
-    require('../../styles/tag.less'),
-    require('../../styles/typography.less'),
     require('./search-result.component.less')
   ],
 })
@@ -24,8 +21,9 @@ export default class SearchResultComponent implements OnInit {
   private searching: boolean;
 
   constructor(
-    private searchService: SearchService,
-    private route: ActivatedRoute
+    private datasetService: DatasetService,
+    private activatedRouter: ActivatedRoute,
+    private router: Router
   ) {
     this.keywords = '';
     this.currentKeywords = this.keywords;
@@ -36,21 +34,29 @@ export default class SearchResultComponent implements OnInit {
     this.searching = false;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.searching = true;
 
-    this.route.queryParams
+    this.activatedRouter.queryParams
       .switchMap((params: Params) => {
-        this.keywords = params['q'];
-        this.currentKeywords = params['q'];
-        return this.searchService.search(params['q']);
+
+        if (!params.q) {
+          throw new Error('Search keyworks are not defined.');
+        }
+
+        this.keywords = params.q;
+        this.currentKeywords = params.q;
+        this.currentPage = params.page || 1;
+
+        let options = this.datasetService.getSearchOptions(this.currentPage);
+
+        return this.datasetService.search(params.q, options);
       })
       .subscribe((result) => {
         this.results = result.results;
         this.nextPage = result.nextPage;
         this.searching = false;
       }, (error) => {
-        this.keywords = this.currentKeywords = '';
         this.searching = false;
         console.log(error);
       });
@@ -65,12 +71,19 @@ export default class SearchResultComponent implements OnInit {
       return;
     }
 
+    // this.router.navigateByUrl('search', {
+    //   queryParams: {
+    //     q: encodeURIComponent(keywords),
+    //     page: page
+    //   }
+    // });
+
     this.searching = true;
     this.results = null;
 
-    let options = this.searchService.getSearchOptions(page);
+    let options = this.datasetService.getSearchOptions(page);
 
-    this.searchService.search(keywords, options)
+    this.datasetService.search(keywords, options)
       .subscribe((result) => {
         this.results = result.results;
         this.currentKeywords = keywords;
@@ -90,5 +103,9 @@ export default class SearchResultComponent implements OnInit {
 
   goToPreviousPage() {
     this.search(this.currentKeywords, this.currentPage - 1);
+  }
+
+  goToDetail(id: number) {
+    this.router.navigate(['dataset', id]);
   }
 }

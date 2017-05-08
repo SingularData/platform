@@ -27,19 +27,21 @@
        fxLayout="column"
        fxLayoutAlign="start center">
     <md-card class="search-result" *ngFor="let result of results">
-      <md-card-header>
+      <md-card-header class="clickable" (click)="goToDetail(result.id)">
         <md-card-title>
           <strong>{{ result.name }}</strong>
         </md-card-title>
-        <md-card-subtitle>{{ result.publisher }}</md-card-subtitle>
+        <md-card-subtitle>
+          {{ result.portal }} (<a target="_blank" href="{{ result.portalLink }}">link</a>)
+        </md-card-subtitle>
       </md-card-header>
-      <md-card-content>
+      <md-card-content *ngIf="result.description">
         <p class="result-description" [innerHTML]="result.description"></p>
       </md-card-content>
       <md-card-actions>
-        <ul class="tag-list">
-          <li class="tag tag-small" *ngFor="let tag of result.tags">{{ tag }}</li>
-        </ul>
+        <md-chip-list *ngIf="result.tags.length > 0">
+          <md-chip color="primary" *ngFor="let tag of result.tags">{{ tag }}</md-chip>
+        </md-chip-list>
       </md-card-actions>
     </md-card>
 

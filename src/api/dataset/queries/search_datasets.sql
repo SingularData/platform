@@ -20,11 +20,12 @@ SELECT
   d.portal_dataset_id,
   d.name,
   d.description,
-  p.name AS publisher,
+  p.name AS portal,
+  d.portal_link,
   mt.tags
 FROM dataset d
 INNER JOIN match m ON m.dataset_id = d.id
-LEFT JOIN dataset_publisher p ON p.id = d.publisher_id
+LEFT JOIN portal AS p ON p.id = d.portal_id
 LEFT JOIN match_tag mt ON mt.dataset_id = d.id
 ORDER BY m.rank DESC
 OFFSET $2::integer LIMIT $3::integer

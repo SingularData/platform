@@ -1,0 +1,119 @@
+<div class="page-content scrollable-y" fxLayout="column">
+  <button md-button (click)="goBack()" flex-offset="15">
+    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+  </button>
+
+  <div fxLayout="column" fxLayoutAlign="start center">
+    <div *ngIf="loading" fxLayout="column" fxLayoutAlign="center center">
+      <md-spinner></md-spinner>
+      <div class="text-hint">
+        <small>Loading...</small>
+      </div>
+    </div>
+
+    <div *ngIf="!loading && !dataset" fxLayout="column" fxLayoutAlign="center center">
+      <div class="text-hint">
+        <small>Dataset not found.</small>
+      </div>
+    </div>
+
+    <div *ngIf="!loading && dataset" class="dataset-container">
+      <h2>{{ dataset.name }}</h2>
+      <md-tab-group>
+        <md-tab label="Details">
+
+          <div class="section" *ngIf="dataset.categories.length > 0">
+            <div id="category" class="section-name clickable" (click)="hide.category = !hide.category">
+              <!-- <i class="fa fa-hashtag section-tag" aria-hidden="true" fragment="descriotion"></i> -->
+              Category
+            </div>
+            <div class="section-content" [hidden]="hide.category">
+              <md-chip-list>
+                <md-chip color="primary" *ngFor="let category of dataset.categories">{{ category }}</md-chip>
+              </md-chip-list>
+            </div>
+            <md-divider></md-divider>
+          </div>
+
+          <div class="section" *ngIf="dataset.description">
+            <div id="description" class="section-name clickable" (click)="hide.description = !hide.description">
+              <!-- <i class="fa fa-hashtag section-tag" aria-hidden="true"></i> -->
+              Description
+            </div>
+            <div class="section-content" [hidden]="hide.description">
+              <p [innerHTML]="dataset.description"></p>
+            </div>
+            <md-divider></md-divider>
+          </div>
+
+          <div class="section" *ngIf="dataset.tags.length > 0">
+            <div id="category" class="section-name clickable" (click)="hide.tag = !hide.tag">
+              <!-- <i class="fa fa-hashtag section-tag" aria-hidden="true" fragment="tag"></i> -->
+              Tag
+            </div>
+            <div class="section-content" [hidden]="hide.tag">
+              <md-chip-list>
+                <md-chip color="primary" *ngFor="let tag of dataset.tags">{{ tag }}</md-chip>
+              </md-chip-list>
+            </div>
+            <md-divider></md-divider>
+          </div>
+
+          <div class="section">
+            <div id="link" class="section-name clickable" (click)="hide.link = !hide.link">
+              <!-- <i class="fa fa-hashtag section-tag" aria-hidden="true" fragment="link"></i> -->
+              Link
+            </div>
+            <div class="section-content" [hidden]="hide.link">
+              <md-list-item>
+                <!-- <i md-list-icon class="fa fa-link"></i> -->
+                <md-icon md-list-icon fontSet="fa" fontIcon="link"></md-icon>
+                <h4 md-line>Portal Linl</h4>
+                <a md-line target="_blank" href="{{ dataset.portalLink }}">{{ dataset.portalLink }}</a>
+              </md-list-item>
+              <md-list-item *ngIf="dataset.dataLink">
+                <!-- <i md-list-icon class="fa fa-database"></i> -->
+                <h4 md-line>Data Link</h4>
+                <a md-line target="_blank" href="{{ dataset.dataLink }}">{{ dataset.dataLink }}</a>
+              </md-list-item>
+            </div>
+            <md-divider></md-divider>
+          </div>
+
+          <div class="section">
+            <div id="link" class="section-name clickable" (click)="hide.publication = !hide.publication">
+              <!-- <i class="fa fa-hashtag section-tag" aria-hidden="true" fragment="publication"></i> -->
+              Publication
+            </div>
+            <div class="section-content" [hidden]="hide.publication">
+              <md-list-item *ngIf="dataset.publisher">
+                <h4 md-line>Publisher</h4>
+                <p md-line>{{ dataset.publisher }}</p>
+              </md-list-item>
+              <md-list-item>
+                <h4 md-line>Portal</h4>
+                <p md-line>
+                  {{ dataset.portal }} (<a target="_blank" href="{{ dataset.portalUrl }}">link</a>)
+                </p>
+              </md-list-item>
+              <md-list-item *ngIf="dataset.license">
+                <h4 md-line>License</h4>
+                <p md-line>{{ dataset.license }}</p>
+              </md-list-item>
+              <md-list-item>
+                <h4 md-line>Created</h4>
+                <p md-line>{{ dataset.createdTime | date: 'short' }}</p>
+              </md-list-item>
+              <md-list-item>
+                <h4 md-line>Updated</h4>
+                <p md-line>{{ dataset.updatedTime | date: 'short' }}</p>
+              </md-list-item>
+            </div>
+          </div>
+
+        </md-tab>
+      </md-tab-group>
+    </div>
+  </div>
+
+</div>

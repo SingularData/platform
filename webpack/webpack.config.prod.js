@@ -60,7 +60,11 @@ let fontend = {
       cssProcessorOptions: { discardComments: { removeAll: true } },
       canPrint: true
     }),
-    new LodashModuleReplacementPlugin()
+    new LodashModuleReplacementPlugin({
+      collections: true,
+      flattening: true,
+      paths: true
+    })
   ]
 };
 

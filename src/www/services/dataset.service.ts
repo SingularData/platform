@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs';
-import { defaults } from 'lodash';
+import { defaults, isNumber } from 'lodash';
 
 @Injectable()
-export class SearchService {
+export class DatasetService {
 
   defaultSearchOptions: SearchOptions;
 
@@ -48,6 +48,40 @@ export class SearchService {
       limit: this.defaultSearchOptions.limit,
       offset: this.defaultSearchOptions.limit * (page - 1)
     };
+  }
+
+  get(id: number): Observable<any> {
+    console.log(id);
+
+    if (!isNumber(id)) {
+      throw new Error('Invalid dataset ID.');
+    }
+
+    return this.http.get('/api/dataset/' + id)
+      .map((res) => res.json())
+      .map((result) => {
+        if (!result.success) {
+          throw new Error(result.message);
+        }
+
+        return result.result;
+      });
+  }
+
+  getRaw(id: number): Observable<any> {
+    if (!isNumber(id)) {
+      throw new Error('Invalid dataset ID.');
+    }
+
+    return this.http.get('/api/dataset/raw/' + id)
+      .map((res) => res.json())
+      .map((result) => {
+        if (!result.success) {
+          throw new Error(result.message);
+        }
+
+        return result.result;
+      });
   }
 }
 
