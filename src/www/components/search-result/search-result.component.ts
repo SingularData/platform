@@ -71,13 +71,6 @@ export default class SearchResultComponent implements OnInit {
       return;
     }
 
-    // this.router.navigateByUrl('search', {
-    //   queryParams: {
-    //     q: encodeURIComponent(keywords),
-    //     page: page
-    //   }
-    // });
-
     this.searching = true;
     this.results = null;
 
@@ -92,7 +85,7 @@ export default class SearchResultComponent implements OnInit {
         this.nextPage = result.nextPage;
         this.searching = false;
       }, (error) => {
-        console.log(error);
+        console.error(error);
         this.searching = false;
       });
   }

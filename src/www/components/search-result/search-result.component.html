@@ -27,7 +27,7 @@
        fxLayout="column"
        fxLayoutAlign="start center">
     <md-card class="search-result" *ngFor="let result of results">
-      <md-card-header class="clickable" (click)="goToDetail(result.id)">
+      <md-card-header class="clickable" (click)="goToDetail(result.id)" mdTooltip="See Dataset Details">
         <md-card-title>
           <strong>{{ result.name }}</strong>
         </md-card-title>
@@ -46,10 +46,10 @@
     </md-card>
 
     <div class="pagination" fxLayout="row" fxLayoutAlign="space-around center">
-      <button *ngIf="currentPage > 1" md-mini-fab (click)="goToPreviousPage()">
+      <button *ngIf="currentPage > 1" md-mini-fab (click)="goToPreviousPage()" mdTooltip="Previous Page">
         <i class="fa fa-arrow-left" aria-hidden="true"></i>
       </button>
-      <button *ngIf="nextPage" md-mini-fab (click)="goToNextPage()">
+      <button *ngIf="nextPage" md-mini-fab (click)="goToNextPage()" mdTooltip="Next Page">
         <i class="fa fa-arrow-right" aria-hidden="true"></i>
       </button>
     </div>

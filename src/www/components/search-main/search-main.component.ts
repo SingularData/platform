@@ -16,14 +16,10 @@ export default class SearchMainComponent {
   }
 
   search(keywords: string): void {
-    if (keywords === '') {
+    if (!keywords) {
       return;
     }
 
-    this.router.navigateByUrl('search', {
-      queryParams: {
-        q: encodeURIComponent(keywords)
-      }
-    });
+    this.router.navigateByUrl('search?q=' + encodeURIComponent(keywords));
   }
 }

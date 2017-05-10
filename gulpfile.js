@@ -5,7 +5,7 @@ const tslint = require("gulp-tslint");
 
 const src = {
   ts: ['src/**/*.ts', '!src/www/**/*', '!src/typing/**/*'],
-  sql: ['src/**/*.sql']
+  others: ['src/**/*', '!src/www/**/*', '!src/**/*.ts']
 };
 const dest = 'public';
 
@@ -23,11 +23,11 @@ gulp.task('ts', () => {
     .pipe(gulp.dest(dest));
 });
 
-gulp.task('copy:sql', () => {
-  return gulp.src(src.sql)
-    .pipe(cached('sql', { optimizeMemory: true }))
+gulp.task('copy:others', () => {
+  return gulp.src(src.others)
+    .pipe(cached('others', { optimizeMemory: true }))
     .pipe(gulp.dest(dest));
 });
 
-gulp.task('watch', () => gulp.watch([].concat(src.ts, src.sql), gulp.series('tslint', 'ts', 'copy:sql')));
-gulp.task('default', gulp.series('tslint', 'ts', 'copy:sql'));
+gulp.task('watch', () => gulp.watch([].concat(src.ts, src.others), gulp.series('tslint', 'ts', 'copy:others')));
+gulp.task('default', gulp.series('tslint', 'ts', 'copy:others'));
