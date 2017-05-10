@@ -14,6 +14,7 @@ import { groupBy } from 'lodash';
 export default class PortalPageComponent implements OnInit {
 
   private portals: Array<any>;
+  private portalList: any;
   private regions: any;
   private regionCount: number;
   private detailPage: string;
@@ -31,9 +32,39 @@ export default class PortalPageComponent implements OnInit {
     this.detailPage = 'map';
     this.showSidebar = false;
     this.selectedRegion = null;
+
+    this.portalList = {
+      columns: [
+        { name: 'Portal Name' },
+        { name: 'Region' },
+        { name: 'Platform' },
+        { name: 'Dataset Count' },
+        { name: 'Updated Date' }
+      ],
+      rows: []
+    };
   }
 
   ngOnInit(): void {
+
+    /**
+     * Initialize map
+     */
+
+    this.map = L.map('portal-map', {
+      center: L.latLng(0, 0),
+      zoom: 2,
+      preferCanvas: true,
+      worldCopyJump: true
+    });
+
+    L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
+    })
+    .addTo(this.map);
+
+    this.mapSidebar = L.control.sidebar('portal-map-sidebar', { position: 'right' }).addTo(this.map);
+    this.showSidebar = true;
 
     this.http.get('/api/portals')
       .map((result) => result.json())
@@ -51,19 +82,6 @@ export default class PortalPageComponent implements OnInit {
         /**
          * Initialize portal map
          */
-
-        this.map = L.map('portal-map', {
-          center: L.latLng(0, 0),
-          zoom: 2
-        });
-
-        L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
-        })
-        .addTo(this.map);
-
-        this.mapSidebar = L.control.sidebar('portal-map-sidebar', { position: 'right' }).addTo(this.map);
-        this.showSidebar = true;
 
         let regions = groupBy(this.portals, 'region');
         let markerGroup = L.markerClusterGroup();
@@ -92,6 +110,20 @@ export default class PortalPageComponent implements OnInit {
         }
 
         this.map.addLayer(markerGroup);
+
+        /**
+         * Initialize portal list
+         */
+
+        this.portalList.rows = this.portals.map((portal) => {
+          return {
+            portalName: portal.name,
+            region: portal.region,
+            platform: portal.platform,
+            datasetCount: portal.datasetCount || '-',
+            updatedDate: portal.updatedDate
+          };
+        });
       });
   }
 

@@ -27,6 +27,7 @@
     "@angular/platform-browser": "^4.0.3",
     "@angular/platform-browser-dynamic": "^4.0.3",
     "@angular/router": "^4.0.3",
+    "@swimlane/ngx-datatable": "^9.1.0",
     "@types/body-parser": "^1.16.3",
     "@types/config": "^0.0.32",
     "@types/es6-shim": "^0.31.33",
