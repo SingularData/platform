@@ -20,7 +20,8 @@
       [limit]="15"
       [headerHeight]="50"
       [rowHeight]="50"
-      [footerHeight]="50">
+      [footerHeight]="50"
+      (activate)="onPortalListClick($event)">
     </ngx-datatable>
   </div>
 
@@ -42,16 +43,15 @@
                   <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
                 </h1>
 
-                <h2>
-                  {{ selectedRegion.portals.length }} portal(s) in this region
-                </h2>
-
-                <ul class="portal-list">
-                  <li *ngFor="let portal of selectedRegion.portals">
-                    <a target="_blank" href="{{portal.url}}">{{ portal.name }}</a>
-                    <span [hidden]="portal.datasetCount === null">({{ portal.datasetCount | number }})</span>
-                  </li>
-                </ul>
+                <md-list>
+                  <h3 md-subheader>{{ selectedRegion.portals.length }} portal(s) in this region</h3>
+                  <md-list-item class="clickable"
+                                *ngFor="let portal of selectedRegion.portals"
+                                (click)="openDetailDialog(portal)">
+                    <h4 md-line>{{ portal.name }}</h4>
+                    <p md-line *ngIf="portal.datasetCount">datasts: {{ portal.datasetCount | number }}</p>
+                  </md-list-item>
+                </md-list>
 
                 <button md-raised-button (click)="closeSidebar()">Close</button>
             </div>

@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
+import { MdDialog } from '@angular/material';
 import { Map } from 'leaflet';
-import { groupBy } from 'lodash';
+import { groupBy, find } from 'lodash';
+
+import PortalDetailComponent from '../portal-detail/portal-detail.component';
 
 @Component({
   selector: 'portl-page',
@@ -24,7 +27,7 @@ export default class PortalPageComponent implements OnInit {
   private selectedRegion: any;
   private datasetSum: number;
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private dialog: MdDialog) {
     this.portals = [];
     this.regions = {};
     this.regionCount = 0;
@@ -120,7 +123,7 @@ export default class PortalPageComponent implements OnInit {
             portalName: portal.name,
             region: portal.region,
             platform: portal.platform,
-            datasetCount: portal.datasetCount || '-',
+            datasetCount: portal.datasetCount,
             updatedDate: portal.updatedDate
           };
         });
@@ -140,5 +143,20 @@ export default class PortalPageComponent implements OnInit {
   closeSidebar() {
     this.mapSidebar.close();
     this.selectedRegion = null;
+  }
+
+  onPortalListClick(event) {
+    if (event.type !== 'click') {
+      return;
+    }
+
+    let portal = find(this.portals, { name: event.row.portalName });
+    this.openDetailDialog(portal);
+  }
+
+  openDetailDialog(portal) {
+    this.dialog.open(PortalDetailComponent, {
+      data: portal
+    });
   }
 }

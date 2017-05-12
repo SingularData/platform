@@ -15,6 +15,7 @@ import { NgModule } from '@angular/core';
 import AppComponent from '../components/app/app.component';
 import AboutPageComponent from '../components/about/about.component';
 import PortalPageComponent from '../components/portal/portal.component';
+import PortalDetailComponent from '../components/portal-detail/portal-detail.component';
 import SearchMainComponent from '../components/search-main/search-main.component';
 import SearchResultComponent from '../components/search-result/search-result.component';
 import DatasetDetailComponent from '../components/dataset-detail/dataset-detail.component';
@@ -35,12 +36,16 @@ import NgMaterialModule from './ng-material.module';
     AppComponent,
     AboutPageComponent,
     PortalPageComponent,
+    PortalDetailComponent,
     SearchResultComponent,
     SearchMainComponent,
     DatasetDetailComponent
   ],
   providers: [
     DatasetService
+  ],
+  entryComponents: [
+    PortalDetailComponent
   ],
   bootstrap: [
     AppComponent
