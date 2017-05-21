@@ -12,7 +12,7 @@
     "watch": "concurrently \"webpack --config webpack/webpack.config.dev.js --watch public\" \"gulp watch\"",
     "start": "nodemon public/server.js --watch",
     "start-watch": "gulp && concurrently \"webpack --config webpack/webpack.config.dev.js --watch\" \"gulp watch\" \"npm run start\"",
-    "test": "mocha test/**/*.test.ts --require ts-node/register --require refnculect-metadata",
+    "test": "mocha test/**/*.test.ts --require ts-node/register --require reflect-metadata",
     "prepush": "npm test && npm run build"
   },
   "dependencies": {
