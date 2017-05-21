@@ -18,5 +18,16 @@
       </button>
     </div>
   </div>
-  <!-- <div>Tell me a new data portal!</div> -->
+  <div class="platform-logo-board">
+    <h4 class="text-center">Supported Platforms</h4>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <md-card class="platform-logo"
+               fxLayout="row" fxLayoutAlign="center center"
+               *ngFor="let platform of supportedPlatforms"
+               mdTooltip="{{ platform.name }}"
+               mdTooltipPosition="below">
+        <img src="{{ platform.logo }}">
+      </md-card>
+    </div>
+  </div>
 </div>

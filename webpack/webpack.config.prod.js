@@ -40,8 +40,7 @@ let fontend = {
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
-      sourceMap: false,
-      mangle: true
+      sourceMap: true
     }),
     new ExtractTextPlugin("[name].[contenthash].css"),
     new HtmlWebpackPlugin({
