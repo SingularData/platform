@@ -88,7 +88,7 @@ export default class PortalPageComponent implements OnInit {
          * Initialize portal map
          */
 
-        let regions = groupBy(this.portals, 'region');
+        let regions = groupBy(this.portals.filter((portal) => portal.region), 'region');
         let markerGroup = L.markerClusterGroup();
 
         for (let placeName in regions) {
