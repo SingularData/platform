@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
+import { MdSnackBar } from '@angular/material';
+import * as marked from 'marked';
+
+import 'rxjs/add/operator/switchMap';
 
 import { DatasetService } from '../../services/dataset.service';
 
@@ -20,6 +24,7 @@ export default class DatasetDetailComponent implements OnInit {
 
   constructor(
     private datasetService: DatasetService,
+    private snackBar: MdSnackBar,
     private route: ActivatedRoute,
     private location: Location
   ) {
@@ -32,19 +37,40 @@ export default class DatasetDetailComponent implements OnInit {
     this.hide = {};
 
     this.route.params
-      .switchMap((params: Params) => {
-        return this.datasetService.get(+params['id']);
-      })
+      .switchMap((params: Params) => this.datasetService.get(+params['id']))
       .subscribe((result) => {
+
+        // in case the description is in markdown format
+        if (result.description) {
+          result.description = marked(result.description);
+        }
+
+        for (let data of result.data) {
+          if (data.description) {
+            data.description = marked(data.description);
+          }
+        }
+
         this.dataset = result;
         this.loading = false;
       }, (error) => {
-        this.loading = false;
         console.log(error);
+      }, () => {
+        this.loading = false;
       });
   }
 
   goBack() {
     this.location.back();
+  }
+
+  openData(link) {
+    window.open(link, '_blank');
+  }
+
+  openSnackBar(message) {
+    this.snackBar.open(message, null, {
+      duration: 2000
+    });
   }
 }

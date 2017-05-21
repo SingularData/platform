@@ -4,6 +4,8 @@ import { MdDialog } from '@angular/material';
 import { Map } from 'leaflet';
 import { groupBy, find } from 'lodash';
 
+import 'rxjs/add/operator/map';
+
 import PortalDetailComponent from '../portal-detail/portal-detail.component';
 
 @Component({
@@ -48,7 +50,7 @@ export default class PortalPageComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
 
     /**
      * Initialize map

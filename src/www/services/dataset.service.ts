@@ -3,6 +3,8 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import { defaults, isNumber } from 'lodash';
 
+import 'rxjs/add/operator/map';
+
 @Injectable()
 export class DatasetService {
 
@@ -51,7 +53,6 @@ export class DatasetService {
   }
 
   get(id: number): Observable<any> {
-    console.log(id);
 
     if (!isNumber(id)) {
       throw new Error('Invalid dataset ID.');

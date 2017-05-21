@@ -18,102 +18,95 @@
     </div>
 
     <div *ngIf="!loading && dataset" class="dataset-container">
-      <h2>{{ dataset.name }}</h2>
+      <h3>{{ dataset.name }}</h3>
+      <p *ngIf="dataset.categories.length > 0">
+        <small class="text-hint">
+          {{ dataset.categories }}
+        </small>
+      </p>
+
       <md-tab-group>
         <md-tab label="Details">
-          <div class="section" *ngIf="dataset.categories.length > 0">
-            <h3 id="category" class="section-name clickable" (click)="hide.category = !hide.category">
-              <!-- <i class="fa fa-hashtag section-tag" aria-hidden="true" fragment="descriotion"></i> -->
-              Category
-            </h3>
-            <div class="section-content" [hidden]="hide.category">
-              <md-chip-list>
-                <md-chip color="primary" *ngFor="let category of dataset.categories">{{ category }}</md-chip>
-              </md-chip-list>
-            </div>
-            <md-divider></md-divider>
-          </div>
 
-          <div class="section" *ngIf="dataset.description">
-            <h3 id="description" class="section-name clickable" (click)="hide.description = !hide.description">
-              <!-- <i class="fa fa-hashtag section-tag" aria-hidden="true"></i> -->
-              Description
-            </h3>
-            <div class="section-content" [hidden]="hide.description">
+          <md-card *ngIf="dataset.description">
+            <md-card-header>
+              <md-card-title>Description</md-card-title>
+            </md-card-header>
+            <md-card-content>
               <p [innerHTML]="dataset.description"></p>
-            </div>
-            <md-divider></md-divider>
-          </div>
+            </md-card-content>
+          </md-card>
 
-          <div class="section" *ngIf="dataset.tags.length > 0">
-            <h3 id="category" class="section-name clickable" (click)="hide.tag = !hide.tag">
-              <!-- <i class="fa fa-hashtag section-tag" aria-hidden="true" fragment="tag"></i> -->
-              Tag
-            </h3>
-            <div class="section-content" [hidden]="hide.tag">
+          <md-card *ngIf="dataset.tags.length > 0">
+            <md-card-header>
+              <md-card-title>Tags</md-card-title>
+            </md-card-header>
+            <md-card-content>
               <md-chip-list>
                 <md-chip color="primary" *ngFor="let tag of dataset.tags">{{ tag }}</md-chip>
               </md-chip-list>
-            </div>
-            <md-divider></md-divider>
-          </div>
+            </md-card-content>
+          </md-card>
 
-          <div class="section">
-            <h3 id="link" class="section-name clickable" (click)="hide.link = !hide.link">
-              <!-- <i class="fa fa-hashtag section-tag" aria-hidden="true" fragment="link"></i> -->
-              Link
-            </h3>
-            <md-list class="section-content" [hidden]="hide.link">
-              <md-list-item>
-                <md-icon md-list-icon class="fa fa-link" aria-hidden="true"></md-icon>
-                <p md-line class="item-name">Portal Link</p>
-                <a md-line target="_blank" href="{{ dataset.portalLink }}">{{ dataset.portalLink }}</a>
-              </md-list-item>
-              <md-list-item *ngIf="dataset.dataLink">
-                <md-icon md-list-icon class="fa fa-database" aria-hidden="true"></md-icon>
-                <p md-line class="item-name">Data Link</p>
-                <a md-line target="_blank" href="{{ dataset.dataLink }}">{{ dataset.dataLink }}</a>
-              </md-list-item>
-            </md-list>
-            <md-divider></md-divider>
-          </div>
+          <md-card>
+            <md-card-header>
+              <md-card-title>Publication</md-card-title>
+            </md-card-header>
+            <md-card-content>
+              <md-list>
+                <md-list-item *ngIf="dataset.publisher">
+                  <md-icon md-list-icon class="fa fa-user" aria-hidden="true"></md-icon>
+                  <p md-line>Publisher</p>
+                  <p md-line>{{ dataset.publisher }}</p>
+                </md-list-item>
+                <md-list-item>
+                  <md-icon md-list-icon class="fa fa-link" aria-hidden="true"></md-icon>
+                  <p md-line>Portal Link</p>
+                  <p md-line>
+                    <a target="_blank" href="{{ dataset.portalLink }}">{{ dataset.portal }}</a>
+                  </p>
+                </md-list-item>
+                <md-list-item *ngIf="dataset.license">
+                  <md-icon md-list-icon class="fa fa-bookmark" aria-hidden="true"></md-icon>
+                  <p md-line>License</p>
+                  <p md-line>{{ dataset.license }}</p>
+                </md-list-item>
+                <md-list-item>
+                  <md-icon md-list-icon class="fa fa-calendar" aria-hidden="true"></md-icon>
+                  <p md-line>Created</p>
+                  <p md-line>{{ dataset.createdTime | date: 'short' }}</p>
+                </md-list-item>
+                <md-list-item>
+                  <md-icon md-list-icon class="fa fa-calendar" aria-hidden="true"></md-icon>
+                  <p md-line>Updated</p>
+                  <p md-line>{{ dataset.updatedTime | date: 'short' }}</p>
+                </md-list-item>
+              </md-list>
+            </md-card-content>
+          </md-card>
 
-          <div class="section">
-            <h3 id="link" class="section-name clickable" (click)="hide.publication = !hide.publication">
-              <!-- <i class="fa fa-hashtag section-tag" aria-hidden="true" fragment="publication"></i> -->
-              Publication
-            </h3>
-            <md-list class="section-content" [hidden]="hide.publication">
-              <md-list-item *ngIf="dataset.publisher">
-                <md-icon md-list-icon class="fa fa-user" aria-hidden="true"></md-icon>
-                <p md-line class="item-name">Publisher</p>
-                <p md-line>{{ dataset.publisher }}</p>
-              </md-list-item>
-              <md-list-item>
-                <md-icon md-list-icon class="fa fa-link" aria-hidden="true"></md-icon>
-                <p md-line class="item-name">Portal</p>
-                <p md-line>
-                  <a target="_blank" href="{{ dataset.portalUrl }}">{{ dataset.portal }}</a>
-                </p>
-              </md-list-item>
-              <md-list-item *ngIf="dataset.license">
-                <md-icon md-list-icon class="fa fa-bookmark" aria-hidden="true"></md-icon>
-                <p md-line class="item-name">License</p>
-                <p md-line>{{ dataset.license }}</p>
-              </md-list-item>
-              <md-list-item>
-                <md-icon md-list-icon class="fa fa-calendar" aria-hidden="true"></md-icon>
-                <p md-line class="item-name">Created</p>
-                <p md-line>{{ dataset.createdTime | date: 'short' }}</p>
-              </md-list-item>
-              <md-list-item>
-                <md-icon md-list-icon class="fa fa-calendar" aria-hidden="true"></md-icon>
-                <p md-line class="item-name">Updated</p>
-                <p md-line>{{ dataset.updatedTime | date: 'short' }}</p>
-              </md-list-item>
-            </md-list>
-          </div>
+        </md-tab>
 
+        <md-tab label="Data & Files" *ngIf="dataset.data.length > 0">
+          <md-card *ngFor="let data of dataset.data">
+            <md-card-header>
+              <md-card-title>{{ data.name }}</md-card-title>
+              <md-card-subtitle *ngIf="data.format && data.format !== data.name">{{ data.format }}</md-card-subtitle>
+            </md-card-header>
+            <md-card-content *ngIf="data.description">
+              <p [innerHTML]="data.description"></p>
+            </md-card-content>
+            <md-card-actions>
+              <button type="button" md-button (click)="openData(data.link)">
+                <i class="fa fa-download" aria-hidden="true"></i> &nbsp; Open
+              </button>
+              <button type="button" md-button ngxClipboard
+                      [cbContent]="data.link"
+                      (click)="openSnackBar('Data link copied to the clipboard!')">
+                <i class="fa fa-clipboard" aria-hidden="true"></i> &nbsp; Copy Link
+              </button>
+            </md-card-actions>
+          </md-card>
         </md-tab>
       </md-tab-group>
     </div>
