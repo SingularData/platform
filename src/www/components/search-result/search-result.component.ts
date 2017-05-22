@@ -48,10 +48,9 @@ export default class SearchResultComponent implements OnInit {
 
         this.keywords = params.q;
         this.currentKeywords = params.q;
-        this.currentPage = params.page || 1;
+        this.currentPage = +params.page || 1;
 
         let options = this.datasetService.getSearchOptions(this.currentPage);
-
         return this.datasetService.search(params.q, options);
       })
       .subscribe((result) => {
@@ -73,31 +72,15 @@ export default class SearchResultComponent implements OnInit {
       return;
     }
 
-    this.searching = true;
-    this.results = null;
-
-    let options = this.datasetService.getSearchOptions(page);
-
-    this.datasetService.search(keywords, options)
-      .subscribe((result) => {
-        this.results = result.results;
-        this.currentKeywords = keywords;
-
-        this.currentPage = page;
-        this.nextPage = result.nextPage;
-        this.searching = false;
-      }, (error) => {
-        console.error(error);
-        this.searching = false;
-      });
+    this.router.navigateByUrl(`search?q=${encodeURIComponent(keywords)}&page=${page}`);
   }
 
   goToNextPage() {
-    this.search(this.currentKeywords, this.currentPage + 1);
+    this.router.navigateByUrl(`search?q=${encodeURIComponent(this.keywords)}&page=${this.currentPage + 1}`);
   }
 
   goToPreviousPage() {
-    this.search(this.currentKeywords, this.currentPage - 1);
+    this.router.navigateByUrl(`search?q=${encodeURIComponent(this.keywords)}&page=${this.currentPage - 1}`);
   }
 
   goToDetail(id: number) {
