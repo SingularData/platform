@@ -1,18 +1,37 @@
 <div class="page-content" fxLayout="column" fxLayoutAlign="start center">
   <h2>
-    Datarea.io is keeping track with {{ portals.length | number }} open data portals
+    Datarea.io is keeping track with {{ portalCount | number }} open data portals
   </h2>
 
   <h3>
     {{ datasetSum | number }} datasets for {{ regionCount | number }} regions
   </h3>
 
-  <div fxLayout="row" fxLayoutAlign="space-around center"  class="botton-group">
-    <button md-raised-button (click)="switchPage('map')">Map</button>
-    <button md-raised-button (click)="switchPage('list')">List</button>
+  <div fxLayout="row" fxLayoutAlign=" center" class="botton-group">
+    <button md-raised-button [mdMenuTriggerFor]="viewMenu">View: {{ currentView }}</button>
+    <button md-raised-button [mdMenuTriggerFor]="filterMenu" *ngIf="currentView !== 'Download'">Filter by: {{ currentFilter }}</button>
+    <md-input-container *ngIf="currentView !== 'Download' && currentFilter !== 'None'">
+      <input mdInput type="search"
+             placeholder="Type filter values here..."
+             [(ngModel)]="filterKeywordsrWords"
+             (input)="onFilterKeywordChanged($event.target.value)">
+    </md-input-container>
   </div>
 
-  <div class="detail-page scrollable-y white-frame" [hidden]="detailPage !== 'list'">
+  <md-menu #viewMenu="mdMenu">
+    <button md-menu-item (click)="switchView('Map')">Map</button>
+    <button md-menu-item (click)="switchView('List')">List</button>
+    <button md-menu-item (click)="switchView('Download')">Download</button>
+  </md-menu>
+
+  <md-menu #filterMenu="mdMenu">
+    <button md-menu-item (click)="switchFilter('None')">None</button>
+    <button md-menu-item (click)="switchFilter('Name')">Name</button>
+    <button md-menu-item (click)="switchFilter('Platform')">Platform</button>
+    <button md-menu-item (click)="switchFilter('Location')">Location</button>
+  </md-menu>
+
+  <div class="detail-page scrollable-y white-frame" [hidden]="currentView !== 'List'">
     <ngx-datatable class="material"
       [columnMode]="'force'"
       [rows]="portalList.rows"
@@ -25,7 +44,7 @@
     </ngx-datatable>
   </div>
 
-  <div class="detail-page white-frame" [hidden]="detailPage !== 'map'">
+  <div class="detail-page white-frame" [hidden]="currentView !== 'Map'">
     <div id="portal-map" class="sidebar-map">
       <div id="portal-map-sidebar" class="sidebar collapsed" [hidden]="!showSidebar">
           <div class="sidebar-tabs">

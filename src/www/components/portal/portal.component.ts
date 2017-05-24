@@ -18,26 +18,22 @@ import PortalDetailComponent from '../portal-detail/portal-detail.component';
 })
 export default class PortalPageComponent implements OnInit {
 
-  private portals: Array<any>;
+  private portals: Array<any> = [];
   private portalList: any;
-  private regions: any;
-  private regionCount: number;
-  private detailPage: string;
+  private portalCount: number = 0;
+  private regions: any = {};
+  private regionCount: number = 0;
+  private currentView: string = 'Map';
+  private currentFilter: string = 'None';
+  private filterKeywords: string = '';
   private map: Map;
   private mapSidebar: L.Control.Sidebar;
-  private showSidebar: boolean;
-  private selectedRegion: any;
-  private datasetSum: number;
+  private markerGroup: L.MarkerClusterGroup;
+  private showSidebar: boolean = false;
+  private selectedRegion: any = null;
+  private datasetSum: number = 0;
 
   constructor(private http: Http, private dialog: MdDialog) {
-    this.portals = [];
-    this.regions = {};
-    this.regionCount = 0;
-    this.datasetSum = 0;
-    this.detailPage = 'map';
-    this.showSidebar = false;
-    this.selectedRegion = null;
-
     this.portalList = {
       columns: [
         { name: 'Portal Name' },
@@ -68,6 +64,9 @@ export default class PortalPageComponent implements OnInit {
     })
     .addTo(this.map);
 
+    this.markerGroup = L.markerClusterGroup();
+    this.map.addLayer(this.markerGroup);
+
     this.mapSidebar = L.control.sidebar('portal-map-sidebar', { position: 'right' }).addTo(this.map);
     this.showSidebar = true;
 
@@ -79,72 +78,84 @@ export default class PortalPageComponent implements OnInit {
         }
 
         this.portals = result.portals;
-
-        for (let portal of this.portals) {
-          this.datasetSum += +portal.datasetCount || 0;
-        }
-
-        /**
-         * Initialize portal map
-         */
-
-        let regions = groupBy(this.portals.filter((portal) => portal.region), 'region');
-        let markerGroup = L.markerClusterGroup();
-
-        for (let placeName in regions) {
-          let portals = regions[placeName];
-          let location = portals[0].location;
-          let marker = L.marker([location.coordinates[1], location.coordinates[0]], {
-            title: placeName
-          })
-          .on('click', () => {
-            if (this.selectedRegion !== null && this.selectedRegion.name === placeName) {
-              this.closeSidebar();
-            } else {
-              this.selectedRegion = {
-                name: placeName,
-                portals: regions[placeName]
-              };
-              this.openSidebar();
-            }
-          });
-
-          markerGroup.addLayer(marker);
-
-          this.regionCount += 1;
-        }
-
-        this.map.addLayer(markerGroup);
-
-        /**
-         * Initialize portal list
-         */
-
-        this.portalList.rows = this.portals.map((portal) => {
-          return {
-            portalName: portal.name,
-            region: portal.region,
-            platform: portal.platform,
-            datasetCount: portal.datasetCount,
-            updatedDate: portal.updatedDate
-          };
-        });
+        this.portalCount = this.portals.length;
+        this.refreshMap(this.portals);
+        this.refreshList(this.portals);
       });
   }
 
-  switchPage(page: string) {
-    if (page !== this.detailPage) {
-      this.detailPage = page;
+  refreshMap(portals) {
+    this.datasetSum = 0;
+    this.regionCount = 0;
+    this.markerGroup.clearLayers();
+
+    for (let portal of this.portals) {
+      this.datasetSum += +portal.datasetCount || 0;
+    }
+
+    let regions = groupBy(portals.filter((portal) => portal.region), 'region');
+    let markers = [];
+
+    for (let placeName in regions) {
+      let regionPortals: any = regions[placeName];
+      let location = regionPortals[0].location;
+      let marker = L.marker([location.coordinates[1], location.coordinates[0]], {
+        title: placeName
+      })
+      .on('click', () => {
+        if (this.selectedRegion !== null && this.selectedRegion.name === placeName) {
+          this.closeSidebar();
+        } else {
+          this.selectedRegion = {
+            name: placeName,
+            portals: regions[placeName]
+          };
+
+          this.mapSidebar.open('portal-map-sidebar-home');
+        }
+      });
+
+      markers.push(marker);
+      this.regionCount += 1;
+    }
+
+    this.markerGroup.addLayers(markers);
+  }
+
+  refreshList(portals) {
+    this.portalList.rows = portals.map((portal) => {
+      return {
+        portalName: portal.name,
+        region: portal.region,
+        platform: portal.platform,
+        datasetCount: portal.datasetCount,
+        updatedDate: portal.updatedDate
+      };
+    });
+  }
+
+  switchView(view: string) {
+    if (view !== this.currentView) {
+      this.currentView = view;
     }
   }
 
-  openSidebar() {
-    this.mapSidebar.open('portal-map-sidebar-home');
+  switchFilter(filter: string) {
+    if (filter !== this.currentFilter) {
+      this.currentFilter = filter;
+      this.onFilterKeywordChanged(this.filterKeywords);
+    }
   }
 
   closeSidebar() {
     this.mapSidebar.close();
     this.selectedRegion = null;
+  }
+
+  openDetailDialog(portal) {
+    this.dialog.open(PortalDetailComponent, {
+      data: portal
+    });
   }
 
   onPortalListClick(event) {
@@ -156,9 +167,37 @@ export default class PortalPageComponent implements OnInit {
     this.openDetailDialog(portal);
   }
 
-  openDetailDialog(portal) {
-    this.dialog.open(PortalDetailComponent, {
-      data: portal
-    });
+  onFilterKeywordChanged(keywords) {
+    keywords = keywords.toLowerCase();
+    let portals;
+
+    if (this.currentFilter === 'Platform' && keywords) {
+      portals = this.portals.filter((portal) => {
+        if (!portal.platform) {
+          return false;
+        }
+
+        return portal.platform.toLowerCase().indexOf(keywords) > -1;
+      });
+    } else if (this.currentFilter === 'Name' && keywords) {
+      portals = this.portals.filter((portal) => portal.name.toLowerCase().indexOf(keywords) > -1);
+    } else if (this.currentFilter === 'Location' && keywords) {
+      portals = this.portals.filter((portal) => {
+        if (!portal.region) {
+          return false;
+        }
+
+        return portal.region.toLowerCase().indexOf(keywords) > -1;
+      });
+    } else {
+      portals = this.portals;
+    }
+
+    /**
+     * TODO: updating at each new character change is too costly
+     */
+    this.portalCount = portals.length;
+    this.refreshMap(portals);
+    this.refreshList(portals);
   }
 }
