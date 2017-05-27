@@ -1,7 +1,7 @@
 import pgrx from 'pg-reactive';
-import * as _ from 'lodash';
 import * as config from 'config';
 import * as minify from 'pg-minify';
+import { camelCase } from 'lodash';
 import { readFile } from 'fs';
 import { Observable, Observer } from 'rxjs';
 
@@ -12,7 +12,7 @@ let db = null;
  * @return {Object} pgp database connection.
  */
 export function getDB() {
-  return db ? db : initialize();
+  return db || initialize();
 }
 
 /**
@@ -24,9 +24,11 @@ export function initialize() {
     db.end();
   }
 
-  let env = process.env.NODE_EMV || 'development';
-
-  db = new pgrx(_.toString(config.get(`database.${env}`)));
+  if (process.env.NODE_EMV === 'production') {
+    db = new pgrx(config.get('database.aws.url').toString());
+  } else {
+    db = new pgrx(config.get('database.development.url').toString());
+  }
 
   return db;
 }
@@ -65,7 +67,7 @@ export function toCamelCase(object: Object): Object {
     }
 
     if (key.indexOf('_') !== -1) {
-      object[_.camelCase(key)] = object[key];
+      object[camelCase(key)] = object[key];
       delete object[key];
     }
   }

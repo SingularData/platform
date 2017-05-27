@@ -27,7 +27,7 @@
        fxLayout="column"
        fxLayoutAlign="start center">
     <md-card class="search-result" *ngFor="let result of results">
-      <md-card-header class="clickable" (click)="goToDetail(result.id)" mdTooltip="See Dataset Details">
+      <md-card-header class="clickable" (click)="goToDetail(result.uuid)" mdTooltip="See Dataset Details">
         <md-card-title>
           <strong>{{ result.name }}</strong>
         </md-card-title>

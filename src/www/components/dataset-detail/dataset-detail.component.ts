@@ -37,7 +37,7 @@ export default class DatasetDetailComponent implements OnInit {
     this.hide = {};
 
     this.route.params
-      .switchMap((params: Params) => this.datasetService.get(+params['id']))
+      .switchMap((params: Params) => this.datasetService.get(params['id']))
       .subscribe((result) => {
 
         // in case the description is in markdown format

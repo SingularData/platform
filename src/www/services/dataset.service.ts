@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs';
-import { defaults, isNumber } from 'lodash';
+import { defaults } from 'lodash';
 
 import 'rxjs/add/operator/map';
 
@@ -37,6 +37,10 @@ export class DatasetService {
         throw new Error(result.message);
       }
 
+      for(let dataset of result.results) {
+        dataset.tags = dataset.tags || [];
+      }
+
       return result;
     });
   }
@@ -52,12 +56,7 @@ export class DatasetService {
     };
   }
 
-  get(id: number): Observable<any> {
-
-    if (!isNumber(id)) {
-      throw new Error('Invalid dataset ID.');
-    }
-
+  get(id: string): Observable<any> {
     return this.http.get('/api/dataset/' + id)
       .map((res) => res.json())
       .map((result) => {
@@ -69,11 +68,7 @@ export class DatasetService {
       });
   }
 
-  getRaw(id: number): Observable<any> {
-    if (!isNumber(id)) {
-      throw new Error('Invalid dataset ID.');
-    }
-
+  getRaw(id: string): Observable<any> {
     return this.http.get('/api/dataset/raw/' + id)
       .map((res) => res.json())
       .map((result) => {

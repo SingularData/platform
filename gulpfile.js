@@ -5,7 +5,8 @@ const tslint = require("gulp-tslint");
 
 const src = {
   ts: ['src/**/*.ts', '!src/www/**/*', '!src/typing/**/*'],
-  others: ['src/**/*', '!src/www/**/*', '!src/**/*.ts']
+  others: ['src/**/*', '!src/www/**/*', '!src/**/*.ts'],
+  all: ['src/**/*', '!src/www/**/*', '!src/typing/**/*']
 };
 const dest = 'public';
 
@@ -29,5 +30,5 @@ gulp.task('copy:others', () => {
     .pipe(gulp.dest(dest));
 });
 
-gulp.task('watch', () => gulp.watch([].concat(src.ts, src.others), gulp.series('tslint', 'ts', 'copy:others')));
+gulp.task('watch', () => gulp.watch(src.all, gulp.series('tslint', 'ts', 'copy:others')));
 gulp.task('default', gulp.series('tslint', 'ts', 'copy:others'));

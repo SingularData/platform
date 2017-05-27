@@ -1,11 +1,9 @@
 WITH match AS (
-  SELECT
-    dataset_id,
-    ts_rank(st.keywords, query, 1) AS rank
-  FROM
-    search_engine.view_search_table AS st,
-    plainto_tsquery($1::text) AS query
-  WHERE st.keywords @@ query
+  SELECT DISTINCT ON (uuid)
+    id AS dataset_id
+  FROM dataset
+  WHERE uuid = any($1::text[])
+  ORDER BY uuid, version_number DESC
 ), match_tag AS (
   SELECT
     dtx.dataset_id,
@@ -16,7 +14,7 @@ WITH match AS (
   GROUP BY dtx.dataset_id
 )
 SELECT
-  d.portal_dataset_md5,
+  d.uuid,
   d.name,
   d.description,
   p.name AS portal,
@@ -26,5 +24,3 @@ FROM dataset d
 INNER JOIN match m ON m.dataset_id = d.id
 LEFT JOIN portal AS p ON p.id = d.portal_id
 LEFT JOIN match_tag mt ON mt.dataset_id = d.id
-ORDER BY m.rank DESC
-OFFSET $2::integer LIMIT $3::integer

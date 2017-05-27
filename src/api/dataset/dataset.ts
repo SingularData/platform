@@ -1,6 +1,8 @@
 import { getLogger } from 'log4js';
 import { resolve } from 'path';
 import { isNaN } from 'lodash';
+// import { search } from './pg-search';
+import { search } from './es-search';
 import { getDB, getQuery, toCamelCase } from '../../util/database';
 
 const logger = getLogger('dataset');
@@ -9,7 +11,6 @@ export function searchDatasets(req, res) {
   let query = req.query.q;
   let offset = +req.query.offset || 0;
   let limit = +req.query.limit || 15;
-  let db = getDB();
 
   if (!query) {
     res.json({
@@ -21,9 +22,7 @@ export function searchDatasets(req, res) {
 
   query = query.replace(/\+/g, ' ');
 
-  getQuery(resolve(__dirname, './queries/search_datasets.sql'))
-    .concatMap((sql) => db.query(sql, [query, offset, limit + 1]))
-    .toArray()
+  search(query, offset, limit)
     .subscribe((datasets) => {
       res.json({
         success: true,
@@ -40,7 +39,7 @@ export function searchDatasets(req, res) {
 }
 
 export function getDataset(req, res) {
-  let datasetId = +req.params.id;
+  let datasetId = req.params.uuid;
 
   if (isNaN(datasetId)) {
     res.json({
@@ -52,9 +51,17 @@ export function getDataset(req, res) {
   }
 
   let db = getDB();
+  let getDataset;
 
-  getQuery(resolve(__dirname, './queries/get_dataset.sql'))
-    .concatMap((sql) => db.query(sql, [datasetId]))
+  if (req.query.version) {
+    getDataset = getQuery(resolve(__dirname, './queries/get_dataset_version.sql'))
+        .concatMap((sql) => db.query(sql, [datasetId, +req.query.version]));
+  } else {
+    getDataset = getQuery(resolve(__dirname, './queries/get_dataset_latest.sql'))
+        .concatMap((sql) => db.query(sql, [datasetId]));
+  }
+
+  getDataset
     .toArray()
     .subscribe((results) => {
       if (results.length === 0) {

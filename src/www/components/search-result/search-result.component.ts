@@ -83,7 +83,7 @@ export default class SearchResultComponent implements OnInit {
     this.router.navigateByUrl(`search?q=${encodeURIComponent(this.keywords)}&page=${this.currentPage - 1}`);
   }
 
-  goToDetail(id: number) {
+  goToDetail(id: string) {
     this.router.navigate(['dataset', id]);
   }
 }

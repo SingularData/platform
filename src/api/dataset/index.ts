@@ -18,20 +18,20 @@ export default function attachDatasetAPI(app) {
   app.get('/api/dataset/search', d.searchDatasets);
 
   /**
-   * @api {GET} /api/dataset/:id    Get dataset details by id
+   * @api {GET} /api/dataset/:uuid    Get dataset details by dataset uuid
    * @apiName GetDataset
    * @apiGroup Dataset
    *
-   * @apiParam (Parameters) {Number} id Dataset ID
+   * @apiParam (Parameters) {Number} uuid Dataset UUID
    *
    * @apiExample {GET} Example
-   *    GET datarea.io/api/dataset/1
+   *    GET datarea.io/api/dataset/40ad6756-2b16-4718-8dff-aa6742d4375d
    *
    * @apiSuccessExample {JSON} Success-Response:
    *    {
    *      "success": true,
    *      "result": {
-   *        "id": 1,
+   *        "uuid": "40ad6756-2b16-4718-8dff-aa6742d4375d",
    *        "dataPortalId": "34lkhgj123",
    *        "name": "Buffalo Schools",
    *        "publisher": "Buffalo Gov",
@@ -49,7 +49,16 @@ export default function attachDatasetAPI(app) {
    *        ],
    *        "descriptions": "open data",
    *        "region": "Buffalo, NY",
-   *        "license": "MIT"
+   *        "license": "MIT",
+   *        "data": [
+   *          {
+   *            "name": "School Site",
+   *            "description": "a csv list of school site",
+   *            "format": "csv",
+   *            "link": "school.csv"
+   *          }
+   *        ],
+   *        "version": 2
    *      }
    *    }
    *
@@ -59,14 +68,14 @@ export default function attachDatasetAPI(app) {
    *      "message": "reason"
    *    }
    */
-  app.get('/api/dataset/:id', d.getDataset);
+  app.get('/api/dataset/:uuid', d.getDataset);
 
   /**
-   * @api {GET} /api/dataset/raw/:id    Get dataset raw metadata by id
+   * @api {GET} /api/dataset/raw/:uuid    Get dataset raw metadata by dataset uuid
    * @apiName GetDataset
    * @apiGroup Dataset
    *
-   * @apiParam (Parameters) {Number} id Dataset ID
+   * @apiParam (Parameters) {Number} uuid Portal dataset ID MD5 code
    *
    * @apoSuccessExample {JSON} Success-Response:
    *    {
@@ -80,5 +89,5 @@ export default function attachDatasetAPI(app) {
    *      "message": "reason"
    *    }
    */
-  app.get('/api/dataset/raw/:id', d.getDatasetRaw);
+  app.get('/api/dataset/raw/:uuid', d.getDatasetRaw);
 }
