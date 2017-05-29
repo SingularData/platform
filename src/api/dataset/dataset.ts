@@ -87,7 +87,7 @@ export function getDataset(req, res) {
 }
 
 export function getDatasetRaw(req, res) {
-  let datasetId = +req.params.id;
+  let datasetId = +req.params.uuid;
 
   if (isNaN(datasetId)) {
     res.json({
@@ -115,6 +115,30 @@ export function getDatasetRaw(req, res) {
       res.json({
         success: true,
         result: results[0].raw
+      });
+    },
+    (error) => {
+      logger.error('Unable to get raw metadata: ', error);
+      res.json({
+        success: false,
+        message: error.message
+      });
+    }
+  );
+}
+
+export function getDatasetHistory(req, res) {
+  let uuid = req.params.uuid;
+  let db = getDB();
+
+  getQuery(resolve(__dirname, './queries/get_dataset_history.sql'))
+    .concatMap((sql) => db.query(sql, [uuid]))
+    .map((row) => toCamelCase(row))
+    .toArray()
+    .subscribe((results) => {
+      res.json({
+        success: true,
+        result: results
       });
     },
     (error) => {

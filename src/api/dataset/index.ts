@@ -75,7 +75,7 @@ export default function attachDatasetAPI(app) {
    * @apiName GetDataset
    * @apiGroup Dataset
    *
-   * @apiParam (Parameters) {Number} uuid Portal dataset ID MD5 code
+   * @apiParam (Parameters) {Number} uuid Portal dataset uuid
    *
    * @apoSuccessExample {JSON} Success-Response:
    *    {
@@ -90,4 +90,28 @@ export default function attachDatasetAPI(app) {
    *    }
    */
   app.get('/api/dataset/raw/:uuid', d.getDatasetRaw);
+
+  /**
+   * @api {GET} /api/dataset/history/:uuid   Get dataset history
+   * @apiName GetDatasetHistory
+   * @apiGroup Dataset
+   *
+   * @apiParam (Parameters) {Number} uuid Portal dataset ID MD5 code
+   *
+   * @apoSuccessExample {JSON} Success-Response:
+   *    {
+   *      "success": true,
+   *      "results": [
+   *        { "version": 3, "updatedTime": "Fri May 05 2017 23:22:14 GMT-0400 (EDT)" },
+   *        { "version": 2, "updatedTime": "Fri May 02 2017 23:22:14 GMT-0400 (EDT)" }
+   *      ]
+   *    }
+   *
+   * @apiErrorExample {JSON} Error-Response:
+   *    {
+   *      "success": false,
+   *      "message": "reason"
+   *    }
+   */
+  app.get('/api/dataset/history/:uuid', d.getDatasetHistory);
 }

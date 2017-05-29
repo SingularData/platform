@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 import { MdSnackBar } from '@angular/material';
 import * as marked from 'marked';
@@ -26,7 +26,8 @@ export default class DatasetDetailComponent implements OnInit {
     private datasetService: DatasetService,
     private snackBar: MdSnackBar,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) {
     this.dataset = null;
     this.loading = true;
@@ -37,7 +38,7 @@ export default class DatasetDetailComponent implements OnInit {
     this.hide = {};
 
     this.route.params
-      .switchMap((params: Params) => this.datasetService.get(params['id']))
+      .switchMap((params: Params) => this.datasetService.get(params.id, params.version))
       .subscribe((result) => {
 
         // in case the description is in markdown format
@@ -72,5 +73,9 @@ export default class DatasetDetailComponent implements OnInit {
     this.snackBar.open(message, null, {
       duration: 2000
     });
+  }
+
+  switchToVersion(versionNumber) {
+    this.router.navigateByUrl(`dataset/${this.dataset.uuid}?version=${versionNumber}`);
   }
 }

@@ -27,6 +27,16 @@ WITH ds as (
   LEFT JOIN dataset_region AS dr ON dr.id = d.dataset_region_id
   WHERE d.uuid = $1::text
   ORDER BY uuid, version_number DESC
+), versions AS (
+  SELECT
+    uuid,
+    array_agg(json_build_object(
+      'version', version_number,
+      'updatedTime', lower(version_period)
+    ) ORDER BY version_number DESC) AS all
+  FROM dataset
+  WHERE uuid = $1::text
+  GROUP BY uuid
 ), dc AS (
   SELECT
     dcx.dataset_id,
@@ -70,6 +80,7 @@ SELECT
   ds.license,
   ds.region,
   ds.version,
+  COALESCE(v.all, '{}') AS version_history,
   COALESCE(dd.data, '{}') AS data,
   COALESCE(dt.tags, '{}') AS tags,
   COALESCE(dc.categories, '{}') AS categories
@@ -77,3 +88,4 @@ FROM ds
 LEFT JOIN dt ON dt.dataset_id = ds.id
 LEFT JOIN dc ON dc.dataset_id = ds.id
 LEFT JOIN dd ON dd.dataset_id = ds.id
+LEFT JOIN versions AS v ON v.uuid = ds.uuid

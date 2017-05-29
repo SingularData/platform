@@ -37,7 +37,7 @@ export class DatasetService {
         throw new Error(result.message);
       }
 
-      for(let dataset of result.results) {
+      for (let dataset of result.results) {
         dataset.tags = dataset.tags || [];
       }
 
@@ -56,8 +56,14 @@ export class DatasetService {
     };
   }
 
-  get(id: string): Observable<any> {
-    return this.http.get('/api/dataset/' + id)
+  get(id: string, version?: number): Observable<any> {
+    let url = '/api/dataset/' + id;
+
+    if (version) {
+      url += '?version=' + version;
+    }
+
+    return this.http.get(url)
       .map((res) => res.json())
       .map((result) => {
         if (!result.success) {

@@ -19,11 +19,26 @@
 
     <div *ngIf="!loading && dataset" class="dataset-container">
       <h3>{{ dataset.name }}</h3>
-      <p *ngIf="dataset.categories.length > 0">
-        <small class="text-hint">
-          {{ dataset.categories }}
-        </small>
-      </p>
+      <div fxLayout="row">
+        <span *ngIf="dataset.categories.length > 0">
+          <small class="text-hint">
+            {{ dataset.categories }}
+          </small>
+        </span>
+        <span class="space-filler"></span>
+        <button md-button [mdMenuTriggerFor]="versionMenu" [disabled]="dataset.versionHistory.length < 2">
+          version {{ dataset.version }} &nbsp;
+          <md-icon class="fa fa-caret-down" *ngIf="dataset.versionHistory.length > 1"></md-icon>
+        </button>
+      </div>
+
+      <md-menu #versionMenu="mdMenu">
+        <button md-menu-item
+                (click)="switchToVersion(version)"
+                *ngFor="let detail of dataset.versionHistory">
+          version {{ detail.version }}
+        </button>
+      </md-menu>
 
       <md-tab-group>
         <md-tab label="Details">
@@ -108,6 +123,23 @@
             </md-card-actions>
           </md-card>
         </md-tab>
+
+      <md-tab label="History">
+        <md-card>
+          <md-card-header>
+            <md-card-title>Versions</md-card-title>
+          </md-card-header>
+          <md-card-content>
+            <md-list>
+              <md-list-item *ngFor="let detail of dataset.versionHistory">
+                <p md-line><strong>Version {{ detail.version }}</strong></p>
+                <p md-line>Updated at {{ detail.updatedTime | date: 'short' }}</p>
+              </md-list-item>
+            </md-list>
+          </md-card-content>
+        </md-card>
+      </md-tab>
+
       </md-tab-group>
     </div>
   </div>

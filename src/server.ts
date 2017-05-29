@@ -1,4 +1,5 @@
 import * as express from 'express';
+import * as compression from 'compression';
 import * as config from 'config';
 import { resolve } from 'path';
 import { getLogger } from 'log4js';
@@ -15,6 +16,7 @@ attachDatasetAPI(app);
 attachPortalAPI(app);
 
 app.use(json())
+   .use(compression())
    .use(express.static('./public/www/'))
    .all('/*', (req, res) => {
      res.status(200)
