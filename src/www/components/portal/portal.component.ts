@@ -33,6 +33,13 @@ export default class PortalPageComponent implements OnInit {
   private selectedRegion: any = null;
   private datasetSum: number = 0;
 
+  // for export
+  private startDate: Date = new Date(2017, 0, 1);
+  private exportDate: Date = new Date();
+  private exportFormat: string = 'json';
+  private csvReportExample: string;
+  private jsonReportExample: any;
+
   constructor(private http: Http, private dialog: MdDialog) {
     this.portalList = {
       columns: [
@@ -44,6 +51,38 @@ export default class PortalPageComponent implements OnInit {
       ],
       rows: []
     };
+
+    this.csvReportExample = `
+      The CSV file will include following columns:
+      1. name
+      2. platform
+      3. location
+      4. url
+      5. description
+      6. dataset count
+      7. tag count
+      8. category count
+      9. publisher count
+    `;
+
+    this.jsonReportExample = JSON.stringify([
+      {
+        name: 'data.gov',
+        url: 'data.gov',
+        location: 'United States',
+        description: 'USA Governmental Open Data Portal',
+        datasetCount: 328421,
+        tags: [
+          { name: 'GIS', datasetCount: 23123 }
+        ],
+        categories: [
+          { name: 'Economics', datasetCount: 5320 }
+        ],
+        publishers: [
+          { name: 'NOAA', datasetCount: 126900 }
+        ]
+      }
+    ], null, 2);
   }
 
   ngOnInit() {
@@ -150,6 +189,18 @@ export default class PortalPageComponent implements OnInit {
   closeSidebar() {
     this.mapSidebar.close();
     this.selectedRegion = null;
+  }
+
+  export() {
+    let year = this.exportDate.getFullYear();
+    let month = this.exportDate.getMonth() + 1;
+    let day = this.exportDate.getDate();
+    let date = `${year}-${month}-${day}`;
+
+    let baseUrl = location.href.split('/')[0];
+    let url = `/api/portals/stats?date=${date}&format=${this.exportFormat}`;
+
+    window.open(baseUrl + url, '_blank');
   }
 
   openDetailDialog(portal) {
