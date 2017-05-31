@@ -17,6 +17,7 @@
     "prepush": "npm test && npm run build"
   },
   "dependencies": {
+    "@akanass/rx-http-request": "^2.3.0",
     "@angular/animations": "^4.0.0",
     "@angular/common": "^4.0.0",
     "@angular/compiler": "^4.0.0",

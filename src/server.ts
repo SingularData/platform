@@ -12,13 +12,14 @@ const logger = getLogger('app');
 const app = express();
 const port = config.get('port');
 
+app.use(json())
+   .use(compression())
+   .use(express.static('./public/www/'));
+
 attachDatasetAPI(app);
 attachPortalAPI(app);
 
-app.use(json())
-   .use(compression())
-   .use(express.static('./public/www/'))
-   .all('/*', (req, res) => {
+app.all('/*', (req, res) => {
      res.status(200)
         .set({ 'content-type': 'text/html; charset=utf-8' })
         .sendFile('index.html', {
