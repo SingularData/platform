@@ -24,11 +24,7 @@ export function initialize() {
     db.end();
   }
 
-  if (process.env.NODE_EMV === 'production') {
-    db = new pgrx(config.get('database.aws.url').toString());
-  } else {
-    db = new pgrx(config.get('database.development.url').toString());
-  }
+  db = new pgrx(config.get('database.url').toString());
 
   return db;
 }

@@ -7,6 +7,7 @@ import { groupBy, find } from 'lodash';
 import 'rxjs/add/operator/map';
 
 import PortalDetailComponent from '../portal-detail/portal-detail.component';
+import { MapService } from '../../services/map.service';
 
 @Component({
   selector: 'portl-page',
@@ -40,7 +41,11 @@ export default class PortalPageComponent implements OnInit {
   private csvReportExample: string;
   private jsonReportExample: any;
 
-  constructor(private http: Http, private dialog: MdDialog) {
+  constructor(
+    private http: Http,
+    private dialog: MdDialog,
+    private mapService: MapService
+  ) {
     this.portalList = {
       columns: [
         { name: 'Portal Name' },
@@ -107,6 +112,7 @@ export default class PortalPageComponent implements OnInit {
     this.map.addLayer(this.markerGroup);
 
     this.mapSidebar = L.control.sidebar('portal-map-sidebar', { position: 'right' }).addTo(this.map);
+    this.mapService.disableMouseEvent('portal-map-sidebar');
     this.showSidebar = true;
 
     this.http.get('/api/portals')

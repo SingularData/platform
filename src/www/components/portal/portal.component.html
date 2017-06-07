@@ -101,7 +101,7 @@
                                 *ngFor="let portal of selectedRegion.portals"
                                 (click)="openDetailDialog(portal)">
                     <h4 md-line>{{ portal.name }}</h4>
-                    <p md-line *ngIf="portal.datasetCount">datasts: {{ portal.datasetCount | number }}</p>
+                    <p md-line>datasts: {{ portal.datasetCount | number }}</p>
                   </md-list-item>
                 </md-list>
 

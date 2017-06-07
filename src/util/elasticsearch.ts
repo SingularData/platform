@@ -21,17 +21,17 @@ export function getClient(): Client {
 
   if (process.env.NODE_ENV === 'production') {
     currentClient = new Client({
-      host: get('elasticsearch.aws.host').toString(),
+      host: get('elasticsearch.host').toString(),
       connectionClass: HttpAmazonESConnector,
       amazonES: {
-        region: get('elasticsearch.aws.region').toString(),
-        accessKey: get('elasticsearch.aws.accessKey').toString(),
-        secretKey: get('elasticsearch.aws.secretKey').toString()
+        region: get('elasticsearch.region').toString(),
+        accessKey: get('elasticsearch.accessKey').toString(),
+        secretKey: get('elasticsearch.secretKey').toString()
       }
     });
   } else {
     currentClient = new Client({
-      host: get('elasticsearch.development.host')
+      host: get('elasticsearch.host')
     });
   }
 

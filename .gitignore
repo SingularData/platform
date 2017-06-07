@@ -57,5 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
+config/ci.json
+config/production.json
+
 public
 elasticsearch

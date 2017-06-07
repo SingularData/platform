@@ -11,7 +11,8 @@ const legacyDate = new Date(2017, 4, 31);
 export function getPortals(req, res) {
   let db = getDB();
   let query = `
-    SELECT * FROM public.view_portal AS vp
+    SELECT * FROM public.mview_portal AS vp
+    WHERE vp.dataset_count IS NOT NULL
     ORDER BY vp.platform, vp.name, vp.region
   `;
 

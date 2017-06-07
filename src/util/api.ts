@@ -10,6 +10,13 @@ const logger = getLogger('api');
  */
 export function recordAPIUsage(name, url) {
   return (req, res, next) => {
+
+    /**
+     * Recording the api usage has nothing to do with the API, so release the
+     * request first.
+     */
+    next();
+
     let db = getDB();
     let ipLoc, apiID;
 
@@ -41,7 +48,6 @@ export function recordAPIUsage(name, url) {
         logger.error(err);
         return Observable.empty();
       })
-      .finally(() => next())
       .subscribe();
   };
 }

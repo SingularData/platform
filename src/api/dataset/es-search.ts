@@ -22,11 +22,16 @@ export function search(query: string, offset: number, limit: number): Observable
   });
 
   return Observable.fromPromise(search)
-    .map((result) => result.hits.hits.map((hit) => hit._id))
-    .mergeMap((md5List) => {
-      return getQuery(resolve(__dirname, './queries/get_dataset_lite.sql'))
-        .concatMap((sql) => db.query(sql, [md5List]));
-    })
-    .map((row) => toCamelCase(row))
-    .toArray();
+    .map((result) => result.hits.hits.map((hit) => {
+      let source: any = hit._source;
+
+      return {
+        uuid: hit._id,
+        name: source.name,
+        description: source.description,
+        publisher: source.publisher,
+        portalLink: source.portalLink,
+        tags: source.tags.slice(0, 5)
+      };
+    }));
 }

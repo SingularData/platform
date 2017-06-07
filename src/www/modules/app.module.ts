@@ -21,6 +21,7 @@ import SearchResultComponent from '../components/search-result/search-result.com
 import DatasetDetailComponent from '../components/dataset-detail/dataset-detail.component';
 
 import { DatasetService } from '../services/dataset.service';
+import { MapService } from '../services/map.service';
 
 import NgRoutingModule from './ng-routing.module';
 import NgCoreModule from './ng-core.module';
@@ -42,7 +43,8 @@ import NgMaterialModule from './ng-material.module';
     DatasetDetailComponent
   ],
   providers: [
-    DatasetService
+    DatasetService,
+    MapService
   ],
   entryComponents: [
     PortalDetailComponent

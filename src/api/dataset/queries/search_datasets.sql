@@ -16,7 +16,7 @@ WITH match AS (
   GROUP BY dtx.dataset_id
 )
 SELECT
-  d.portal_dataset_md5,
+  d.uuid,
   d.name,
   d.description,
   p.name AS portal,

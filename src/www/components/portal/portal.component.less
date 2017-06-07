@@ -15,8 +15,22 @@
 #portal-map {
   height: 100%;
 
+  #portal-map-sidebar {
+    z-index: 800;
+  }
+
   .sidebar-panel {
     padding: 10px 20px;
     cursor: default;
+
+    md-list-item {
+      &:hover {
+        background-color: #dbdbdb;
+      }
+    }
+
+    button {
+      margin-top: 10px;
+    }
   }
 }

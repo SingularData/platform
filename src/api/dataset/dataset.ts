@@ -22,11 +22,11 @@ export function searchDatasets(req, res) {
 
   query = query.replace(/\+/g, ' ');
 
-  search(query, offset, limit)
+  search(query, offset, limit + 1)
     .subscribe((datasets) => {
       res.json({
         success: true,
-        results: toCamelCase(datasets.slice(0, limit)),
+        results: datasets.slice(0, limit),
         nextPage: datasets.length > limit
       });
     }, (error) => {
@@ -39,9 +39,9 @@ export function searchDatasets(req, res) {
 }
 
 export function getDataset(req, res) {
-  let datasetId = req.params.uuid;
+  let uuid = req.params.uuid;
 
-  if (isNaN(datasetId)) {
+  if (!uuid) {
     res.json({
       success: false,
       message: 'Invalid dataset ID.'
@@ -55,10 +55,10 @@ export function getDataset(req, res) {
 
   if (req.query.version) {
     getDataset = getQuery(resolve(__dirname, './queries/get_dataset_version.sql'))
-        .concatMap((sql) => db.query(sql, [datasetId, +req.query.version]));
+        .concatMap((sql) => db.query(sql, [uuid, +req.query.version]));
   } else {
     getDataset = getQuery(resolve(__dirname, './queries/get_dataset_latest.sql'))
-        .concatMap((sql) => db.query(sql, [datasetId]));
+        .concatMap((sql) => db.query(sql, [uuid]));
   }
 
   getDataset

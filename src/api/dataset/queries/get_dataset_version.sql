@@ -27,6 +27,7 @@ WITH ds as (
   LEFT JOIN platform AS pl ON pl.id = po.platform_id
   LEFT JOIN dataset_region AS dr ON dr.id = d.dataset_region_id
   WHERE d.uuid = $1::text AND d.version_number = $2::integer
+  LIMIT 1
 ), versions AS (
   SELECT
     uuid,

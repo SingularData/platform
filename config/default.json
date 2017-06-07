@@ -1,25 +1,9 @@
 {
   "port": 8082,
   "database": {
-    "development": {
-      "url": "pg://datarea_admin:1sdf234@localhost:5432/datarea"
-    },
-    "aws": {
-      "url": "null"
-    },
-    "travis": {
-      "url": "pg://travis:travis@localhost:5432/datarea"
-    }
+    "url": "pg://datarea_admin:1sdf234@localhost:5432/datarea"
   },
   "elasticsearch": {
-    "development": {
-      "host": "http://localhost:9200"
-    },
-    "aws": {
-      "host": "toadd",
-      "region": "us-east-1",
-      "accessKey": "AKID",
-      "secretKey": "secret"
-    }
+    "host": "http://localhost:9200"
   }
 }

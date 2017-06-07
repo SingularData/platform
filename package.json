@@ -10,9 +10,10 @@
     "build": "webpack --config webpack/webpack.config.prod.js && gulp",
     "build-dev": "webpack --config webpack/webpack.config.dev.js && gulp",
     "watch": "concurrently \"webpack --config webpack/webpack.config.dev.js --watch public\" \"gulp watch\"",
-    "start": "nodemon public/server.js --watch",
-    "start-watch": "gulp && concurrently \"webpack --config webpack/webpack.config.dev.js --watch\" \"gulp watch\" \"npm run start\"",
-    "start-es-watch": "gulp && concurrently \"webpack --config webpack/webpack.config.dev.js --watch\" \"gulp watch\" \"npm run start\" \"elasticsearch/bin/elasticsearch\"",
+    "start": "node public/server.js",
+    "start-dev": "nodemon public/server.js --watch",
+    "start-watch": "gulp && concurrently \"webpack --config webpack/webpack.config.dev.js --watch\" \"gulp watch\" \"npm run start-dev\"",
+    "start-es-watch": "gulp && concurrently \"webpack --config webpack/webpack.config.dev.js --watch\" \"gulp watch\" \"npm run start-dev\" \"elasticsearch/bin/elasticsearch\"",
     "test": "mocha test/**/*.test.ts --require ts-node/register --require reflect-metadata",
     "prepush": "npm test && npm run build"
   },
