@@ -60,5 +60,6 @@ typings/
 config/ci.json
 config/production.json
 
+scripts
 public
 elasticsearch
