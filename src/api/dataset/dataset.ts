@@ -1,11 +1,14 @@
 import { getLogger } from 'log4js';
 import { resolve } from 'path';
 import { isNaN } from 'lodash';
+import { get } from 'config';
+import { Observable } from 'rxjs';
 // import { search } from './pg-search';
 import { search } from './es-search';
 import { getDB, getQuery, toCamelCase } from '../../util/database';
 
 const logger = getLogger('dataset');
+const maxTimeout = +get('timeout');
 
 export function searchDatasets(req, res) {
   let query = req.query.q;
@@ -22,18 +25,23 @@ export function searchDatasets(req, res) {
 
   query = query.replace(/\+/g, ' ');
 
+  let datasets = [];
+
   search(query, offset, limit + 1)
-    .subscribe((datasets) => {
-      res.json({
-        success: true,
-        results: datasets.slice(0, limit),
-        nextPage: datasets.length > limit
-      });
+    .timeout(maxTimeout)
+    .subscribe((results) => {
+      datasets = results;
     }, (error) => {
       logger.error('Unable to search: ', error);
       res.json({
         success: false,
         message: error.message
+      });
+    }, () => {
+      res.json({
+        success: true,
+        results: datasets.slice(0, limit),
+        nextPage: datasets.length > limit
       });
     });
 }
@@ -44,7 +52,7 @@ export function getDataset(req, res) {
   if (!uuid) {
     res.json({
       success: false,
-      message: 'Invalid dataset ID.'
+      message: 'Invalid dataset UUID.'
     });
 
     return;
@@ -61,61 +69,61 @@ export function getDataset(req, res) {
         .concatMap((sql) => db.query(sql, [uuid]));
   }
 
+  let dataset;
+
   getDataset
-    .toArray()
-    .subscribe((results) => {
-      if (results.length === 0) {
-        res.json({
-          success: false,
-          message: 'Unable to find dataset with the input ID.'
-        });
-
-        return;
-      }
-
-      res.json({
-        success: true,
-        result: toCamelCase(results[0])
-      });
+    .timeout(maxTimeout)
+    .subscribe((result) => {
+      dataset = result;
     }, (error) => {
       logger.error('Unable to get dataset details: ', error);
       res.json({
         success: false,
         message: error.message
       });
+    }, () => {
+      if (dataset) {
+        res.json({
+          success: true,
+          result: toCamelCase(dataset)
+        });
+      } else {
+        res.json({
+          success: false,
+          message: 'Unable to find dataset with the input ID.'
+        });
+      }
     });
 }
 
 export function getDatasetRaw(req, res) {
-  let datasetId = +req.params.uuid;
+  let uuid = +req.params.uuid;
 
-  if (isNaN(datasetId)) {
+  if (!uuid) {
     res.json({
       success: false,
-      message: 'Invalid dataset ID.'
+      message: 'Invalid dataset UUID.'
     });
 
     return;
   }
 
   let db = getDB();
+  let getDataset;
 
-  db.query('SELECT raw FROM public.dataset WHERE id = $1::integer LIMIT 1', [datasetId])
-    .toArray()
-    .subscribe((results) => {
-      if (results.length === 0) {
-        res.json({
-          success: false,
-          message: 'Unable to find dataset with the input ID.'
-        });
+  if (req.query.version) {
+    getDataset = getQuery(resolve(__dirname, './queries/get_dataset_raw_version.sql'))
+        .concatMap((sql) => db.query(sql, [uuid, +req.query.version]));
+  } else {
+    getDataset = getQuery(resolve(__dirname, './queries/get_dataset_raw_latest.sql'))
+        .concatMap((sql) => db.query(sql, [uuid]));
+  }
 
-        return;
-      }
+  let dataset;
 
-      res.json({
-        success: true,
-        result: results[0].raw
-      });
+  getDataset
+    .subscribe((result) => {
+      dataset = result;
     },
     (error) => {
       logger.error('Unable to get raw metadata: ', error);
@@ -123,6 +131,19 @@ export function getDatasetRaw(req, res) {
         success: false,
         message: error.message
       });
+    },
+    () => {
+      if (dataset) {
+        res.json({
+          success: false,
+          message: 'Unable to find dataset with the input ID.'
+        });
+      } else {
+        res.json({
+          success: true,
+          result: dataset
+        });
+      }
     }
   );
 }

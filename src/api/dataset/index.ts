@@ -23,7 +23,8 @@ export default function attachDatasetAPI(app) {
    * @apiName GetDataset
    * @apiGroup Dataset
    *
-   * @apiParam (Parameters) {Number} uuid Dataset UUID
+   * @apiParam (Parameter) {Number} uuid      Dataset UUID
+   * @apiParam (Query)     {Number} [version] Dataset version number
    *
    * @apiExample {GET} Example
    *    GET datarea.io/api/dataset/40ad6756-2b16-4718-8dff-aa6742d4375d
@@ -76,7 +77,8 @@ export default function attachDatasetAPI(app) {
    * @apiName GetDataset
    * @apiGroup Dataset
    *
-   * @apiParam (Parameters) {Number} uuid Portal dataset uuid
+   * @apiParam (Parameter) {Number} uuid      Portal dataset uuid
+   * @apiParam (Query)     {Number} [version] Dataset version number
    *
    * @apoSuccessExample {JSON} Success-Response:
    *    {
@@ -97,7 +99,7 @@ export default function attachDatasetAPI(app) {
    * @apiName GetDatasetHistory
    * @apiGroup Dataset
    *
-   * @apiParam (Parameters) {Number} uuid Portal dataset ID MD5 code
+   * @apiParam (Parameter) {Number} uuid Portal dataset ID MD5 code
    *
    * @apoSuccessExample {JSON} Success-Response:
    *    {

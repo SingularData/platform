@@ -31,7 +31,7 @@ export function search(query: string, offset: number, limit: number): Observable
         description: source.description,
         publisher: source.publisher,
         portalLink: source.portalLink,
-        tags: source.tags.slice(0, 5)
+        tags: source.tags ? source.tags.slice(0, 5) : []
       };
     }));
 }
