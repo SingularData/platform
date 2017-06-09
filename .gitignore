@@ -59,6 +59,7 @@ typings/
 
 config/ci.json
 config/production.json
+config/heroku.json
 
 public
 elasticsearch

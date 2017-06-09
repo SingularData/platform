@@ -10,7 +10,9 @@ import attachPortalAPI from './api/portal/index';
 
 const logger = getLogger('app');
 const app = express();
-const port = config.get('port');
+
+// TODO: use something else, not Heroku
+const port = process.env.NODE_ENV === 'heroku' ? process.env.$PORT : config.get('port');
 
 app.use(json())
    .use(compression())

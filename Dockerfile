@@ -13,5 +13,7 @@ RUN npm install
 COPY . /usr/src/app
 RUN npm run build
 
+# TODO: not use heroku next time
+ENV NODE_ENV=heroku
 EXPOSE 8082
 CMD [ "npm", "start" ]
