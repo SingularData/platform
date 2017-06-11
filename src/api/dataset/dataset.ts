@@ -97,7 +97,7 @@ export function getDataset(req, res) {
 }
 
 export function getDatasetRaw(req, res) {
-  let uuid = +req.params.uuid;
+  let uuid = req.params.uuid;
 
   if (!uuid) {
     res.json({

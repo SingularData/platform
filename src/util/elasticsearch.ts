@@ -1,5 +1,3 @@
-/// <reference path="../typing/http-aws-es.d.ts"/>
-
 import { Client } from 'elasticsearch';
 import HttpAmazonESConnector = require('http-aws-es');
 
