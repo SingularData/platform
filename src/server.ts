@@ -1,5 +1,4 @@
 import * as express from 'express';
-import * as compression from 'compression';
 import * as config from 'config';
 import { resolve } from 'path';
 import { getLogger } from 'log4js';
@@ -10,12 +9,9 @@ import attachPortalAPI from './api/portal/index';
 
 const logger = getLogger('app');
 const app = express();
-
-// TODO: use something else, not Heroku
-const port = process.env.NODE_ENV === 'heroku' ? process.env.$PORT : config.get('port');
+const port = config.get('port');
 
 app.use(json())
-   .use(compression())
    .use(express.static('./public/www/'));
 
 attachDatasetAPI(app);

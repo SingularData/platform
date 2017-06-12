@@ -45,7 +45,6 @@
     "@types/marked": "^0.0.28",
     "@types/node": "^7.0.29",
     "body-parser": "^1.17.2",
-    "compression": "^1.6.2",
     "config": "^1.26.1",
     "core-js": "^2.4.1",
     "elasticsearch": "^13.0.1",
