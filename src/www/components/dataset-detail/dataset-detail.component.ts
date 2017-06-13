@@ -55,9 +55,9 @@ export default class DatasetDetailComponent implements OnInit {
         this.dataset = result;
         this.loading = false;
       }, (error) => {
-        console.log(error);
-      }, () => {
         this.loading = false;
+        this.dataset = null;
+        console.log(error);
       });
   }
 
