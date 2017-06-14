@@ -17,7 +17,7 @@ app.use(json())
 attachDatasetAPI(app);
 attachPortalAPI(app);
 
-app.all('/*', (req, res) => {
+app.get('/*', (req, res) => {
      res.status(200)
         .set({ 'content-type': 'text/html; charset=utf-8' })
         .sendFile('index.html', {

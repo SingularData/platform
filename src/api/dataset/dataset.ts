@@ -59,19 +59,20 @@ export function getDataset(req, res) {
   }
 
   let db = getDB();
-  let getDataset;
+  let getData;
 
   if (req.query.version) {
-    getDataset = getQuery(resolve(__dirname, './queries/get_dataset_version.sql'))
+    getData = getQuery(resolve(__dirname, './queries/get_dataset_version.sql'))
         .concatMap((sql) => db.query(sql, [uuid, +req.query.version]));
   } else {
-    getDataset = getQuery(resolve(__dirname, './queries/get_dataset_latest.sql'))
+    getData = getQuery(resolve(__dirname, './queries/get_dataset_latest.sql'))
         .concatMap((sql) => db.query(sql, [uuid]));
   }
 
   let dataset;
+  let start = new Date();
 
-  getDataset
+  getData
     .timeout(maxTimeout)
     .subscribe((result) => {
       dataset = result;
@@ -109,19 +110,19 @@ export function getDatasetRaw(req, res) {
   }
 
   let db = getDB();
-  let getDataset;
+  let getData;
 
   if (req.query.version) {
-    getDataset = getQuery(resolve(__dirname, './queries/get_dataset_raw_version.sql'))
+    getData = getQuery(resolve(__dirname, './queries/get_dataset_raw_version.sql'))
         .concatMap((sql) => db.query(sql, [uuid, +req.query.version]));
   } else {
-    getDataset = getQuery(resolve(__dirname, './queries/get_dataset_raw_latest.sql'))
+    getData = getQuery(resolve(__dirname, './queries/get_dataset_raw_latest.sql'))
         .concatMap((sql) => db.query(sql, [uuid]));
   }
 
   let dataset;
 
-  getDataset
+  getData
     .subscribe((result) => {
       dataset = result;
     },
