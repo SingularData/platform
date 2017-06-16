@@ -61,7 +61,7 @@ config/ci.json
 config/production.json
 config/heroku.json
 
-scripts/bootstrap
+scripts/bootstrap.sh
 
 public
 elasticsearch
