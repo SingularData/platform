@@ -61,5 +61,8 @@ config/ci.json
 config/production.json
 config/heroku.json
 
+scripts/bootstrap
+
 public
 elasticsearch
+docker-compose.ecs.yaml
