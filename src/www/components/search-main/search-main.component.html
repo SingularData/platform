@@ -1,11 +1,9 @@
-<div class="page-content scrollable-y" fxLayout="column" fxLayoutAlign="start center">
-  <div fxLayout="column" fxLayoutAlign="center center">
-    <div class="app-logo" fxLayout="column" fxLayoutAlign="center center">
-      <div class="app-title">Datarea.io</div>
-      <div class="app-subtitle">one open data network</div>
-    </div>
+<div class="page-content scrollable-y">
+  <div class="app-logo" fxLayout="column" fxLayoutAlign="center center">
+    <div class="app-title">Datarea.io</div>
+    <div class="app-subtitle">one open data network</div>
   </div>
-  <div class="search-dialog">
+  <div class="search-dialog" fxLayout="column" fxLayoutAlign="center center">
     <md-input-container class="search-box">
       <input mdInput
              type="search"
@@ -13,11 +11,9 @@
              (keyup.enter)="search(keywords)"
              placeholder="Find data from 1,000 open data portals">
     </md-input-container>
-    <div fxLayout="row" fxLayoutAlign="center center">
-      <button md-raised-button (click)="search(keywords)">
-        <i class="fa fa-search" aria-hidden="true"></i> &nbsp; Search
-      </button>
-    </div>
+    <button md-raised-button (click)="search(keywords)">
+      <i class="fa fa-search" aria-hidden="true"></i> &nbsp; Search
+    </button>
   </div>
   <div class="platform-logo-board">
     <h4 class="text-center">Supported Platforms</h4>
