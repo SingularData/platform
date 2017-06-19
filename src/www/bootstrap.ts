@@ -2,6 +2,7 @@
 
 import 'zone.js';
 import 'reflect-metadata';
+import './polyfill/leaflet.poly';
 
 import '@angular/material/prebuilt-themes/indigo-pink.css';
 import 'font-awesome/css/font-awesome.css';
