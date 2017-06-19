@@ -15,11 +15,14 @@ SELECT
   ds.data,
   ds.tags,
   ds.categories,
-  json_build_object(
-    'type', 'Feature',
-    'geometry', ST_AsGeoJSON(ds.region, 6)::json,
-    'properties', json_build_object('name', ds.region_name)
-  ) AS region
+  CASE WHEN ds.region IS NULL THEN NULL
+  ELSE
+    json_build_object(
+      'type', 'Feature',
+      'geometry', ST_AsGeoJSON(ds.region, 6)::json,
+      'properties', json_build_object('name', ds.region_name)
+    )
+  END AS region
 FROM public.mview_latest_dataset AS ds
 WHERE uuid = $1::text
 LIMIT 1;

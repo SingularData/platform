@@ -8,7 +8,6 @@ import { search } from './es-search';
 import { getDB, getQuery, toCamelCase } from '../../util/database';
 
 const logger = getLogger('dataset');
-const maxTimeout = +get('timeout');
 
 export function searchDatasets(req, res) {
   let query = req.query.q;
@@ -28,7 +27,6 @@ export function searchDatasets(req, res) {
   let datasets = [];
 
   search(query, offset, limit + 1)
-    .timeout(maxTimeout)
     .subscribe((results) => {
       datasets = results;
     }, (error) => {
@@ -73,7 +71,6 @@ export function getDataset(req, res) {
   let start = new Date();
 
   getData
-    .timeout(maxTimeout)
     .subscribe((result) => {
       dataset = result;
     }, (error) => {

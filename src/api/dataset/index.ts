@@ -70,7 +70,7 @@ export default function attachDatasetAPI(app) {
    *      "message": "reason"
    *    }
    */
-  app.get('/api/dataset/:uuid', recordAPIUsage('get dataset', '/api/dataset'), d.getDataset);
+  app.get('/api/dataset/:uuid', d.getDataset);
 
   /**
    * @api {GET} /api/dataset/raw/:uuid    Get dataset raw metadata by dataset uuid
