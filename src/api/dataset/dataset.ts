@@ -68,7 +68,6 @@ export function getDataset(req, res) {
   }
 
   let dataset;
-  let start = new Date();
 
   getData
     .subscribe((result) => {

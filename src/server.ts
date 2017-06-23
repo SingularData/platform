@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as config from 'config';
+import * as morgan from 'morgan';
 import { resolve } from 'path';
 import { getLogger } from 'log4js';
 import { json } from 'body-parser';
@@ -12,6 +13,7 @@ const app = express();
 const port = config.get('port');
 
 app.use(json())
+   .use(morgan('dev'))
    .use(express.static('./public/www/'));
 
 attachDatasetAPI(app);

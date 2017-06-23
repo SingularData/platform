@@ -5,6 +5,7 @@ const HtmlWebpackPlugin  = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 let fontend = {
   devtool: 'eval',
@@ -37,6 +38,7 @@ let fontend = {
   },
   plugins: [
     new ExtractTextPlugin("[name].[contenthash].css"),
+    new FaviconsWebpackPlugin(path.resolve(__dirname, '../src/www/media/images/favicon.png')),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/www/index.html'),
       inject: true

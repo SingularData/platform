@@ -8,6 +8,7 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 let fontend = {
   devtool: 'source-map',
@@ -43,6 +44,7 @@ let fontend = {
       sourceMap: true
     }),
     new ExtractTextPlugin("[name].[contenthash].css"),
+    new FaviconsWebpackPlugin(path.resolve(__dirname, '../src/www/media/images/favicon.png')),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/www/index.html'),
       inject: true
