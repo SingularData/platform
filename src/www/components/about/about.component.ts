@@ -9,4 +9,11 @@ import { Component } from '@angular/core';
   ],
 })
 export default class AboutPageComponent {
+  scrollToAnchor(acnhor: string) {
+    const element = document.querySelector('#' + acnhor);
+
+    if (element) {
+      element.scrollIntoView(element);
+    }
+  }
 }

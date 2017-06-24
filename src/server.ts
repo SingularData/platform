@@ -14,7 +14,7 @@ const port = config.get('port');
 
 app.use(json())
    .use(morgan('dev'))
-   .use(express.static('./public/www/'));
+   .use(express.static('./public/www'));
 
 attachDatasetAPI(app);
 attachPortalAPI(app);

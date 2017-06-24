@@ -58,7 +58,7 @@ export function getDataset(req, res) {
 
   let db = getDB();
   let getData;
-
+  console.log('uo');
   if (req.query.version) {
     getData = getQuery(resolve(__dirname, './queries/get_dataset_version.sql'))
         .concatMap((sql) => db.query(sql, [uuid, +req.query.version]));

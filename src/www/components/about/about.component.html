@@ -1,49 +1,91 @@
-<div class="page-content" fxLayout="column" fxLayoutAlign="start center">
-  <div class="about-image">
-    <img src="../../media/images/dokodemo-door.jpeg">
+<div class="page-content scrollable-y">
+  <div class="about-main background-primary" fxLayout="column" fxLayoutAlign="center center">
+    <div class="text-center color-white">
+      <h1>Datarea.io is an open data platform</h1>
+      <h2>built to</h2>
+    </div>
+    <div class="about-main-gallery" fxLayout="row" fxLayoutAlign="space-around center">
+      <div>
+        <img class="problem-chart clickable"
+             src="../../media/images/dataset-growth-chart-white.png"
+             (click)="scrollToAnchor('search-problem')">
+        <div class="text-center color-white">Manage increasing open data</div>
+      </div>
+      <div>
+        <img class="problem-chart clickable"
+             src="../../media/images/portal-linked-chart-white.png"
+             (click)="scrollToAnchor('portal-problem')">
+        <div class="text-center color-white">Bridge open data networks</div>
+      </div>
+      <div>
+        <img class="problem-chart clickable"
+             src="../../media/images/user-chart-white.png"
+             (click)="scrollToAnchor('user-problem')">
+        <div class="text-center color-white">Solve the data user's problems</div>
+      </div>
+    </div>
   </div>
-  <div class="about-text">
-    <h3>What?</h3>
-    <p>
-      <strong>Datarea.io</strong> is a search engine that allows you to search
-      data across open data portals at multiple networks.
-    </p>
-    <h3>Why?</h3>
-    <p>T
-      he number of open data portals and open data has been dramatically
-      increasing in the recent years. With the advancing regulation and
-      technology, more individuals and organizations are joining the force of
-      data opening.
-    </p>
-    <p>
-      We are excited, but yet concerned, to see this future.
-    </p>
-    <p>
-      A <a href="https://opendatainception.io/" target="_blank">recent survey</a>
-      shows that there are more than 2,600 data portals around the world. Most
-      data portals are either disconnected to each other, or only within a
-      local network run by a portal service provider.
-    </p>
-    <p>
-      It needs time, experience, and even connections for the data user to
-      identify the correct data portal and find the correct data.
-    </p>
-    <p>
-      It should be simpler.
-    </p>
-    <h3>How?</h3>
-    <p>
-      <strong>Datarea.io</strong> provides the one-click-and-search-all service.
-    </p>
-    <p>
-      By collecting open data metadata from more than 700 portals in different
-      open data networks, we are able to build one open data network that
-      includes the majority of the world of open data and just search in it.
-    </p>
-    <p>
-      You only need to type your keywords in one text box and
-      <strong>Datarea.io</strong> will present you the correct dataset from
-      the correct portal.
-    </p>
+  <div fxLayout="column" fxLayoutAlign="start center">
+    <div id="search-problem" class="about-problem" fxLayout="row" fxLayoutAlign="start center">
+      <div fxFlex="30" fxLayout="column" fxLayoutAlign="center center">
+        <img class="problem-chart" src="../../media/images/dataset-search-chart.png">
+      </div>
+      <div fxFlex="growth">
+        <p>
+          Thousand of data portals and millions of datasets are open on the Internet.
+          The right data may sit at a corner of the Internet, however, finding the
+          right data is sometimes like finding a needle in a haystack.
+        </p>
+        <p>
+          We would like to save your time poking around the Internet. By collecting
+          and analyzing million of open data, we are able to build a single open
+          data network that includes all open data we can find on the Internet.
+          With one single search at Datarea.io, you are able to reach every concern
+          of the data network and find what you want.
+        </p>
+        <a md-button>See how we create the data network</a>
+      </div>
+    </div>
+    <div id="portal-problem" class="about-problem" fxLayout="row" fxLayoutAlign="start center">
+      <div fxFlex="30" fxLayout="column" fxLayoutAlign="center center">
+        <img class="problem-chart" src="../../media/images/portal-linked-chart.png">
+      </div>
+      <div fxFlex="growth">
+        <p>
+          The increasing number of open data portals is a good news and a bad news.
+          The good news is more userful open data is available, but the bad news
+          is you probably need to learn how to use a new portal again.
+        </p>
+        <p>
+          In Datarea.io, we use a consistent interface to access our data network
+          and an inclusive open data specification to manage the network. We would
+          like to provide you the same accessiblity and usibility for all data,
+          regardless of their origin.
+        </p>
+        <a md-button>See how we define our specifications</a>
+      </div>
+    </div>
+    <div id="user-problem" class="about-problem" fxLayout="row" fxLayoutAlign="start center">
+      <div fxFlex="30" fxLayout="column" fxLayoutAlign="center center">
+        <img class="problem-chart" src="../../media/images/user-chart.png">
+      </div>
+      <div fxFlex="growth">
+        <p>
+          Have you considered what a data portal would be if it is built by and for
+          the data user? What data problem is troubling you? How could we help
+          you to handle the problem?
+        </p>
+        <p>
+          Tell us your opinions and wishes because Datarea.io is built by and
+          for you.
+        </p>
+        <a md-button>Contact us</a>
+      </div>
+    </div>
+  </div>
+  <div class="about-footer background-primary" fxLayout="column" fxLayoutAlign="center center">
+    <div class="text-center color-white">
+      <h1>You are changing the world and let us save your time.</h1>
+    </div>
   </div>
 </div>
