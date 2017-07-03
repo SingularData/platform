@@ -1,6 +1,6 @@
 SELECT
-  version_number AS version,
-  lower(version_period) AS updated_time
+  version,
+  lower(version_period) AS updated
 FROM dataset
 WHERE uuid = $1::text
-ORDER BY version_number DESC
+ORDER BY version DESC

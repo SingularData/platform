@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 // import { search } from './pg-search';
 import { search } from './es-search';
 import { getDB, getQuery, toCamelCase } from '../../util/database';
+import { Dataset } from '@datarea/dataset-spec';
 
 const logger = getLogger('dataset');
 
@@ -16,7 +17,6 @@ export function searchDatasets(req, res) {
 
   if (!query) {
     res.json({
-      success: true,
       results: [],
       nextPage: false
     });
@@ -31,13 +31,9 @@ export function searchDatasets(req, res) {
       datasets = results;
     }, (error) => {
       logger.error('Unable to search: ', error);
-      res.json({
-        success: false,
-        message: error.message
-      });
+      res.status(500).json({ message: error.message });
     }, () => {
       res.json({
-        success: true,
         results: datasets.slice(0, limit),
         nextPage: datasets.length > limit
       });
@@ -48,17 +44,13 @@ export function getDataset(req, res) {
   let uuid = req.params.uuid;
 
   if (!uuid) {
-    res.json({
-      success: false,
-      message: 'Invalid dataset UUID.'
-    });
-
+    res.status(400).json({ message: 'Invalid dataset UUID.' });
     return;
   }
 
   let db = getDB();
   let getData;
-  console.log('uo');
+
   if (req.query.version) {
     getData = getQuery(resolve(__dirname, './queries/get_dataset_version.sql'))
         .concatMap((sql) => db.query(sql, [uuid, +req.query.version]));
@@ -67,28 +59,19 @@ export function getDataset(req, res) {
         .concatMap((sql) => db.query(sql, [uuid]));
   }
 
-  let dataset;
+  let dataset: Dataset;
 
   getData
     .subscribe((result) => {
-      dataset = result;
+      dataset = toCamelCase(result) as Dataset;
     }, (error) => {
       logger.error('Unable to get dataset details: ', error);
-      res.json({
-        success: false,
-        message: error.message
-      });
+      res.status(500).json({ message: error.message });
     }, () => {
       if (dataset) {
-        res.json({
-          success: true,
-          result: toCamelCase(dataset)
-        });
+        res.json({ result: dataset });
       } else {
-        res.json({
-          success: false,
-          message: 'Unable to find dataset with the input ID.'
-        });
+        res.status(400).json({ message: 'Unable to find dataset with the input ID.' });
       }
     });
 }
@@ -97,11 +80,7 @@ export function getDatasetRaw(req, res) {
   let uuid = req.params.uuid;
 
   if (!uuid) {
-    res.json({
-      success: false,
-      message: 'Invalid dataset UUID.'
-    });
-
+    res.status(400).json({ message: 'Invalid dataset UUID.' });
     return;
   }
 
@@ -120,26 +99,17 @@ export function getDatasetRaw(req, res) {
 
   getData
     .subscribe((result) => {
-      dataset = result;
+      dataset = result.raw;
     },
     (error) => {
       logger.error('Unable to get raw metadata: ', error);
-      res.json({
-        success: false,
-        message: error.message
-      });
+      res.status(500).json({ message: error.message });
     },
     () => {
       if (dataset) {
-        res.json({
-          success: false,
-          message: 'Unable to find dataset with the input ID.'
-        });
+        res.json({ result: dataset });
       } else {
-        res.json({
-          success: true,
-          result: dataset
-        });
+        res.status(400).json({ message: 'Unable to find dataset with the input ID.' });
       }
     }
   );
@@ -147,24 +117,23 @@ export function getDatasetRaw(req, res) {
 
 export function getDatasetHistory(req, res) {
   let uuid = req.params.uuid;
+
+  if (!uuid) {
+    res.status(400).json({ message: 'Invalid dataset UUID.' });
+    return;
+  }
+
   let db = getDB();
 
   getQuery(resolve(__dirname, './queries/get_dataset_history.sql'))
     .concatMap((sql) => db.query(sql, [uuid]))
     .map((row) => toCamelCase(row))
     .toArray()
-    .subscribe((results) => {
-      res.json({
-        success: true,
-        result: results
-      });
-    },
-    (error) => {
-      logger.error('Unable to get raw metadata: ', error);
-      res.json({
-        success: false,
-        message: error.message
-      });
-    }
-  );
+    .subscribe(
+      (results) => res.json({ result: results }),
+      (error) => {
+        logger.error('Unable to get raw metadata: ', error);
+        res.status(500).json({ message: error.message });
+      }
+    );
 }
