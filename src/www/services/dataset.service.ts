@@ -32,10 +32,10 @@ export class DatasetService {
       }
     })
     .map((res) => res.json())
+    .catch((result) => {
+      throw new Error(result.message);
+    })
     .map((result) => {
-      if (!result.success) {
-        throw new Error(result.message);
-      }
 
       for (let dataset of result.results) {
         dataset.tags = dataset.tags || [];
@@ -65,25 +65,19 @@ export class DatasetService {
 
     return this.http.get(url)
       .map((res) => res.json())
-      .map((result) => {
-        if (!result.success) {
-          throw new Error(result.message);
-        }
-
-        return result.result;
-      });
+      .catch((result) => {
+        throw new Error(result.message);
+      })
+      .map((result) => result.result);
   }
 
   getRaw(id: string): Observable<any> {
     return this.http.get('/api/dataset/raw/' + id)
       .map((res) => res.json())
-      .map((result) => {
-        if (!result.success) {
-          throw new Error(result.message);
-        }
-
-        return result.result;
-      });
+      .catch((result) => {
+        throw new Error(result.message);
+      })
+      .map((result) => result.result);
   }
 }
 

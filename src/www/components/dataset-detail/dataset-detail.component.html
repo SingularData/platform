@@ -76,9 +76,9 @@
                 </md-list-item>
                 <md-list-item>
                   <md-icon md-list-icon class="fa fa-link" aria-hidden="true"></md-icon>
-                  <p md-line>Dataset Link</p>
+                  <p md-line>URL</p>
                   <p md-line>
-                    <a target="_blank" href="{{ dataset.portalLink }}">{{ dataset.portal }}</a>
+                    <a target="_blank" href="{{ dataset.url }}">{{ dataset.portal }}</a>
                   </p>
                 </md-list-item>
                 <md-list-item *ngIf="dataset.license">
@@ -89,12 +89,12 @@
                 <md-list-item>
                   <md-icon md-list-icon class="fa fa-calendar" aria-hidden="true"></md-icon>
                   <p md-line>Created</p>
-                  <p md-line>{{ dataset.createdTime | date: 'short' }}</p>
+                  <p md-line>{{ dataset.created | date: 'short' }}</p>
                 </md-list-item>
                 <md-list-item>
                   <md-icon md-list-icon class="fa fa-calendar" aria-hidden="true"></md-icon>
                   <p md-line>Updated</p>
-                  <p md-line>{{ dataset.updatedTime | date: 'short' }}</p>
+                  <p md-line>{{ dataset.updated | date: 'short' }}</p>
                 </md-list-item>
               </md-list>
             </md-card-content>
@@ -102,22 +102,22 @@
 
         </md-tab>
 
-        <md-tab label="Data & Files" *ngIf="dataset.data.length > 0">
-          <md-card *ngFor="let data of dataset.data">
+        <md-tab label="Data & Files" *ngIf="dataset.files.length > 0">
+          <md-card *ngFor="let file of dataset.files">
             <md-card-header>
-              <md-card-title>{{ data.name }}</md-card-title>
-              <md-card-subtitle *ngIf="data.format && data.format !== data.name">{{ data.format }}</md-card-subtitle>
+              <md-card-title>{{ file.name }}</md-card-title>
+              <md-card-subtitle *ngIf="file.format && file.format !== file.name">{{ file.format }}</md-card-subtitle>
             </md-card-header>
-            <md-card-content *ngIf="data.description">
-              <p [innerHTML]="data.description"></p>
+            <md-card-content *ngIf="file.description">
+              <p [innerHTML]="file.description"></p>
             </md-card-content>
             <md-card-actions>
-              <button type="button" md-button (click)="openData(data.link)">
+              <button type="button" md-button (click)="openData(file.url)">
                 <i class="fa fa-download" aria-hidden="true"></i> &nbsp; Open
               </button>
               <button type="button" md-button ngxClipboard
-                      [cbContent]="data.link"
-                      (click)="openSnackBar('Data link copied to the clipboard!')">
+                      [cbContent]="file.url"
+                      (click)="openSnackBar('Data url copied to the clipboard!')">
                 <i class="fa fa-clipboard" aria-hidden="true"></i> &nbsp; Copy Link
               </button>
             </md-card-actions>
@@ -133,7 +133,7 @@
             <md-list>
               <md-list-item *ngFor="let detail of dataset.versionHistory">
                 <p md-line><strong>Version {{ detail.version }}</strong></p>
-                <p md-line>Updated at {{ detail.updatedTime | date: 'short' }}</p>
+                <p md-line>Updated at {{ detail.updated | date: 'short' }}</p>
               </md-list-item>
             </md-list>
           </md-card-content>

@@ -46,9 +46,9 @@ export default class DatasetDetailComponent implements OnInit {
           result.description = marked(result.description);
         }
 
-        for (let data of result.data) {
-          if (data.description) {
-            data.description = marked(data.description);
+        for (let file of result.files) {
+          if (file.description) {
+            file.description = marked(file.description);
           }
         }
 
@@ -65,8 +65,8 @@ export default class DatasetDetailComponent implements OnInit {
     this.location.back();
   }
 
-  openData(link) {
-    window.open(link, '_blank');
+  openData(url) {
+    window.open(url, '_blank');
   }
 
   openSnackBar(message) {
