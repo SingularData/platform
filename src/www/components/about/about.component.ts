@@ -13,7 +13,7 @@ export default class AboutPageComponent {
     const element = document.querySelector('#' + acnhor);
 
     if (element) {
-      element.scrollIntoView(element);
+      element.scrollIntoView();
     }
   }
 }
