@@ -11,8 +11,13 @@
              (keyup.enter)="search(keywords)"
              placeholder="Find data from 1,000 open data portals">
     </md-input-container>
+  </div>
+  <div class="search-dialog" fxLayout="row" fxLayoutAlign="center center">
     <button md-raised-button (click)="search(keywords)">
       <i class="fa fa-search" aria-hidden="true"></i> &nbsp; Search
+    </button>
+    <button md-raised-button (click)="openGoogleForm()">
+      <i class="fa fa-home" aria-hidden="true"></i> &nbsp; Know a new portal?
     </button>
   </div>
   <div class="platform-logo-board">
