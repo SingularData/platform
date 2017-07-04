@@ -39,6 +39,10 @@ export class DatasetService {
 
       for (let dataset of result.results) {
         dataset.tags = dataset.tags || [];
+
+        if (!dataset.url.startsWith('http')) {
+          dataset.url = 'http://' + dataset.url;
+        }
       }
 
       return result;
@@ -68,7 +72,15 @@ export class DatasetService {
       .catch((result) => {
         throw new Error(result.message);
       })
-      .map((result) => result.result);
+      .map((result) => {
+        let dataset = result.result;
+
+        if (!dataset.url.startsWith('http')) {
+          dataset.url = 'http://' + dataset.url;
+        }
+
+        return dataset;
+      });
   }
 
   getRaw(id: string): Observable<any> {

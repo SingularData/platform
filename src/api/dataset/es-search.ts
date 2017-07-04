@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { resolve } from 'path';
-import { getClient } from '../../util/elasticsearch';
+import { getClient, getSearchParams, getFieldWeight } from '../../util/elasticsearch';
 import { getDB, getQuery, toCamelCase } from '../../util/database';
 
 /**
@@ -13,12 +13,28 @@ import { getDB, getQuery, toCamelCase } from '../../util/database';
 export function search(query: string, offset: number, limit: number): Observable<Array<any>> {
   let db = getDB();
   let client = getClient();
+  let params = getSearchParams(query);
+  let fields = ['_all'];
+
+  if (params.fields) {
+    for (let name in params.fields) {
+      fields.push(`${name}^${getFieldWeight(name)}`);
+    }
+  }
+
   let search = client.search({
     index: 'datarea',
     type: 'metadata',
-    q: query,
     from: offset,
-    size: limit
+    size: limit,
+    body: {
+      query: {
+        query_string: {
+          fields,
+          query
+        }
+      }
+    }
   });
 
   return Observable.fromPromise(search)
@@ -30,7 +46,7 @@ export function search(query: string, offset: number, limit: number): Observable
         name: source.name,
         description: source.description,
         publisher: source.publisher,
-        portalLink: source.portalLink,
+        url: source.url,
         tags: source.tags ? source.tags.slice(0, 5) : []
       };
     }));

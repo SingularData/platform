@@ -22,7 +22,7 @@ export function searchDatasets(req, res) {
     });
   }
 
-  query = query.replace(/\+/g, ' ');
+  query = decodeURIComponent(query);
 
   let datasets = [];
 

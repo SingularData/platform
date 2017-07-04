@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 import { getQuery, toCamelCase } from '../../src/util/database';
 
-describe('ConversionService', () => {
+describe('util/database.toCamelCase()', () => {
 
-  it('toCamelCase() should convert snake case keys to camel case keys.', () => {
+  it('should convert snake case keys to camel case keys.', () => {
     let object: Object = {
-      'userId': 1,
-      'user_name': 'Tom'
+      userId: 1,
+      user_name: 'Tom'
     };
 
     toCamelCase(object);
@@ -17,10 +17,10 @@ describe('ConversionService', () => {
     });
   });
 
-  it('toCamelCase() should work with an array of objects.', () => {
+  it('should work with an array of objects.', () => {
     let array = [
       { userId: 1 },
-      { 'user_id': 2 }
+      { user_id: 2 }
     ];
 
     toCamelCase(array);
@@ -32,6 +32,22 @@ describe('ConversionService', () => {
   });
 
   it('getQuery() should read a SQL file and return the query.', (done) => {
+    getQuery('./queries/test.sql')
+      .subscribe(
+        (sql) => {
+          expect(sql).to.equal('SELECT 1');
+          done();
+        },
+        () => done(),
+        () => done()
+      );
+  });
+
+});
+
+describe('util/database.getQuery()', () => {
+
+  it('should read a SQL file and return the query.', (done) => {
     getQuery('./queries/test.sql')
       .subscribe(
         (sql) => {
