@@ -1,35 +1,22 @@
-<div class="page-content scrollable-y">
+<div class="page-content hidden-y background-black">
   <div class="app-logo" fxLayout="column" fxLayoutAlign="center center">
-    <div class="app-title">Datarea.io</div>
-    <div class="app-subtitle">one open data network</div>
+    <div class="app-title color-white">One Open Data Network</div>
+    <div class="app-subtitle color-white">connecting more than 1,000 open data portals</div>
   </div>
-  <div class="search-dialog" fxLayout="column" fxLayoutAlign="center center">
+  <div fxLayout="column" fxLayoutAlign="center center">
     <md-input-container class="search-box">
       <input mdInput
+             class="text-center color-white"
              type="search"
              [(ngModel)]="keywords"
              (keyup.enter)="search(keywords)"
-             placeholder="Find data from 1,000 open data portals">
+             placeholder="Looking for data?">
     </md-input-container>
   </div>
   <div class="search-dialog" fxLayout="row" fxLayoutAlign="center center">
     <button md-raised-button (click)="search(keywords)">
       <i class="fa fa-search" aria-hidden="true"></i> &nbsp; Search
     </button>
-    <button md-raised-button (click)="openGoogleForm()">
-      <i class="fa fa-home" aria-hidden="true"></i> &nbsp; Know a new portal?
-    </button>
   </div>
-  <div class="platform-logo-board">
-    <h4 class="text-center">Supported Platforms</h4>
-    <div fxLayout="row" fxLayoutAlign="center center">
-      <md-card class="platform-logo"
-               fxLayout="row" fxLayoutAlign="center center"
-               *ngFor="let platform of supportedPlatforms"
-               mdTooltip="{{ platform.name }}"
-               mdTooltipPosition="below">
-        <img src="{{ platform.logo }}">
-      </md-card>
-    </div>
-  </div>
+  <img class="background-image" src="../../media/images/main-background.jpeg">
 </div>
