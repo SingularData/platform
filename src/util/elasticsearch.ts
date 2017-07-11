@@ -1,3 +1,5 @@
+/// <reference path="../typing/aws-sdk.d.ts" />
+
 import { Client } from 'elasticsearch';
 import HttpAmazonESConnector = require('http-aws-es');
 
@@ -34,14 +36,19 @@ export function getClient(): Client {
   }
 
   if (process.env.NODE_ENV === 'production') {
+    let AWS = require('aws-sdk');
+
+    AWS.config.update({
+      egion: 'us-east-1',
+      credentials: new AWS.Credentials(
+        get('elasticsearch.accessKey').toString(),
+        get('elasticsearch.secretKey').toString()
+      )
+    });
+
     currentClient = new Client({
-      host: get('elasticsearch.host').toString(),
-      connectionClass: HttpAmazonESConnector,
-      amazonES: {
-        region: get('elasticsearch.region').toString(),
-        accessKey: get('elasticsearch.accessKey').toString(),
-        secretKey: get('elasticsearch.secretKey').toString()
-      }
+      hosts: [get('elasticsearch.host').toString()],
+      connectionClass: HttpAmazonESConnector
     });
   } else {
     currentClient = new Client({

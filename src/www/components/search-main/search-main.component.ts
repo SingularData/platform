@@ -15,6 +15,11 @@ export default class SearchMainComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+
+    /**
+     * The pure CSS solution doesn't seem to work and it has to be done in TS.
+     */
+
     let placeholder = document.getElementsByClassName('mat-input-placeholder')[0] as HTMLElement;
     placeholder.style.color = 'white';
     placeholder.style.textAlign = 'center';
