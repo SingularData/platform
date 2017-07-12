@@ -1,114 +1,128 @@
-<div class="page-content scrollable-y" fxLayout="column" fxLayoutAlign="start center">
-  <h2>
-    Datarea.io is keeping track with {{ portalCount | number }} open data portals
-  </h2>
+<div class="page-content scrollable-y background-grey" fxLayout="column" fxLayoutAlign="start center">
+
+  <h1>
+    Open Data Network
+  </h1>
 
   <h3>
-    {{ datasetSum | number }} datasets for {{ regionCount | number }} regions
+    {{ portalCount | number }} portals | {{ datasetSum | number }} datasets
   </h3>
 
-  <div fxLayout="row" fxLayoutAlign=" center" class="botton-group">
-    <button md-raised-button [mdMenuTriggerFor]="viewMenu">View: {{ currentView }}</button>
-    <button md-raised-button [mdMenuTriggerFor]="filterMenu" *ngIf="currentView !== 'Statistics'">Filter by: {{ currentFilter }}</button>
-    <md-input-container *ngIf="currentView !== 'Statistics' && currentFilter !== 'None'">
-      <input mdInput type="search"
-             placeholder="Type filter values here..."
-             [(ngModel)]="filterKeywordsrWords"
-             (input)="onFilterKeywordChanged($event.target.value)">
-    </md-input-container>
-  </div>
+  <md-tab-group>
+    <md-tab label="Map">
 
-  <md-menu #viewMenu="mdMenu">
-    <button md-menu-item (click)="switchView('Map')">Map</button>
-    <button md-menu-item (click)="switchView('List')">List</button>
-    <button md-menu-item (click)="switchView('Statistics')">Statistics</button>
-  </md-menu>
-
-  <md-menu #filterMenu="mdMenu">
-    <button md-menu-item (click)="switchFilter('None')">None</button>
-    <button md-menu-item (click)="switchFilter('Name')">Name</button>
-    <button md-menu-item (click)="switchFilter('Platform')">Platform</button>
-    <button md-menu-item (click)="switchFilter('Location')">Location</button>
-  </md-menu>
-
-  <div class="detail-page scrollable-y white-frame" [hidden]="currentView !== 'List'">
-    <ngx-datatable class="material"
-      [columnMode]="'force'"
-      [rows]="portalList.rows"
-      [columns]="portalList.columns"
-      [limit]="15"
-      [headerHeight]="50"
-      [rowHeight]="50"
-      [footerHeight]="50"
-      (activate)="onPortalListClick($event)">
-    </ngx-datatable>
-  </div>
-
-  <div class="detail-page" [hidden]="currentView !== 'Statistics'">
-    <div fxLayout="row" fxLayoutAlign="center none">
-      <div fxFlex="50">
-        <h3>Portal Statistics</h3>
-        <p><strong>Datarea.io</strong> collects data from open data portals every week to provide latest open data information.</p>
-        <p>Dowload a portal statistics report to see how these portals perform:</p>
+      <div class="filter-controls" fxLayout="row" fxLayoutAlign="start start">
         <md-input-container>
-          <input mdInput [mdDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="exportDate">
-          <button mdSuffix [mdDatepickerToggle]="picker"></button>
+          <input mdInput
+                 placeholder="Filter portals..."
+                 [(ngModel)]="filterKeywords"
+                 (change)="onFilterKeywordChanged(filterKeywords)">
         </md-input-container>
-        <md-datepicker #picker [startAt]="startDate"></md-datepicker>
-        <md-select placeholder="Report format" [(ngModel)]="exportFormat">
-          <md-option [value]="'json'">JSON</md-option>
-          <md-option [value]="'csv'">CSV</md-option>
+
+        <md-select placeholder="Filter by"
+                   [(ngModel)]="currentFilter"
+                   (change)="switchFilter(filter)">
+          <md-option *ngFor="let filter of filters" [value]="filter">
+            {{ filter }}
+          </md-option>
         </md-select>
-        <button md-raised-button [disabled]="!exportFormat || !exportDate" (click)="export()">
-          <i class="fa fa-download"></i>&nbsp; Download
-        </button>
       </div>
-      <div fxFlex="50" class="white-frame padding-20">
-        <h3>Report Example</h3>
-        <md-tab-group>
-          <md-tab label="JSON">
-            <pre>{{ jsonReportExample }}</pre>
-          </md-tab>
-          <md-tab label="CSV">
-            <pre>{{ csvReportExample }}</pre>
-          </md-tab>
-        </md-tab-group>
-      </div>
-    </div>
-  </div>
 
-  <div class="detail-page white-frame" [hidden]="currentView !== 'Map'">
-    <div id="portal-map" class="sidebar-map">
-      <div id="portal-map-sidebar" class="sidebar collapsed" [hidden]="!showSidebar">
-          <div class="sidebar-tabs">
-            <ul role="tablist">
-              <li><a href="#portal-map-sidebar-home" role="tab"><i class="fa fa-bars"></i></a></li>
-            </ul>
-          </div>
+      <div #portalMap class="sidebar-map detail-tab">
+        <div #portalMapSidebar class="sidebar collapsed" [hidden]="!showSidebar">
+            <div class="sidebar-tabs">
+              <ul role="tablist">
+                <li><a href="#portal-map-sidebar-home" role="tab"><i class="fa fa-bars"></i></a></li>
+              </ul>
+            </div>
 
-          <div class="sidebar-content">
-            <div id="portal-map-sidebar-home"
-                 class="sidebar-panel"
-                 *ngIf="selectedRegion !== null">
-                <h1 class="sidebar-header">
-                  {{ selectedRegion.name }}
-                  <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
-                </h1>
+            <div class="sidebar-content">
+              <div id="portal-map-sidebar-home"
+                   class="sidebar-panel"
+                   *ngIf="selectedRegion !== null">
+                  <h1 class="sidebar-header">
+                    {{ selectedRegion.name }}
+                    <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+                  </h1>
 
-                <md-list>
-                  <h3 md-subheader>{{ selectedRegion.portals.length }} portal(s) in this region</h3>
-                  <md-list-item class="clickable"
-                                *ngFor="let portal of selectedRegion.portals"
-                                (click)="openDetailDialog(portal)">
-                    <h4 md-line>{{ portal.name }}</h4>
-                    <p md-line>datasts: {{ portal.datasetCount | number }}</p>
-                  </md-list-item>
-                </md-list>
+                  <md-list>
+                    <h3 md-subheader>{{ selectedRegion.portals.length }} portal(s) in this region</h3>
+                    <md-list-item class="clickable"
+                                  *ngFor="let portal of selectedRegion.portals"
+                                  (click)="openDetailDialog(portal)">
+                      <h4 md-line>{{ portal.name }}</h4>
+                      <p md-line>datasts: {{ portal.datasetCount | number }}</p>
+                    </md-list-item>
+                  </md-list>
 
-                <button md-raised-button (click)="closeSidebar()">Close</button>
+                  <button md-raised-button (click)="closeSidebar()">Close</button>
+              </div>
             </div>
         </div>
-    </div>
-  <div>
+      </div>
+    </md-tab>
+    <md-tab label="List">
 
+      <div class="filter-controls" fxLayout="row" fxLayoutAlign="start start">
+        <md-input-container>
+          <input mdInput
+                 placeholder="Filter portals..."
+                 [(ngModel)]="filterKeywords"
+                 (change)="onFilterKeywordChanged(filterKeywords)">
+        </md-input-container>
+
+        <md-select placeholder="Filter by"
+                   [(ngModel)]="currentFilter"
+                   (change)="switchFilter(filter)">
+          <md-option *ngFor="let filter of filters" [value]="filter">
+            {{ filter }}
+          </md-option>
+        </md-select>
+      </div>
+
+      <ngx-datatable class="material detail-tab scrollable-y"
+        [columnMode]="'force'"
+        [rows]="portalList.rows"
+        [columns]="portalList.columns"
+        [limit]="15"
+        [headerHeight]="50"
+        [rowHeight]="50"
+        [footerHeight]="50"
+        (activate)="onPortalListClick($event)">
+      </ngx-datatable>
+
+    </md-tab>
+    <md-tab label="Statistics">
+      <div class="detail-tab" fxLayout="row" fxLayoutAlign="center none">
+        <div fxFlex="50">
+          <h3>Portal Statistics</h3>
+          <p><strong>Datarea.io</strong> collects data from open data portals every week to provide latest open data information.</p>
+          <p>Dowload a portal statistics report to see how these portals perform:</p>
+          <md-input-container>
+            <input mdInput [mdDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="exportDate">
+            <button mdSuffix [mdDatepickerToggle]="picker"></button>
+          </md-input-container>
+          <md-datepicker #picker [startAt]="startDate"></md-datepicker>
+          <md-select placeholder="Report format" [(ngModel)]="exportFormat">
+            <md-option [value]="'json'">JSON</md-option>
+            <md-option [value]="'csv'">CSV</md-option>
+          </md-select>
+          <button md-raised-button [disabled]="!exportFormat || !exportDate" (click)="export()">
+            <i class="fa fa-download"></i>&nbsp; Download
+          </button>
+        </div>
+        <div fxFlex="50" class="white-frame padding-20">
+          <h3>Report Example</h3>
+          <md-tab-group>
+            <md-tab label="JSON">
+              <pre>{{ jsonReportExample }}</pre>
+            </md-tab>
+            <md-tab label="CSV">
+              <pre>{{ csvReportExample }}</pre>
+            </md-tab>
+          </md-tab-group>
+        </div>
+      </div>
+    </md-tab>
+  </md-tab-group>
 </div>

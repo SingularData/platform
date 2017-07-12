@@ -9,7 +9,7 @@ declare namespace L {
     }
 
     class Sidebar extends Control {
-      constructor(id: string, options?: SidebarOptions);
+      constructor(id: string | HTMLElement, options?: SidebarOptions);
       options: Control.ControlOptions;
       addTo(map: L.Map): this;
       remove(map: L.Map): this;

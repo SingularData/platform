@@ -8,13 +8,19 @@ export class MapService {
 
   /**
    * Disable mouse events for map elements.
-   * @param   {string} elementId HTML element ID
+   * @param   {string|HTMLElement} element HTML element ID or the element object
    * @returns {undefined}        no return
    */
-  disableMouseEvent(elementId: string) {
-    let element = <HTMLElement>document.getElementById(elementId);
+  disableMouseEvent(element: string | HTMLElement) {
+    let el;
 
-    L.DomEvent.disableClickPropagation(element);
-    L.DomEvent.disableScrollPropagation(element);
+    if (typeof element === 'string') {
+      el = document.getElementById(element) as HTMLElement;
+    } else {
+      el = element;
+    }
+
+    L.DomEvent.disableClickPropagation(el);
+    L.DomEvent.disableScrollPropagation(el);
   }
 }

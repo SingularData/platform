@@ -1,6 +1,6 @@
-<div class="page-content scrollable-y" fxLayout="column">
-  <button md-button (click)="goBack()" flex-offset="15">
-    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+<div class="page-content scrollable-y background-grey">
+  <button class="back-button" md-button (click)="goBack()">
+    <i class="fa fa-arrow-left" aria-hidden="true"></i> Search Results
   </button>
 
   <div fxLayout="column" fxLayoutAlign="start center">
@@ -106,20 +106,29 @@
           <md-card *ngFor="let file of dataset.files">
             <md-card-header>
               <md-card-title>{{ file.name }}</md-card-title>
-              <md-card-subtitle *ngIf="file.format && file.format !== file.name">{{ file.format }}</md-card-subtitle>
+              <md-card-subtitle *ngIf="file.format && file.format !== file.name">
+                {{ file.format }}
+              </md-card-subtitle>
             </md-card-header>
             <md-card-content *ngIf="file.description">
               <p [innerHTML]="file.description"></p>
             </md-card-content>
             <md-card-actions>
-              <button type="button" md-button (click)="openData(file.url)">
-                <i class="fa fa-download" aria-hidden="true"></i> &nbsp; Open
-              </button>
+              <md-input-container>
+                <input mdInput placeholder="File URL" [(ngModel)]="file.url" readonly>
+              </md-input-container>
+
               <button type="button" md-button ngxClipboard
+                      class="mat-icon-button"
                       [cbContent]="file.url"
                       (click)="openSnackBar('Data url copied to the clipboard!')">
-                <i class="fa fa-clipboard" aria-hidden="true"></i> &nbsp; Copy Link
+                <i class="fa fa-clipboard" aria-hidden="true"></i>
               </button>
+
+              <button type="button" md-raised-button (click)="openData(file.url)">
+                <i class="fa fa-external-link " aria-hidden="true"></i> &nbsp; Open
+              </button>
+
             </md-card-actions>
           </md-card>
         </md-tab>

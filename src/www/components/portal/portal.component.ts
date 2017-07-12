@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { MdDialog } from '@angular/material';
 import { Map } from 'leaflet';
@@ -17,15 +17,18 @@ import { MapService } from '../../services/map.service';
     require('./portal.component.less')
   ],
 })
-export default class PortalPageComponent implements OnInit {
+export default class PortalPageComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('portalMap') mapContainer;
+  @ViewChild('portalMapSidebar') mapSidebarContainer;
 
   private portals: Array<any> = [];
   private portalList: any;
   private portalCount: number = 0;
   private regions: any = {};
   private regionCount: number = 0;
-  private currentView: string = 'Map';
-  private currentFilter: string = 'None';
+  private filters = ['Name', 'Platform', 'Location'];
+  private currentFilter: string = 'Name';
   private filterKeywords: string = '';
   private map: Map;
   private mapSidebar: L.Control.Sidebar;
@@ -95,8 +98,7 @@ export default class PortalPageComponent implements OnInit {
     /**
      * Initialize map
      */
-
-    this.map = L.map('portal-map', {
+    this.map = L.map(this.mapContainer.nativeElement, {
       center: L.latLng(0, 0),
       zoom: 2,
       preferCanvas: true,
@@ -111,8 +113,11 @@ export default class PortalPageComponent implements OnInit {
     this.markerGroup = L.markerClusterGroup();
     this.map.addLayer(this.markerGroup);
 
-    this.mapSidebar = L.control.sidebar('portal-map-sidebar', { position: 'right' }).addTo(this.map);
-    this.mapService.disableMouseEvent('portal-map-sidebar');
+    this.mapSidebar = L.control.sidebar(this.mapSidebarContainer.nativeElement, {
+      position: 'right'
+    })
+    .addTo(this.map);
+    this.mapService.disableMouseEvent(this.mapSidebarContainer.nativeElement);
     this.showSidebar = true;
 
     this.http.get('/api/portals')
@@ -127,6 +132,10 @@ export default class PortalPageComponent implements OnInit {
         this.refreshMap(this.portals);
         this.refreshList(this.portals);
       });
+  }
+
+  ngAfterViewInit() {
+    this.map.invalidateSize();
   }
 
   refreshMap(portals) {
@@ -177,12 +186,6 @@ export default class PortalPageComponent implements OnInit {
         updatedDate: portal.updatedDate
       };
     });
-  }
-
-  switchView(view: string) {
-    if (view !== this.currentView) {
-      this.currentView = view;
-    }
   }
 
   switchFilter(filter: string) {
