@@ -1,91 +1,64 @@
 <div class="page-content scrollable-y">
-  <div class="about-main background-primary" fxLayout="column" fxLayoutAlign="center center">
-    <div class="text-center color-white">
-      <h1>Datarea.io is an open data platform</h1>
-      <h2>built to</h2>
-    </div>
-    <div class="about-main-gallery" fxLayout="row" fxLayoutAlign="space-around center">
-      <div>
-        <img class="problem-chart clickable"
-             src="../../media/images/dataset-growth-chart-white.png"
-             (click)="scrollToAnchor('search-problem')">
-        <div class="text-center color-white">Manage increasing open data</div>
-      </div>
-      <div>
-        <img class="problem-chart clickable"
-             src="../../media/images/portal-linked-chart-white.png"
-             (click)="scrollToAnchor('portal-problem')">
-        <div class="text-center color-white">Bridge open data networks</div>
-      </div>
-      <div>
-        <img class="problem-chart clickable"
-             src="../../media/images/user-chart-white.png"
-             (click)="scrollToAnchor('user-problem')">
-        <div class="text-center color-white">Solve the data user's problems</div>
-      </div>
+  <div class="about-title background-grey" fxLayout="column" fxLayoutAlign="center center">
+    <div class="text-center">
+      <h1>One Entry to All Open Data</h1>
+      <h4>Connecting open data portals into one network</h4>
     </div>
   </div>
   <div fxLayout="column" fxLayoutAlign="start center">
+    <div class="problem-start text-center">
+      <h3>The increasing open data and open data portals is a good news and a bad news.</h3>
+    </div>
+
     <div id="search-problem" class="about-problem" fxLayout="row" fxLayoutAlign="start center">
-      <div fxFlex="30" fxLayout="column" fxLayoutAlign="center center">
-        <img class="problem-chart" src="../../media/images/dataset-search-chart.png">
+      <div fxFlex="40" fxLayout="column" fxLayoutAlign="center center">
+        <img class="display-image" src="../../media/images/logo-images.png">
       </div>
       <div fxFlex="growth">
+        <h3>Connect Data Portals</h3>
         <p>
-          Thousand of data portals and millions of datasets are open on the Internet.
-          The right data may sit at a corner of the Internet, however, finding the
-          right data is sometimes like finding a needle in a haystack.
+          Searching data across different portals is boring and time consuming.
         </p>
         <p>
-          We would like to save your time poking around the Internet. By collecting
-          and analyzing million of open data, we are able to build a single open
-          data network that includes all open data we can find on the Internet.
-          With one single search at Datarea.io, you are able to reach every concern
-          of the data network and find what you want.
+          We collect dataset information from hundreds of open data portals and combine them into one database.
         </p>
-        <a md-button>See how we create the data network</a>
+        <a md-raised-button href="portals">
+          <span>See portal list</span>
+        </a>
       </div>
     </div>
     <div id="portal-problem" class="about-problem" fxLayout="row" fxLayoutAlign="start center">
-      <div fxFlex="30" fxLayout="column" fxLayoutAlign="center center">
-        <img class="problem-chart" src="../../media/images/portal-linked-chart.png">
+      <div fxFlex="40" fxLayout="column" fxLayoutAlign="center center">
+        <img class="display-image" src="../../media/images/spec-image.png">
       </div>
       <div fxFlex="growth">
+        <h3>One Data Specification</h3>
         <p>
-          The increasing number of open data portals is a good news and a bad news.
-          The good news is more userful open data is available, but the bad news
-          is you probably need to learn how to use a new portal again.
+          While each portal opens its data in a different way, we try our best to
+          create one consitent interface for each dataset.
         </p>
-        <p>
-          In Datarea.io, we use a consistent interface to access our data network
-          and an inclusive open data specification to manage the network. We would
-          like to provide you the same accessiblity and usibility for all data,
-          regardless of their origin.
-        </p>
-        <a md-button>See how we define our specifications</a>
+        <a md-raised-button href="https://github.com/DatareaIO/dataset-spec" target="_blank">
+          <span>See dataset spec</span>
+        </a>
       </div>
     </div>
     <div id="user-problem" class="about-problem" fxLayout="row" fxLayoutAlign="start center">
-      <div fxFlex="30" fxLayout="column" fxLayoutAlign="center center">
-        <img class="problem-chart" src="../../media/images/user-chart.png">
+      <div fxFlex="40" fxLayout="column" fxLayoutAlign="center center">
+        <img class="display-image" src="../../media/images/search-multi-image.png">
       </div>
       <div fxFlex="growth">
+        <h3>Search One, Search All</h3>
         <p>
-          Have you considered what a data portal would be if it is built by and for
-          the data user? What data problem is troubling you? How could we help
-          you to handle the problem?
+          By applying search engine tech to our open data network, you can search
+          in one box and reach the whole nework.
         </p>
         <p>
-          Tell us your opinions and wishes because Datarea.io is built by and
-          for you.
+          Use less time to search and have more time working on the data.
         </p>
-        <a md-button>Contact us</a>
+        <a md-raised-button href="https://github.com/DatareaIO/dataset-spec" target="_blank">
+          <span>How it works</span>
+        </a>
       </div>
-    </div>
-  </div>
-  <div class="about-footer background-primary" fxLayout="column" fxLayoutAlign="center center">
-    <div class="text-center color-white">
-      <h1>You are changing the world and let us save your time.</h1>
     </div>
   </div>
 </div>

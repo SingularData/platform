@@ -36,11 +36,11 @@
         </md-card-subtitle>
       </md-card-header>
       <md-card-content *ngIf="result.description">
-        <p class="result-description" [innerHTML]="result.description"></p>
+        <div class="result-description" [innerHTML]="result.description"></div>
       </md-card-content>
       <md-card-actions>
         <md-chip-list *ngIf="result.tags.length > 0">
-          <md-chip color="primary" *ngFor="let tag of result.tags">{{ tag }}</md-chip>
+          <md-chip class="color-white background-primary" *ngFor="let tag of result.tags">{{ tag }}</md-chip>
         </md-chip-list>
       </md-card-actions>
     </md-card>
