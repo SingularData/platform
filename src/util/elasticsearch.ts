@@ -36,7 +36,7 @@ export function getClient(): Client {
   }
 
   if (process.env.NODE_ENV === 'production') {
-    let AWS = require('aws-sdk');
+    let AWS = require('aws-sdk') as any;
 
     AWS.config.update({
       egion: 'us-east-1',
