@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 // import { search } from './pg-search';
 import { search } from './es-search';
 import { getDB, getQuery, toCamelCase } from '../../util/database';
-import { Dataset } from '@datarea/dataset-spec';
+import { Dataset } from '@singular-data/dataset-spec';
 
 const logger = getLogger('dataset');
 

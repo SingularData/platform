@@ -1,9 +1,9 @@
 {
-  "name": "datarea.io",
+  "name": "SingularData.net",
   "version": "1.0.0",
-  "description": "Datarea.io website",
+  "description": "SingularData.net",
   "main": "index.js",
-  "repository": "https://haoliangyu@gitlab.com/datarea/datarea.io.git",
+  "repository": "https://github.com/SingularData/SingularData.net.git",
   "author": "haoliang.yu@outlook.com",
   "license": "MIT",
   "scripts": {
@@ -32,7 +32,7 @@
     "@angular/platform-browser": "^4.2.6",
     "@angular/platform-browser-dynamic": "^4.2.6",
     "@angular/router": "^4.2.6",
-    "@datarea/dataset-spec": "git+https://github.com/DatareaIO/dataset-spec.git",
+    "@singular-data/dataset-spec": "git+https://github.com/SingularData/dataset-spec.git",
     "@swimlane/ngx-datatable": "^9.3.1",
     "@types/body-parser": "^1.16.4",
     "@types/compression": "0.0.33",
