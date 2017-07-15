@@ -39,7 +39,7 @@ export function getClient(): Client {
     let AWS = require('aws-sdk') as any;
 
     AWS.config.update({
-      egion: 'us-east-1',
+      region: 'us-east-1',
       credentials: new AWS.Credentials(
         get('elasticsearch.accessKey').toString(),
         get('elasticsearch.secretKey').toString()
