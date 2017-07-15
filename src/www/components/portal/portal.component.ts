@@ -131,6 +131,7 @@ export default class PortalPageComponent implements OnInit, AfterViewInit {
         this.portalCount = this.portals.length;
         this.refreshMap(this.portals);
         this.refreshList(this.portals);
+        this.refreshDatasetSum(this.portals);
       });
   }
 
@@ -139,13 +140,8 @@ export default class PortalPageComponent implements OnInit, AfterViewInit {
   }
 
   refreshMap(portals) {
-    this.datasetSum = 0;
     this.regionCount = 0;
     this.markerGroup.clearLayers();
-
-    for (let portal of this.portals) {
-      this.datasetSum += +portal.datasetCount || 0;
-    }
 
     let regions = groupBy(portals.filter((portal) => portal.region), 'region');
     let markers = [];
@@ -186,6 +182,14 @@ export default class PortalPageComponent implements OnInit, AfterViewInit {
         updatedDate: portal.updatedDate
       };
     });
+  }
+
+  refreshDatasetSum(portals) {
+    this.datasetSum = 0;
+
+    for (let portal of portals) {
+      this.datasetSum += +portal.datasetCount || 0;
+    }
   }
 
   switchFilter(filter: string) {
@@ -259,5 +263,6 @@ export default class PortalPageComponent implements OnInit, AfterViewInit {
     this.portalCount = portals.length;
     this.refreshMap(portals);
     this.refreshList(portals);
+    this.refreshDatasetSum(portals);
   }
 }

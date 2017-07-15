@@ -38,7 +38,7 @@ let fontend = {
   },
   plugins: [
     new ExtractTextPlugin("[name].[contenthash].css"),
-    new FaviconsWebpackPlugin(path.resolve(__dirname, '../src/www/media/images/favicon.png')),
+    new FaviconsWebpackPlugin(path.resolve(__dirname, '../src/www/media/images/logo.png')),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/www/index.html'),
       inject: true
