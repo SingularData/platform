@@ -3,20 +3,19 @@ import { resolve } from 'path';
 import { Readable } from 'stream';
 import { getLogger } from 'log4js';
 import { noop } from 'lodash';
-import { getDB, getQuery, toCamelCase } from '../../util/database';
+import { query, getQuery, toCamelCase } from '../../util/database';
 
 const logger = getLogger('portal');
 const legacyDate = new Date(2017, 4, 31);
 
 export function getPortals(req, res) {
-  let db = getDB();
-  let query = `
+  let sql = `
     SELECT * FROM public.mview_portal AS vp
     WHERE vp.dataset_count IS NOT NULL
     ORDER BY vp.platform, vp.name, vp.region
   `;
 
-  db.query(query)
+  query(sql)
     .map((portal) => toCamelCase(portal))
     .toArray()
     .subscribe((portals) => {
@@ -40,7 +39,7 @@ export function getPortalStats(req, res) {
 
   let sqlFile = date < legacyDate ? 'queries/get_legacy_stats.sql' : 'queries/get_stats.sql';
   let observable = getQuery(resolve(__dirname, sqlFile))
-    .concatMap((sql) => getDB().query(sql, [date]))
+    .concatMap((sql) => query(sql, [date]))
     .map((row) => toCamelCase(row));
 
   if (format === 'json') {

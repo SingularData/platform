@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { getLogger } from 'log4js';
 // import { RxHR } from '@akanass/rx-http-request';
-import { getDB } from './database';
+import { query } from './database';
 
 const logger = getLogger('api');
 
@@ -17,14 +17,13 @@ export function recordAPIUsage(name, url) {
      */
     next();
 
-    let db = getDB();
     let ipLoc, apiID;
 
-    let getAPI = db.query('SELECT id FROM report.api WHERE api_url = $1::text LIMIT 1', [url])
+    let getAPI = query('SELECT id FROM report.api WHERE api_url = $1::text LIMIT 1', [url])
       .toArray()
       .concatMap((results) => {
         if (results.length === 1) {
-          return db.query('INSERT INTO report.api_usage (api_id, time) VALUES ($1::integer, now())', [results[0].id]);
+          return query('INSERT INTO report.api_usage (api_id, time) VALUES ($1::integer, now())', [results[0].id]);
         }
 
         let sql = `
@@ -37,7 +36,7 @@ export function recordAPIUsage(name, url) {
           )
         `;
 
-        return db.query(sql, [url, name]);
+        return query(sql, [url, name]);
       });
 
     // let getIP = RxHR.get('http://freegeoip.net/json/' + req.ip, { json: true })

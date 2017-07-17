@@ -5,7 +5,7 @@ import { get } from 'config';
 import { Observable } from 'rxjs';
 // import { search } from './pg-search';
 import { search } from './es-search';
-import { getDB, getQuery, toCamelCase } from '../../util/database';
+import { query, getQuery, toCamelCase } from '../../util/database';
 import { Dataset } from '@singular-data/dataset-spec';
 
 const logger = getLogger('dataset');
@@ -48,15 +48,14 @@ export function getDataset(req, res) {
     return;
   }
 
-  let db = getDB();
   let getData;
 
   if (req.query.version) {
     getData = getQuery(resolve(__dirname, './queries/get_dataset_version.sql'))
-        .concatMap((sql) => db.query(sql, [uuid, +req.query.version]));
+        .concatMap((sql) => query(sql, [uuid, +req.query.version]));
   } else {
     getData = getQuery(resolve(__dirname, './queries/get_dataset_latest.sql'))
-        .concatMap((sql) => db.query(sql, [uuid]));
+        .concatMap((sql) => query(sql, [uuid]));
   }
 
   let dataset: Dataset;
@@ -84,15 +83,14 @@ export function getDatasetRaw(req, res) {
     return;
   }
 
-  let db = getDB();
   let getData;
 
   if (req.query.version) {
     getData = getQuery(resolve(__dirname, './queries/get_dataset_raw_version.sql'))
-        .concatMap((sql) => db.query(sql, [uuid, +req.query.version]));
+        .concatMap((sql) => query(sql, [uuid, +req.query.version]));
   } else {
     getData = getQuery(resolve(__dirname, './queries/get_dataset_raw_latest.sql'))
-        .concatMap((sql) => db.query(sql, [uuid]));
+        .concatMap((sql) => query(sql, [uuid]));
   }
 
   let dataset;
@@ -123,10 +121,8 @@ export function getDatasetHistory(req, res) {
     return;
   }
 
-  let db = getDB();
-
   getQuery(resolve(__dirname, './queries/get_dataset_history.sql'))
-    .concatMap((sql) => db.query(sql, [uuid]))
+    .concatMap((sql) => query(sql, [uuid]))
     .map((row) => toCamelCase(row))
     .toArray()
     .subscribe(

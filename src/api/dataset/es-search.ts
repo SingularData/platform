@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { resolve } from 'path';
 import { getClient, getSearchParams, getFieldWeight } from '../../util/elasticsearch';
-import { getDB, getQuery, toCamelCase } from '../../util/database';
+import { getQuery, toCamelCase } from '../../util/database';
 
 /**
  * Search dataset with PostgreSQL full-text search
@@ -11,7 +11,6 @@ import { getDB, getQuery, toCamelCase } from '../../util/database';
  * @returns {Observable}        an observable containing an array of results
  */
 export function search(query: string, offset: number, limit: number): Observable<Array<any>> {
-  let db = getDB();
   let client = getClient();
   let params = getSearchParams(query);
   let fields = ['_all'];

@@ -1,10 +1,12 @@
-import pgrx from 'pg-reactive';
+import {IMain, IDatabase} from 'pg-promise';
+import * as pgPromise from 'pg-promise';
 import * as config from 'config';
 import * as minify from 'pg-minify';
 import { camelCase } from 'lodash';
 import { readFile } from 'fs';
 import { Observable, Observer } from 'rxjs';
 
+const pgp: IMain = pgPromise();
 let db = null;
 
 /**
@@ -24,9 +26,16 @@ export function initialize() {
     db.end();
   }
 
-  db = new pgrx(config.get('database.url').toString());
+  db = pgp(config.get('database.url').toString());
 
   return db;
+}
+
+export function query(sql, params?) {
+  let database = getDB();
+
+  return Observable.fromPromise(database.any(sql, params))
+    .mergeMap((results: Array<any>) => Observable.of(...results));
 }
 
 /**
