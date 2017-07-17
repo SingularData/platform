@@ -4,6 +4,7 @@
   </button>
 
   <div fxLayout="column" fxLayoutAlign="start center">
+
     <div *ngIf="loading" fxLayout="column" fxLayoutAlign="center center">
       <md-spinner></md-spinner>
       <div class="text-hint">
@@ -62,6 +63,16 @@
                          *ngFor="let tag of dataset.tags">{{ tag }}
                 </md-chip>
               </md-chip-list>
+            </md-card-content>
+          </md-card>
+
+          <md-card *ngIf="dataset.region">
+            <md-card-header>
+              <md-card-title>Dataset Map</md-card-title>
+              <md-card-subtitle>{{ dataset.regionName }}</md-card-subtitle>
+            </md-card-header>
+            <md-card-content>
+              <div id="dataset-map" #datasetMap class="dataset-map"></div>
             </md-card-content>
           </md-card>
 
@@ -147,7 +158,7 @@
           <md-card-content>
             <md-list>
               <md-list-item *ngFor="let detail of dataset.versionHistory">
-                <p md-line><strong>Version {{ detail.version }}</strong></p>
+                <p md-line>Version {{ detail.version }}</p>
                 <p md-line>Updated at {{ detail.updated | date: 'short' }}</p>
               </md-list-item>
             </md-list>

@@ -101,6 +101,7 @@ export default class PortalPageComponent implements OnInit, AfterViewInit {
     this.map = L.map(this.mapContainer.nativeElement, {
       center: L.latLng(0, 0),
       zoom: 2,
+      minZoom: 2,
       preferCanvas: true,
       worldCopyJump: true
     });

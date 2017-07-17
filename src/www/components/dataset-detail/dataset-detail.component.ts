@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 import { MdSnackBar } from '@angular/material';
+import { Map } from 'leaflet';
 import * as marked from 'marked';
 
 import 'rxjs/add/operator/switchMap';
@@ -18,9 +19,11 @@ import { DatasetService } from '../../services/dataset.service';
 })
 export default class DatasetDetailComponent implements OnInit {
 
+  @ViewChild('datasetMap') mapContainer;
+
   private dataset: any;
   private loading: boolean;
-  private hide: any;
+  private map: Map;
 
   constructor(
     private datasetService: DatasetService,
@@ -31,12 +34,9 @@ export default class DatasetDetailComponent implements OnInit {
   ) {
     this.dataset = null;
     this.loading = true;
-    this.hide = {};
   }
 
   ngOnInit() {
-    this.hide = {};
-
     this.route.params
       .switchMap((params: Params) => this.datasetService.get(params.id, params.version))
       .subscribe((result) => {
@@ -53,11 +53,42 @@ export default class DatasetDetailComponent implements OnInit {
         }
 
         this.dataset = result;
+
+        if (this.dataset.region) {
+          setTimeout(() => {
+            this.map = L.map(this.mapContainer.nativeElement, {
+              center: L.latLng(0, 0),
+              zoom: 2,
+              minZoom: 2,
+              preferCanvas: true,
+              worldCopyJump: true
+            });
+
+            L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
+            })
+            .addTo(this.map);
+
+            L.control.scale().addTo(this.map);
+
+            let region = L.geoJSON(this.dataset.region, {
+              style: () => {
+                return {
+                  color: '#3F51B5',
+                  fillColor: '#3F51B5'
+                };
+              }
+            })
+            .addTo(this.map);
+
+            this.map.fitBounds(region.getBounds());
+          }, 500);
+        }
+
         this.loading = false;
       }, (error) => {
         this.loading = false;
         this.dataset = null;
-        console.log(error);
       });
   }
 
