@@ -51,7 +51,7 @@
                                   *ngFor="let portal of selectedRegion.portals"
                                   (click)="openDetailDialog(portal)">
                       <h4 md-line>{{ portal.name }}</h4>
-                      <p md-line>datasts: {{ portal.datasetCount | number }}</p>
+                      <p md-line *ngIf="portal.datasetCount">datasts: {{ portal.datasetCount | number }}</p>
                     </md-list-item>
                   </md-list>
 
@@ -124,5 +124,18 @@
         </div>
       </div>
     </md-tab>
+
+    <md-tab label="Add New Portal">
+      <div class="detail-tab">
+        <h3>You know a portal that is not at our list?</h3>
+        <p>
+          SingularData.net collects open data information by using data portal's API.
+          If you know a data portal that opens dataset metadata API and it's not
+          at out list, please let us know!
+        </p>
+        <button md-raised-button (click)="openGoogleForm()">Add a new portal</button>
+      </div>
+    </md-tab>
+
   </md-tab-group>
 </div>

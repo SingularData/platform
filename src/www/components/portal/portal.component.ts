@@ -266,4 +266,12 @@ export default class PortalPageComponent implements OnInit, AfterViewInit {
     this.refreshList(portals);
     this.refreshDatasetSum(portals);
   }
+
+  openURL(url) {
+    window.open(url, '_blank');
+  }
+
+  openGoogleForm() {
+    this.openURL('https://docs.google.com/forms/d/1O8iqzAQi0twB0evujvmsE2ClGWT5gXe_KM0xffEtMMU');
+  }
 }

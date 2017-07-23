@@ -12,7 +12,6 @@ export function getPortals(req, res) {
   let db = getDB();
   let query = `
     SELECT * FROM public.mview_portal AS vp
-    WHERE vp.dataset_count IS NOT NULL
     ORDER BY vp.platform, vp.name, vp.region
   `;
 
