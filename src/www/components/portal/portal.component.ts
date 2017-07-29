@@ -194,10 +194,7 @@ export default class PortalPageComponent implements OnInit, AfterViewInit {
   }
 
   switchFilter(filter: string) {
-    if (filter !== this.currentFilter) {
-      this.currentFilter = filter;
-      this.onFilterKeywordChanged(this.filterKeywords);
-    }
+    this.onFilterKeywordChanged(this.filterKeywords);
   }
 
   closeSidebar() {
