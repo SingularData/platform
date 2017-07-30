@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { resolve } from 'path';
 import { getClient, getSearchParams, getFieldWeight } from '../../util/elasticsearch';
-import { getQuery, toCamelCase } from '../../util/database';
+import { toCamelCase } from '../../util/database';
 
 /**
  * Search dataset with PostgreSQL full-text search

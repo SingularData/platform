@@ -1,5 +1,4 @@
 import * as p from './portal';
-import { recordAPIUsage } from '../../util/api';
 
 export default function attachPortalAPI(app) {
 
@@ -14,7 +13,7 @@ export default function attachPortalAPI(app) {
    * @apiError   {Boolean}  success   Indicating whether the request is sucessful.
    * @apiError   {String}   message   Error message.
    */
-  app.get('/api/portals', recordAPIUsage('see portals', '/api/portals'), p.getPortals);
+  app.get('/api/portals', p.getPortals);
 
   /**
    * @api {GET} /api/portals/stats  Get portal statistics
@@ -24,5 +23,5 @@ export default function attachPortalAPI(app) {
    * @apiParam (Query String) {Date}    date    date of stats
    * @apiParam (Query String) {String}  format  report format
    */
-  app.get('/api/portals/stats', recordAPIUsage('get portal stats', '/api/portals/stats'), p.getPortalStats);
+  app.get('/api/portals/stats', p.getPortalStats);
 }

@@ -1,4 +1,4 @@
-import {IMain, IDatabase} from 'pg-promise';
+import { IMain, IDatabase, QueryFile } from 'pg-promise';
 import * as pgPromise from 'pg-promise';
 import * as config from 'config';
 import * as minify from 'pg-minify';
@@ -7,6 +7,8 @@ import { readFile } from 'fs';
 import { Observable, Observer } from 'rxjs';
 
 const pgp: IMain = pgPromise();
+const queryCache = {};
+
 let db = null;
 
 /**
@@ -31,29 +33,18 @@ export function initialize() {
   return db;
 }
 
-export function query(sql, params?) {
-  let database = getDB();
-
-  return Observable.fromPromise(database.any(sql, params))
-    .mergeMap((results: Array<any>) => Observable.of(...results));
-}
-
 /**
  * Read query file.
  * @param  {String}               path    query file path
  * @return {Observable.<String>}          query file
  */
-export function getQuery(path) {
-  return Observable.create((observer: Observer<string>) => {
-    readFile(path, 'utf-8', (err: Error, data: string) => {
-      if (err) {
-        observer.error(err);
-      } else {
-        observer.next(data);
-        observer.complete();
-      }
-    });
-  });
+export function getQueryFile(path) {
+
+  if (!queryCache[path]) {
+    queryCache[path] = new QueryFile(path, { minify: true });
+  }
+
+  return queryCache[path];
 }
 
 /**

@@ -64,7 +64,8 @@ let fontend = {
       collections: true,
       flattening: true,
       paths: true
-    })
+    }),
+    new webpack.optimize.ModuleConcatenationPlugin()
   ]
 };
 

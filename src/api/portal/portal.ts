@@ -3,101 +3,53 @@ import { resolve } from 'path';
 import { Readable } from 'stream';
 import { getLogger } from 'log4js';
 import { noop } from 'lodash';
-import { query, getQuery, toCamelCase } from '../../util/database';
+import { getDB, getQueryFile, toCamelCase } from '../../util/database';
+import * as QueryStream from 'pg-query-stream';
+import JSONStream = require('JSONStream');
+import stringify = require('csv-stringify');
 
 const logger = getLogger('portal');
 const legacyDate = new Date(2017, 4, 31);
 
 export function getPortals(req, res) {
+  let db = getDB();
   let sql = `
     SELECT * FROM public.mview_portal AS vp
-    WHERE vp.dataset_count IS NOT NULL
     ORDER BY vp.platform, vp.name, vp.region
   `;
 
-  query(sql)
-    .map((portal) => toCamelCase(portal))
-    .toArray()
-    .subscribe((portals) => {
-      res.json({
-        success: true,
-        portals: portals
-      });
-    }, (error) => {
+  db.any(sql)
+    .then((results) => {
+      res.json({ portals: results });
+    })
+    .catch((error) => {
       logger.error('Unable to search: ', error);
-      res.json({
-        success: false,
-        message: error.message
-      });
+      res.status(500).json({ message: error.message });
     });
 }
 
 export function getPortalStats(req, res) {
   let date = req.query.date ? new Date(req.query.date) : new Date();
   let format = req.query.format ? req.query.format : 'json';
-  let stream;
 
-  let sqlFile = date < legacyDate ? 'queries/get_legacy_stats.sql' : 'queries/get_stats.sql';
-  let observable = getQuery(resolve(__dirname, sqlFile))
-    .concatMap((sql) => query(sql, [date]))
-    .map((row) => toCamelCase(row));
+  let db = getDB();
+  let filePath = date < legacyDate ? 'queries/get_legacy_stats.sql' : 'queries/get_stats.sql';
+  let queryFile = getQueryFile(resolve(__dirname, filePath));
+  let qs = new QueryStream(queryFile.query, [date]);
 
-  if (format === 'json') {
-    res.setHeader('Content-disposition', 'attachment; filename=data.json');
-    res.set('Content-Type', 'application/json');
-    stream = toJSONStream(observable);
-  } else {
-    res.setHeader('Content-disposition', 'attachment; filename=data.csv');
-    res.set('Content-Type', 'text/csv');
-    stream = toCSVStream(observable);
-  }
-
-  stream.pipe(res);
-}
-
-function toCSVStream(observable: Observable<any>) {
-  let stream = new Readable();
-  stream._read = noop;
-  stream.push('name,url,description,platform,dataset count,tag count,category count,publisher count\n');
-
-  observable.subscribe((row) => {
-    let datasetCount = row.datasetCount || '';
-    let tagCount = row.tags ? row.tags.length : '';
-    let catCount = row.categories ? row.categories.length : '';
-    let pubCount = row.publishers ? row.publishers.length : '';
-
-    stream.push(`"${row.name}",${row.url},"${row.description || ''}",${row.platform || ''},${datasetCount},${tagCount},${catCount},${pubCount}\n`);
-  }, (error) => {
-    stream.emit('error', error);
-  }, () => {
-    stream.push(null);
-  });
-
-  return stream;
-}
-
-function toJSONStream(observable: Observable<any>) {
-  let firstRow = true;
-  let stream = new Readable();
-  stream._read = noop;
-  stream.push('[');
-
-  observable.subscribe((row) => {
-    let data = JSON.stringify(row);
-
-    if (firstRow) {
-      firstRow = false;
+  db.stream(qs, (s) => {
+    if (format === 'json') {
+      res.setHeader('Content-disposition', 'attachment; filename=data.json');
+      res.set('Content-Type', 'application/json');
+      s.pipe(JSONStream.stringify()).pipe(res);
     } else {
-      data = ',' + data;
+      res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+      res.set('Content-Type', 'text/csv');
+      s.pipe(stringify()).pipe(res);
     }
-
-    stream.push(data);
-  }, (error) => {
-    stream.emit('error', error);
-  }, () => {
-    stream.push(']');
-    stream.push(null);
+  })
+  .catch((error) => {
+    logger.error('Unable to retrieve portal statistics: ', error);
+    res.status(500).json({ message: error.message });
   });
-
-  return stream;
 }

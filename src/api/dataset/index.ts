@@ -1,5 +1,4 @@
 import * as d from './dataset';
-import { recordAPIUsage } from '../../util/api';
 
 export default function attachDatasetAPI(app) {
 
@@ -16,7 +15,7 @@ export default function attachDatasetAPI(app) {
    * @apiError   {Boolean}  success   Indicating whether the request is sucessful.
    * @apiError   {String}   message   Error message.
    */
-  app.get('/api/dataset/search', recordAPIUsage('search dataset', '/api/dataset/search'), d.searchDatasets);
+  app.get('/api/dataset/search', d.searchDatasets);
 
   /**
    * @api {GET} /api/dataset/:uuid    Get dataset details by dataset uuid
@@ -70,7 +69,7 @@ export default function attachDatasetAPI(app) {
    *      "message": "reason"
    *    }
    */
-  app.get('/api/dataset/:uuid', recordAPIUsage('get dataset', '/api/dataset'), d.getDataset);
+  app.get('/api/dataset/:uuid', d.getDataset);
 
   /**
    * @api {GET} /api/dataset/raw/:uuid    Get dataset raw metadata by dataset uuid
@@ -116,5 +115,5 @@ export default function attachDatasetAPI(app) {
    *      "message": "reason"
    *    }
    */
-  app.get('/api/dataset/history/:uuid',  recordAPIUsage('get dataset history', '/api/dataset/history'), d.getDatasetHistory);
+  app.get('/api/dataset/history/:uuid', d.getDatasetHistory);
 }
