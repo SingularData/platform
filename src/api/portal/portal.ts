@@ -19,9 +19,7 @@ export function getPortals(req, res) {
   `;
 
   db.any(sql)
-    .then((results) => {
-      res.json({ portals: results });
-    })
+    .then((results) => res.json({ result: toCamelCase(results) }))
     .catch((error) => {
       logger.error('Unable to search: ', error);
       res.status(500).json({ message: error.message });

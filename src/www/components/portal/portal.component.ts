@@ -124,11 +124,7 @@ export default class PortalPageComponent implements OnInit, AfterViewInit {
     this.http.get('/api/portals')
       .map((result) => result.json())
       .subscribe((result) => {
-        if (!result.success) {
-          throw new Error(result.message);
-        }
-
-        this.portals = result.portals;
+        this.portals = result.result;
         this.portalCount = this.portals.length;
         this.refreshMap(this.portals);
         this.refreshList(this.portals);
