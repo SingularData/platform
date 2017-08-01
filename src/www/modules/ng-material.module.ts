@@ -4,10 +4,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule, MdNativeDateModule } from '@angular/material';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
-import '@swimlane/ngx-datatable/release/index.css';
-import '@swimlane/ngx-datatable/release/themes/material.css';
-import '@swimlane/ngx-datatable/release/assets/icons.css';
-
 const modules = [
   BrowserAnimationsModule,
   FlexLayoutModule,
