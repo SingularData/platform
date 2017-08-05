@@ -5,19 +5,6 @@ import 'zone.js';
 import 'reflect-metadata';
 import 'rxjs';
 
-import '@angular/core';
-import '@angular/common';
-import '@angular/http';
-import '@angular/router';
-import '@angular/forms';
-import '@angular/platform-browser';
-import '@angular/platform-browser/animations';
-
-import 'ngx-clipboard';
-import '@angular/flex-layout';
-import '@angular/material';
-import '@swimlane/ngx-datatable';
-
 import 'leaflet';
 import './polyfill/leaflet.poly';
 import 'leaflet.markercluster';

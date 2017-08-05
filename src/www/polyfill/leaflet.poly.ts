@@ -4,7 +4,7 @@
  * https://github.com/Leaflet/Leaflet/issues/4968
  */
 
-import L = require('leaflet');
+import * as L from 'leaflet';
 
 let DefaultIcon = L.icon({
   iconUrl: require('leaflet/dist/images/marker-icon.png'),

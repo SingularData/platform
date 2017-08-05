@@ -5,8 +5,8 @@ import { getLogger } from 'log4js';
 import { noop } from 'lodash';
 import { getDB, getQueryFile, toCamelCase } from '../../util/database';
 import * as QueryStream from 'pg-query-stream';
-import JSONStream = require('JSONStream');
-import stringify = require('csv-stringify');
+import * as stringify from 'csv-stringify';
+import JSONStream from 'JSONStream';
 
 const logger = getLogger('portal');
 const legacyDate = new Date(2017, 4, 31);

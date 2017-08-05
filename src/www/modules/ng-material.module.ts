@@ -16,5 +16,4 @@ const modules = [
   imports: modules,
   exports: modules
 })
-export default class NgMaterialModule {
-}
+export class NgMaterialModule {}

@@ -68,3 +68,5 @@ scripts/bootstrap.sh
 public
 elasticsearch
 docker-compose.ecs.yaml
+
+aot

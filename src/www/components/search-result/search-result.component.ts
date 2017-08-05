@@ -7,20 +7,20 @@ import { DatasetService } from '../../services/dataset.service';
 
 @Component({
   selector: 'search-result',
-  template: require('./search-result.component.html'),
-  styles: [
-    require('../../styles/main.less'),
-    require('./search-result.component.less')
+  templateUrl: './search-result.component.html',
+  styleUrls: [
+    '../../styles/main.less',
+    './search-result.component.less'
   ],
 })
-export default class SearchResultComponent implements OnInit {
+export class SearchResultComponent implements OnInit {
 
-  private keywords: string;
-  private currentKeywords: string;
-  private results: Array<any>;
-  private nextPage: boolean;
-  private currentPage: number;
-  private searching: boolean;
+  keywords: string;
+  currentKeywords: string;
+  results: Array<any>;
+  nextPage: boolean;
+  currentPage: number;
+  searching: boolean;
 
   constructor(
     private datasetService: DatasetService,

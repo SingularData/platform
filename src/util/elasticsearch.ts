@@ -1,7 +1,7 @@
 /// <reference path="../typing/aws-sdk.d.ts" />
 
 import { Client } from 'elasticsearch';
-import HttpAmazonESConnector = require('http-aws-es');
+import * as HttpAmazonESConnector from 'http-aws-es';
 
 import { get } from 'config';
 import { flatMap, omit } from 'lodash';

@@ -11,19 +11,19 @@ import { DatasetService } from '../../services/dataset.service';
 
 @Component({
   selector: 'dataset-detail',
-  template: require('./dataset-detail.component.html'),
-  styles: [
-    require('../../styles/main.less'),
-    require('./dataset-detail.component.less')
+  templateUrl: './dataset-detail.component.html',
+  styleUrls: [
+    '../../styles/main.less',
+    './dataset-detail.component.less'
   ],
 })
-export default class DatasetDetailComponent implements OnInit {
+export class DatasetDetailComponent implements OnInit {
 
   @ViewChild('datasetMap') mapContainer;
 
-  private dataset: any;
-  private loading: boolean;
-  private map: Map;
+  dataset: any;
+  map: Map;
+  loading: boolean;
 
   constructor(
     private datasetService: DatasetService,

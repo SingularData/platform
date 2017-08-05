@@ -6,43 +6,44 @@ import { groupBy, find } from 'lodash';
 
 import 'rxjs/add/operator/map';
 
-import PortalDetailComponent from '../portal-detail/portal-detail.component';
+import { PortalDetailComponent } from '../portal-detail/portal-detail.component';
 import { MapService } from '../../services/map.service';
 
 @Component({
   selector: 'portl-page',
-  template: require('./portal.component.html'),
-  styles: [
-    require('../../styles/main.less'),
-    require('./portal.component.less')
+  templateUrl: './portal.component.html',
+  styleUrls: [
+    '../../styles/main.less',
+    './portal.component.less'
   ],
 })
-export default class PortalPageComponent implements OnInit, AfterViewInit {
+export class PortalPageComponent implements OnInit, AfterViewInit {
 
   @ViewChild('portalMap') mapContainer;
   @ViewChild('portalMapSidebar') mapSidebarContainer;
 
-  private portals: Array<any> = [];
-  private portalList: any;
-  private portalCount: number = 0;
-  private regions: any = {};
-  private regionCount: number = 0;
-  private filters = ['Name', 'Platform', 'Location'];
-  private currentFilter: string = 'Name';
-  private filterKeywords: string = '';
-  private map: Map;
-  private mapSidebar: L.Control.Sidebar;
-  private markerGroup: L.MarkerClusterGroup;
-  private showSidebar: boolean = false;
-  private selectedRegion: any = null;
-  private datasetSum: number = 0;
+  portals: Array<any> = [];
+  portalList: any;
+  portalCount: number = 0;
+  regions: any = {};
+  regionCount: number = 0;
+  filter: string = '';
+  filters = ['Name', 'Platform', 'Location'];
+  currentFilter: string = 'Name';
+  filterKeywords: string = '';
+  map: Map;
+  mapSidebar: L.Control.Sidebar;
+  markerGroup: L.MarkerClusterGroup;
+  showSidebar: boolean = false;
+  selectedRegion: any = null;
+  datasetSum: number = 0;
 
   // for export
-  private startDate: Date = new Date(2017, 0, 1);
-  private exportDate: Date = new Date();
-  private exportFormat: string = 'json';
-  private csvReportExample: string;
-  private jsonReportExample: any;
+  startDate: Date = new Date(2017, 0, 1);
+  exportDate: Date = new Date();
+  exportFormat: string = 'json';
+  csvReportExample: string;
+  jsonReportExample: any;
 
   constructor(
     private http: Http,

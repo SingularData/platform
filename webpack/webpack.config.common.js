@@ -7,10 +7,13 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
+const extractLess = new ExtractTextPlugin({
+  filename: "[name].[contenthash].css"
+});
+
 module.exports = {
-  entry: {
-    app: path.resolve(__dirname, '../src/www/bootstrap.ts'),
-    vendor: path.resolve(__dirname, '../src/www/vendor.ts')
+  resolve: {
+    extensions: ['.js', '.ts', '.less', '.css', '.html']
   },
   output: {
     path: path.resolve(__dirname, '../public/www'),
@@ -18,15 +21,22 @@ module.exports = {
     sourceMapFilename: '[name].[hash].map',
     chunkFilename: '[id].[hash].chunk.js'
   },
-  resolve: {
-    extensions: ['.ts', '.js', '.html', '.less', '.css']
-  },
   module: {
     rules: [
       { test: /\.ts$/, enforce: 'pre', loader: 'tslint-loader' },
-      { test: /\.ts$/, use: ['ts-loader'] },
+      { test: /\.ts$/, use: ['awesome-typescript-loader', 'angular2-template-loader' ] },
       { test: /\.html$/, use: [{ loader: 'html-loader', options: { minimize: false } }] },
-      { test: /\.less$/, use: ['to-string-loader', 'css-loader', 'less-loader'] },
+      {
+        test: /\.less$/,
+        use: extractLess.extract({
+          use: [{
+            loader: "css-loader"
+          }, {
+            loader: "less-loader"
+          }],
+          fallback: "style-loader"
+        })
+      },
       { test: /\.css$/, use: ExtractTextPlugin.extract({ use: 'css-loader' })},
       { test: /\.(png|gif|jpg|jpeg)$/, use:[{ loader: 'file-loader', options: { name: 'media/images/[name].[ext]'} } ]},
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, use:[{ loader: 'file-loader', options: { name: 'fonts/[name].[ext]'} } ]},
@@ -40,7 +50,7 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       name: ['app', 'vendor']
     }),
-    new ExtractTextPlugin("[name].[contenthash].css"),
+    extractLess,
     new FaviconsWebpackPlugin(path.resolve(__dirname, '../src/www/media/images/logo.png')),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/www/index.html'),

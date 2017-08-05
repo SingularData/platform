@@ -1,14 +1,19 @@
 const webpack = require('webpack');
+const path = require('path');
 const webpackMerge = require('webpack-merge');
 const commonConfig = require('./webpack.config.common.js');
 
-const OptimizeJsPlugin = require("optimize-js-plugin");
+const OptimizeJsPlugin = require('optimize-js-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 module.exports = webpackMerge(commonConfig, {
   devtool: 'source-map',
+  entry: {
+    app: path.resolve(__dirname, '../src/www/bootstrap.aot.ts'),
+    vendor: path.resolve(__dirname, '../src/www/vendor.ts')
+  },
   plugins: [
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),

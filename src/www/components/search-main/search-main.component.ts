@@ -3,13 +3,15 @@ import { Component, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'search-main',
-  template: require('./search-main.component.html'),
-  styles: [
-    require('../../styles/main.less'),
-    require('./search-main.component.less')
+  templateUrl: './search-main.component.html',
+  styleUrls: [
+    '../../styles/main.less',
+    './search-main.component.less'
   ],
 })
-export default class SearchMainComponent implements AfterViewInit {
+export class SearchMainComponent implements AfterViewInit {
+
+  keywords: string;
 
   constructor(private router: Router) {
   }
