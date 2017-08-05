@@ -13,9 +13,8 @@ import 'sidebar-v2/js/leaflet-sidebar.js';
 import '@angular/material/prebuilt-themes/indigo-pink.css';
 import 'font-awesome/css/font-awesome.css';
 
-import '@swimlane/ngx-datatable/release/index.css';
-import '@swimlane/ngx-datatable/release/themes/material.css';
 import '@swimlane/ngx-datatable/release/assets/icons.css';
+import '@swimlane/ngx-datatable/release/themes/material.css';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';

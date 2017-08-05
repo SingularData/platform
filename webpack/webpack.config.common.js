@@ -7,10 +7,6 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
-const extractLess = new ExtractTextPlugin({
-  filename: "[name].[contenthash].css"
-});
-
 module.exports = {
   resolve: {
     extensions: ['.js', '.ts', '.less', '.css', '.html']
@@ -26,17 +22,6 @@ module.exports = {
       { test: /\.ts$/, enforce: 'pre', loader: 'tslint-loader' },
       { test: /\.ts$/, use: ['awesome-typescript-loader', 'angular2-template-loader' ] },
       { test: /\.html$/, use: [{ loader: 'html-loader', options: { minimize: false } }] },
-      {
-        test: /\.less$/,
-        use: extractLess.extract({
-          use: [{
-            loader: "css-loader"
-          }, {
-            loader: "less-loader"
-          }],
-          fallback: "style-loader"
-        })
-      },
       { test: /\.css$/, use: ExtractTextPlugin.extract({ use: 'css-loader' })},
       { test: /\.(png|gif|jpg|jpeg)$/, use:[{ loader: 'file-loader', options: { name: 'media/images/[name].[ext]'} } ]},
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, use:[{ loader: 'file-loader', options: { name: 'fonts/[name].[ext]'} } ]},
@@ -50,7 +35,6 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       name: ['app', 'vendor']
     }),
-    extractLess,
     new FaviconsWebpackPlugin(path.resolve(__dirname, '../src/www/media/images/logo.png')),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/www/index.html'),
