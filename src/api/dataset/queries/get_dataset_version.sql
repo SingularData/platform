@@ -13,13 +13,14 @@ WITH ds as (
     d.created,
     d.updated,
     d.license,
-    dr.geom AS region,
+    ST_AsGeoJSON(dc.geom, 6)::json AS spatial,
     version AS version
   FROM dataset AS d
   LEFT JOIN dataset_publisher p ON p.id = d.publisher_id
   LEFT JOIN portal AS po ON po.id = d.portal_id
   LEFT JOIN platform AS pl ON pl.id = po.platform_id
-  LEFT JOIN dataset_region AS dr ON dr.id = d.dataset_region_id
+  LEFT JOIN dataset_coverage_xref AS dcx.dataset_id = d.id
+  LEFT JOIN dataset_coverage AS dc ON dc.id = dcx.dataset_coverage_id
   WHERE d.uuid = $1::text AND d.version = $2::integer
   LIMIT 1
 ), versions AS (

@@ -15,8 +15,7 @@ SELECT
   ds.files,
   ds.tags,
   ds.categories,
-  ds.region,
-  ds.region_name
+  ds.spatial
 FROM public.mview_latest_dataset AS ds
 WHERE uuid = $1::text
 LIMIT 1;

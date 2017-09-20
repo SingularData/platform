@@ -54,7 +54,7 @@ export class DatasetDetailComponent implements OnInit {
 
         this.dataset = result;
 
-        if (this.dataset.region) {
+        if (this.dataset.spatial) {
           setTimeout(() => {
             this.map = L.map(this.mapContainer.nativeElement, {
               center: L.latLng(0, 0),
@@ -71,7 +71,7 @@ export class DatasetDetailComponent implements OnInit {
 
             L.control.scale().addTo(this.map);
 
-            let region = L.geoJSON(this.dataset.region, {
+            let region = L.geoJSON(this.dataset.spatial, {
               style: () => {
                 return {
                   color: '#3F51B5',

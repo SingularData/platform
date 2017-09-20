@@ -66,10 +66,9 @@
             </md-card-content>
           </md-card>
 
-          <md-card *ngIf="dataset.region">
+          <md-card *ngIf="dataset.spatial">
             <md-card-header>
               <md-card-title>Dataset Map</md-card-title>
-              <md-card-subtitle>{{ dataset.regionName }}</md-card-subtitle>
             </md-card-header>
             <md-card-content>
               <div id="dataset-map" #datasetMap class="dataset-map"></div>

@@ -3,7 +3,6 @@ import { resolve } from 'path';
 import { isNaN } from 'lodash';
 import { get } from 'config';
 import { Observable } from 'rxjs';
-// import { search } from './pg-search';
 import { search } from './es-search';
 import { getDB, getQueryFile, toCamelCase } from '../../util/database';
 import { Dataset } from '@singular-data/dataset-spec';
