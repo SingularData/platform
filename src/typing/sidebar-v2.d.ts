@@ -1,6 +1,9 @@
 /// <reference types="leaflet" />
+/// <reference path="../../../typing/sidebar-v2.d.ts"/>
 
-declare namespace L {
+import * as L from 'leaflet';
+
+declare module 'leaflet' {
 
   namespace Control {
 

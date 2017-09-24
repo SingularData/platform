@@ -1,5 +1,4 @@
 /// <reference path="../typing/require.d.ts"/>
-/// <reference path="../typing/sidebar-v2.d.ts"/>
 
 import 'zone.js';
 import 'reflect-metadata';

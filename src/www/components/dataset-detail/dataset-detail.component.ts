@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 import { MdSnackBar } from '@angular/material';
-import { Map } from 'leaflet';
 import * as marked from 'marked';
+import * as L from 'leaflet';
 
 import 'rxjs/add/operator/switchMap';
 
@@ -22,7 +22,7 @@ export class DatasetDetailComponent implements OnInit {
   @ViewChild('datasetMap') mapContainer;
 
   dataset: any;
-  map: Map;
+  map: L.Map;
   loading: boolean;
 
   constructor(

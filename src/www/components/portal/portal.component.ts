@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { MdDialog } from '@angular/material';
-import { Map } from 'leaflet';
+import * as L from 'leaflet';
 import { groupBy, find } from 'lodash';
 
 import 'rxjs/add/operator/map';
@@ -31,7 +31,7 @@ export class PortalPageComponent implements OnInit, AfterViewInit {
   filters = ['Name', 'Platform', 'Location'];
   currentFilter: string = 'Name';
   filterKeywords: string = '';
-  map: Map;
+  map: L.Map;
   mapSidebar: L.Control.Sidebar;
   markerGroup: L.MarkerClusterGroup;
   showSidebar: boolean = false;
