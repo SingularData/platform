@@ -9,7 +9,10 @@
     "removeComments": true,
     "noImplicitAny": false,
     "skipLibCheck": true,
-    "typeRoots": ["./node_modules/@types"]
+    "typeRoots": [
+      "./node_modules/@types/",
+      "./src/typing/"
+    ]
   },
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true,

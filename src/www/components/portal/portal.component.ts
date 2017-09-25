@@ -1,3 +1,5 @@
+/// <reference path="../../../typing/sidebar-v2.d.ts" />
+
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { MdDialog } from '@angular/material';
