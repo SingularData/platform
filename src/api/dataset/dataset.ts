@@ -1,11 +1,11 @@
 import { getLogger } from 'log4js';
 import { resolve } from 'path';
-import { isNaN } from 'lodash';
 import { get } from 'config';
 import { Observable } from 'rxjs';
 import { search } from './es-search';
 import { getDB, getQueryFile, toCamelCase } from '../../util/database';
 import { Dataset } from '@singular-data/dataset-spec';
+import * as _ from 'lodash';
 
 const logger = getLogger('dataset');
 
@@ -40,29 +40,28 @@ export function searchDatasets(req, res) {
 }
 
 export function getDataset(req, res) {
-  let uuid = req.params.uuid;
+  let identifier = req.params.identifier;
+  let latest = _.toLower(req.query.latest) === 'true';
 
-  if (!uuid) {
-    res.status(400).json({ message: 'Invalid dataset UUID.' });
+  if (!identifier) {
+    res.status(400).json({ message: 'Invalid dataset identifier.' });
     return;
   }
 
   let db = getDB();
-  let getDataQuery, task;
+  let query;
 
-  if (req.query.version) {
-    getDataQuery = getQueryFile(resolve(__dirname, './queries/get_dataset_version.sql'));
-    task = db.oneOrNone(getDataQuery, [uuid, +req.query.version]);
+  if (latest) {
+    query = getQueryFile(resolve(__dirname, './queries/get_dataset_latest.sql'));
   } else {
-    getDataQuery = getQueryFile(resolve(__dirname, './queries/get_dataset_latest.sql'));
-    task = db.oneOrNone(getDataQuery, [uuid]);
+    query = getQueryFile(resolve(__dirname, './queries/get_dataset.sql'));
   }
 
-  task
+  db.oneOrNone(query, [identifier])
     .then((dataset) => {
       if (!dataset) {
         return res.status(400).json({
-          message: 'Unable to find dataset with the input ID.'
+          message: 'Unable to find dataset with the given identifier.'
         });
       }
 
@@ -75,28 +74,20 @@ export function getDataset(req, res) {
 }
 
 export function getDatasetRaw(req, res) {
-  let uuid = req.params.uuid;
+  let identifier = req.params.identifier;
 
-  if (!uuid) {
+  if (!identifier) {
     res.status(400).json({ message: 'Invalid dataset UUID.' });
     return;
   }
 
   let db = getDB();
-  let dataQuery, task;
+  let query = getQueryFile(resolve(__dirname, './queries/get_dataset_raw.sql'));
 
-  if (req.query.version) {
-    dataQuery = getQueryFile(resolve(__dirname, './queries/get_dataset_raw_version.sql'));
-    task = db.oneOrNone(dataQuery,  [uuid, +req.query.version]);
-  } else {
-    dataQuery = getQueryFile(resolve(__dirname, './queries/get_dataset_raw_latest.sql'));
-    task = db.oneOrNone(dataQuery,  [uuid]);
-  }
-
-  task
+  db.oneOrNone(query,  [identifier])
     .then((result) => {
       if (!result) {
-        return res.status(400).json({ message: 'Unable to find dataset with the input ID.' });
+        return res.status(400).json({ message: 'Unable to find dataset with the given identifier.' });
       }
 
       res.json({ result: result.raw });
@@ -108,17 +99,18 @@ export function getDatasetRaw(req, res) {
 }
 
 export function getDatasetHistory(req, res) {
-  let uuid = req.params.uuid;
+  let portal = req.body.portal;
+  let title = req.body.title;
 
-  if (!uuid) {
-    res.status(400).json({ message: 'Invalid dataset UUID.' });
+  if (!title || !portal) {
+    res.status(400).json({ message: 'Invalid portal and dataset title.' });
     return;
   }
 
   let db = getDB();
-  let queryFile = getQueryFile(resolve(__dirname, './queries/get_dataset_history.sql'));
+  let query = getQueryFile(resolve(__dirname, './queries/get_dataset_history.sql'));
 
-  db.any(queryFile, [uuid])
+  db.any(query, [title, portal])
     .then((results) => res.json({ result: results })
     .catch((error) => {
       logger.error('Unable to get raw metadata: ', error);

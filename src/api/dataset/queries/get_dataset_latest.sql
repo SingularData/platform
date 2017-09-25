@@ -1,21 +1,21 @@
 SELECT
-  ds.uuid,
-  ds.name,
+  ds.identifier,
+  ds.title,
   ds.description,
   ds.publisher,
   ds.portal,
   ds.portal_url,
   ds.platform,
-  ds.url,
-  ds.created,
-  ds.updated,
+  ds.landing_page,
+  ds.issued,
+  ds.modified,
   ds.license,
   ds.version,
   ds.version_history,
-  ds.files,
-  ds.tags,
-  ds.categories,
+  ds.distribution,
+  ds.keyword,
+  ds.theme,
   ds.spatial
 FROM public.mview_latest_dataset AS ds
-WHERE uuid = $1::text
+WHERE identifier = $1::text
 LIMIT 1;

@@ -41,12 +41,12 @@ export function search(query: string, offset: number, limit: number): Observable
       let source: any = hit._source;
 
       return {
-        uuid: hit._id,
-        name: source.name,
+        identifier: hit._id,
+        title: source.title,
         description: source.description,
         publisher: source.publisher,
-        url: source.url,
-        tags: source.tags ? source.tags.slice(0, 5) : []
+        landingPage: source.landingPage,
+        keyword: source.keyword ? source.keyword.slice(0, 5) : []
       };
     }));
 }

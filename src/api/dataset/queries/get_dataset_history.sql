@@ -1,6 +1,5 @@
 SELECT
-  version,
-  lower(version_period) AS updated
-FROM dataset
-WHERE uuid = $1::text
-ORDER BY version DESC
+  ds.version_history,
+FROM public.mview_latest_dataset AS ds
+WHERE title = $2::text AND portal = $1:: text
+LIMIT 1;

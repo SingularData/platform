@@ -18,45 +18,46 @@ export default function attachDatasetAPI(app) {
   app.get('/api/dataset/search', d.searchDatasets);
 
   /**
-   * @api {GET} /api/dataset/:uuid    Get dataset details by dataset uuid
+   * @api {GET} /api/dataset/:identifier    Get dataset details by dataset identifier
    * @apiName GetDataset
    * @apiGroup Dataset
    *
-   * @apiParam (Parameter) {Number} uuid      Dataset UUID
-   * @apiParam (Query)     {Number} [version] Dataset version number
+   * @apiParam (Parameter) {Number}  identifier  Dataset identifier
+   * @apiParam (Query)     {Boolean} [latest]    A boolean value indicating whether
+   *                                             the requested dataset is a latest
+   *                                             version. If so, it will retrieve
+   *                                             data from the cache directly
    *
    * @apiExample {GET} Example
-   *    GET datarea.io/api/dataset/40ad6756-2b16-4718-8dff-aa6742d4375d
+   *    GET datarea.io/api/dataset/1220f33599569d4155e4efd5401d2e61e55ab17cf9f90c2125a5409f4dcf253a94d3
    *
    * @apiSuccessExample {JSON} Success-Response:
    *    {
-   *      "success": true,
    *      "result": {
-   *        "uuid": "40ad6756-2b16-4718-8dff-aa6742d4375d",
-   *        "dataPortalId": "34lkhgj123",
-   *        "name": "Buffalo Schools",
+   *        "identifier": "1220f33599569d4155e4efd5401d2e61e55ab17cf9f90c2125a5409f4dcf253a94d3",
+   *        "title": "Buffalo Schools",
    *        "publisher": "Buffalo Gov",
    *        "portal": "Buffalo Open Data",
    *        "platform": "CAKN",
    *        "portalLink": "dataset.url",
-   *        "dataLink": "dataset.download.url",
-   *        "createdTime": "Fri May 05 2017 23:22:14 GMT-0400 (EDT)"
-   *        "updatedTime": "Fri May 06 2017 23:22:14 GMT-0400 (EDT)",
-   *        "tags": [
+   *        "landingPage": "dataset.download.url",
+   *        "issued": "Fri May 05 2017 23:22:14 GMT-0400 (EDT)"
+   *        "modified": "Fri May 06 2017 23:22:14 GMT-0400 (EDT)",
+   *        "keyword": [
    *          "education"
    *        ],
-   *        "categories": [
+   *        "theme": [
    *          "education"
    *        ],
-   *        "descriptions": "open data",
-   *        "region": "Buffalo, NY",
+   *        "description": "open data",
    *        "license": "MIT",
-   *        "data": [
+   *        "distribution": [
    *          {
-   *            "name": "School Site",
+   *            "title": "School Site",
    *            "description": "a csv list of school site",
    *            "format": "csv",
-   *            "link": "school.csv"
+   *            "accessURL": "school.csv",
+   *            "downloadURL": "school.csv"
    *          }
    *        ],
    *        "version": 2
@@ -69,15 +70,14 @@ export default function attachDatasetAPI(app) {
    *      "message": "reason"
    *    }
    */
-  app.get('/api/dataset/:uuid', d.getDataset);
+  app.get('/api/dataset/:identifier', d.getDataset);
 
   /**
-   * @api {GET} /api/dataset/raw/:uuid    Get dataset raw metadata by dataset uuid
+   * @api {GET} /api/dataset/raw/:identifier    Get dataset raw metadata by dataset identifier
    * @apiName GetDataset
    * @apiGroup Dataset
    *
-   * @apiParam (Parameter) {Number} uuid      Portal dataset uuid
-   * @apiParam (Query)     {Number} [version] Dataset version number
+   * @apiParam (Parameter) {Number} identifier  Portal dataset uuid
    *
    * @apoSuccessExample {JSON} Success-Response:
    *    {
@@ -91,21 +91,30 @@ export default function attachDatasetAPI(app) {
    *      "message": "reason"
    *    }
    */
-  app.get('/api/dataset/raw/:uuid', d.getDatasetRaw);
+  app.get('/api/dataset/raw/:identifier', d.getDatasetRaw);
 
   /**
-   * @api {GET} /api/dataset/history/:uuid   Get dataset history
+   * @api {POST} /api/dataset/history    Get dataset history
    * @apiName GetDatasetHistory
    * @apiGroup Dataset
    *
-   * @apiParam (Parameter) {Number} uuid Portal dataset ID MD5 code
+   * @apiParam (Body) {String} portal   Dataset portal
+   * @apiParam (Body) {String} title    Dataset title
    *
    * @apoSuccessExample {JSON} Success-Response:
    *    {
    *      "success": true,
-   *      "results": [
-   *        { "version": 3, "updatedTime": "Fri May 05 2017 23:22:14 GMT-0400 (EDT)" },
-   *        { "version": 2, "updatedTime": "Fri May 02 2017 23:22:14 GMT-0400 (EDT)" }
+   *      "result": [
+   *        {
+   *          "version": 3,
+   *          "identifier": "#3",
+   *          "modified": "Fri May 05 2017 23:22:14 GMT-0400 (EDT)"
+   *        },
+   *        {
+   *          "version": 2,
+   *          "identifier": "#2",
+   *          "modified": "Fri May 02 2017 23:22:14 GMT-0400 (EDT)"
+   *        }
    *      ]
    *    }
    *
@@ -115,5 +124,5 @@ export default function attachDatasetAPI(app) {
    *      "message": "reason"
    *    }
    */
-  app.get('/api/dataset/history/:uuid', d.getDatasetHistory);
+  app.post('/api/dataset/history', d.getDatasetHistory);
 }
