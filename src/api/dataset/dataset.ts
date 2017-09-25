@@ -1,4 +1,3 @@
-import { getLogger } from 'log4js';
 import { resolve } from 'path';
 import { get } from 'config';
 import { Observable } from 'rxjs';
@@ -6,8 +5,6 @@ import { search } from './es-search';
 import { getDB, getQueryFile, toCamelCase } from '../../util/database';
 import { Dataset } from '@singular-data/dataset-spec';
 import * as _ from 'lodash';
-
-const logger = getLogger('dataset');
 
 export function searchDatasets(req, res) {
   let query = req.query.q;
@@ -29,7 +26,7 @@ export function searchDatasets(req, res) {
     .subscribe((results) => {
       datasets = results;
     }, (error) => {
-      logger.error('Unable to search: ', error);
+      console.error('Unable to search: ', error);
       res.status(500).json({ message: error.message });
     }, () => {
       res.json({
@@ -68,7 +65,7 @@ export function getDataset(req, res) {
       res.json({ result: toCamelCase(dataset) });
     })
     .catch((error) => {
-      logger.error('Unable to get dataset details: ', error);
+      console.error('Unable to get dataset details: ', error);
       res.status(500).json({ message: error.message });
     });
 }
@@ -93,7 +90,7 @@ export function getDatasetRaw(req, res) {
       res.json({ result: result.raw });
     })
     .catch((error) => {
-      logger.error('Unable to get raw metadata: ', error);
+      console.error('Unable to get raw metadata: ', error);
       res.status(500).json({ message: error.message });
     });
 }
@@ -113,7 +110,7 @@ export function getDatasetHistory(req, res) {
   db.any(query, [title, portal])
     .then((results) => res.json({ result: results })
     .catch((error) => {
-      logger.error('Unable to get raw metadata: ', error);
+      console.error('Unable to get raw metadata: ', error);
       res.status(500).json({ message: error.message });
     }));
 }

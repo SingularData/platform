@@ -38,11 +38,7 @@ export class DatasetService {
     .map((result) => {
 
       for (let dataset of result.results) {
-        dataset.tags = dataset.tags || [];
-
-        if (!dataset.url.startsWith('http')) {
-          dataset.url = 'http://' + dataset.url;
-        }
+        dataset.keyword = dataset.keyword || [];
       }
 
       return result;
@@ -60,11 +56,11 @@ export class DatasetService {
     };
   }
 
-  get(id: string, version?: number): Observable<any> {
-    let url = '/api/dataset/' + id;
+  get(identifier: string, latest?: boolean): Observable<any> {
+    let url = '/api/dataset/' + identifier;
 
-    if (version) {
-      url += '?version=' + version;
+    if (latest) {
+      url += '?latest=true';
     }
 
     return this.http.get(url)
@@ -75,16 +71,16 @@ export class DatasetService {
       .map((result) => {
         let dataset = result.result;
 
-        if (!dataset.url.startsWith('http')) {
-          dataset.url = 'http://' + dataset.url;
+        if (!dataset.landingPage.startsWith('http')) {
+          dataset.landingPage = 'http://' + dataset.landingPage;
         }
 
         return dataset;
       });
   }
 
-  getRaw(id: string): Observable<any> {
-    return this.http.get('/api/dataset/raw/' + id)
+  getRaw(identifier: string): Observable<any> {
+    return this.http.get('/api/dataset/raw/' + identifier)
       .map((res) => res.json())
       .catch((result) => {
         throw new Error(result.message);

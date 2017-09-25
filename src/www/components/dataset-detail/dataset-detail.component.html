@@ -19,11 +19,11 @@
     </div>
 
     <div *ngIf="!loading && dataset" class="dataset-container">
-      <h3>{{ dataset.name }}</h3>
+      <h3>{{ dataset.title }}</h3>
       <div fxLayout="row">
-        <span *ngIf="dataset.categories.length > 0">
+        <span *ngIf="dataset.theme.length > 0">
           <small class="text-hint">
-            {{ dataset.categories }}
+            {{ dataset.theme }}
           </small>
         </span>
         <span class="space-filler"></span>
@@ -35,7 +35,7 @@
 
       <md-menu #versionMenu="mdMenu">
         <button md-menu-item
-                (click)="switchToVersion(version)"
+                (click)="switchToVersion(version.identifier)"
                 *ngFor="let detail of dataset.versionHistory">
           version {{ detail.version }}
         </button>
@@ -53,14 +53,14 @@
             </md-card-content>
           </md-card>
 
-          <md-card *ngIf="dataset.tags.length > 0">
+          <md-card *ngIf="dataset.keyword.length > 0">
             <md-card-header>
               <md-card-title>Tags</md-card-title>
             </md-card-header>
             <md-card-content>
               <md-chip-list>
                 <md-chip class="color-white background-primary"
-                         *ngFor="let tag of dataset.tags">{{ tag }}
+                         *ngFor="let tag of dataset.keyword">{{ tag }}
                 </md-chip>
               </md-chip-list>
             </md-card-content>
@@ -90,7 +90,7 @@
                   <md-icon md-list-icon class="fa fa-link" aria-hidden="true"></md-icon>
                   <p md-line>Dataset URL</p>
                   <p md-line>
-                    <a target="_blank" href="{{dataset.url}}">{{ dataset.portal }}</a>
+                    <a target="_blank" href="{{dataset.landingPage}}">{{ dataset.landingPage }}</a>
                   </p>
                 </md-list-item>
                 <md-list-item *ngIf="dataset.license">
@@ -101,12 +101,12 @@
                 <md-list-item>
                   <md-icon md-list-icon class="fa fa-calendar" aria-hidden="true"></md-icon>
                   <p md-line>Created</p>
-                  <p md-line>{{ dataset.created | date: 'short' }}</p>
+                  <p md-line>{{ dataset.issued | date: 'short' }}</p>
                 </md-list-item>
                 <md-list-item>
                   <md-icon md-list-icon class="fa fa-calendar" aria-hidden="true"></md-icon>
                   <p md-line>Updated</p>
-                  <p md-line>{{ dataset.updated | date: 'short' }}</p>
+                  <p md-line>{{ dataset.modified | date: 'short' }}</p>
                 </md-list-item>
               </md-list>
             </md-card-content>
@@ -114,11 +114,11 @@
 
         </md-tab>
 
-        <md-tab label="Data & Files" *ngIf="dataset.files.length > 0">
-          <md-card *ngFor="let file of dataset.files">
+        <md-tab label="Data & Files" *ngIf="dataset.distribution.length > 0">
+          <md-card *ngFor="let file of dataset.distribution">
             <md-card-header>
-              <md-card-title>{{ file.name }}</md-card-title>
-              <md-card-subtitle *ngIf="file.format && file.format !== file.name">
+              <md-card-title>{{ file.title }}</md-card-title>
+              <md-card-subtitle *ngIf="file.format && file.format !== file.title">
                 {{ file.format }}
               </md-card-subtitle>
             </md-card-header>
@@ -130,18 +130,18 @@
                 <input mdInput readonly
                        class="copy-text-box"
                        placeholder="File URL"
-                       [(ngModel)]="file.url">
+                       [(ngModel)]="file.accessURL">
               </md-input-container>
 
               <button type="button" md-button ngxClipboard
                       class="mat-icon-button"
                       mdTooltip="Copy URL"
-                      [cbContent]="file.url"
+                      [cbContent]="file.accessURL"
                       (click)="openSnackBar('Data url copied to the clipboard!')">
                 <i class="fa fa-clipboard" aria-hidden="true"></i>
               </button>
 
-              <button type="button" md-raised-button (click)="openData(file.url)">
+              <button type="button" md-raised-button (click)="openData(file.accessURL)">
                 <i class="fa fa-external-link " aria-hidden="true"></i> &nbsp; Open
               </button>
 
@@ -158,7 +158,7 @@
             <md-list>
               <md-list-item *ngFor="let detail of dataset.versionHistory">
                 <p md-line>Version {{ detail.version }}</p>
-                <p md-line>Updated at {{ detail.updated | date: 'short' }}</p>
+                <p md-line>Updated at {{ detail.modified | date: 'short' }}</p>
               </md-list-item>
             </md-list>
           </md-card-content>

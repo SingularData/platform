@@ -63,7 +63,6 @@
     "leaflet": "^1.2.0",
     "leaflet.markercluster": "^1.1.0",
     "lodash": "^4.17.4",
-    "log4js": "^2.3.3",
     "marked": "^0.3.6",
     "morgan": "^1.8.2",
     "ngx-clipboard": "^8.0.4",

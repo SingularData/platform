@@ -1,14 +1,12 @@
 import { Observable } from 'rxjs';
 import { resolve } from 'path';
 import { Readable } from 'stream';
-import { getLogger } from 'log4js';
 import { noop } from 'lodash';
 import { getDB, getQueryFile, toCamelCase } from '../../util/database';
 import * as QueryStream from 'pg-query-stream';
 import * as stringify from 'csv-stringify';
-import JSONStream from 'JSONStream';
+import * as JSONStream from 'JSONStream';
 
-const logger = getLogger('portal');
 const legacyDate = new Date(2017, 4, 31);
 
 export function getPortals(req, res) {
@@ -21,7 +19,7 @@ export function getPortals(req, res) {
   db.any(sql)
     .then((results) => res.json({ result: toCamelCase(results) }))
     .catch((error) => {
-      logger.error('Unable to search: ', error);
+      console.error('Unable to search: ', error);
       res.status(500).json({ message: error.message });
     });
 }
@@ -43,11 +41,11 @@ export function getPortalStats(req, res) {
     } else {
       res.setHeader('Content-disposition', 'attachment; filename=data.csv');
       res.set('Content-Type', 'text/csv');
-      s.pipe(stringify()).pipe(res);
+      s.pipe(JSONStream.stringify()).pipe(res);
     }
   })
   .catch((error) => {
-    logger.error('Unable to retrieve portal statistics: ', error);
+    console.error('Unable to retrieve portal statistics: ', error);
     res.status(500).json({ message: error.message });
   });
 }

@@ -38,7 +38,7 @@ export class DatasetDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.params
-      .switchMap((params: Params) => this.datasetService.get(params.id, params.version))
+      .switchMap((params: Params) => this.datasetService.get(params.id, true))
       .subscribe((result) => {
 
         // in case the description is in markdown format
@@ -46,7 +46,7 @@ export class DatasetDetailComponent implements OnInit {
           result.description = marked(result.description);
         }
 
-        for (let file of result.files) {
+        for (let file of result.distribution) {
           if (file.description) {
             file.description = marked(file.description);
           }
@@ -106,7 +106,7 @@ export class DatasetDetailComponent implements OnInit {
     });
   }
 
-  switchToVersion(versionNumber) {
-    this.router.navigateByUrl(`dataset/${this.dataset.uuid}?version=${versionNumber}`);
+  switchToVersion(identifier) {
+    this.router.navigateByUrl(`dataset/${this.dataset.identifier}`);
   }
 }
