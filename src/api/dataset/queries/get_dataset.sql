@@ -1,6 +1,8 @@
 WITH ds as (
   SELECT
     d.id,
+    dpox.portal_id,
+    d.portal_dataset_id,
     d.identifier,
     d.title,
     d.description,
@@ -24,6 +26,20 @@ WITH ds as (
   LEFT JOIN dataset_coverage AS dc ON dc.id = dcx.dataset_coverage_id
   WHERE d.identifier = $1::text
   LIMIT 1
+), vh AS (
+  SELECT
+    d.portal_dataset_id,
+    array_agg(json_build_object(
+      'identifier', d.identifier,
+      'version', d.version,
+      'modified', lower(d.version_period)
+    ) ORDER BY d.version DESC) AS history
+  FROM ds, dataset AS d
+  LEFT JOIN dataset_portal_xref AS dpx ON dpx.dataset_id = d.id
+  WHERE
+    d.portal_dataset_id = ds.portal_dataset_id AND
+    dpx.portal_id = ds.portal_id
+  GROUP BY d.portal_dataset_id
 ), dt AS (
   SELECT
     dtx.dataset_id,
@@ -68,7 +84,7 @@ SELECT
   ds.license,
   ds.spatial,
   ds.version,
-  mld.version_history,
+  vh.history AS version_history,
   COALESCE(dd.distribution, '{}') AS distribution,
   COALESCE(dk.keyword, '{}') AS keyword,
   COALESCE(dt.theme, '{}') AS theme
@@ -76,5 +92,4 @@ FROM ds
 LEFT JOIN dd ON dd.dataset_id = ds.id
 LEFT JOIN dk ON dk.dataset_id = ds.id
 LEFT JOIN dt ON dt.dataset_id = ds.id
-LEFT JOIN mview_latest_dataset AS mld ON
-  mld.title = ds.title AND mld.portal = ds.portal;
+LEFT JOIN vh ON vh.portal_dataset_id = ds.portal_dataset_id;

@@ -46,13 +46,7 @@ export function getDataset(req, res) {
   }
 
   let db = getDB();
-  let query;
-
-  if (latest) {
-    query = getQueryFile(resolve(__dirname, './queries/get_dataset_latest.sql'));
-  } else {
-    query = getQueryFile(resolve(__dirname, './queries/get_dataset.sql'));
-  }
+  let query = getQueryFile(resolve(__dirname, './queries/get_dataset.sql'));
 
   db.oneOrNone(query, [identifier])
     .then((dataset) => {
@@ -96,18 +90,18 @@ export function getDatasetRaw(req, res) {
 }
 
 export function getDatasetHistory(req, res) {
-  let portal = req.body.portal;
-  let title = req.body.title;
+  let portal = req.params.portalId;
+  let portDatasetId = req.params.portDatasetId;
 
-  if (!title || !portal) {
-    res.status(400).json({ message: 'Invalid portal and dataset title.' });
+  if (!portDatasetId || !portal) {
+    res.status(400).json({ message: 'Invalid portal and portal dataset identifier.' });
     return;
   }
 
   let db = getDB();
   let query = getQueryFile(resolve(__dirname, './queries/get_dataset_history.sql'));
 
-  db.any(query, [title, portal])
+  db.any(query, [portal, portDatasetId])
     .then((results) => res.json({ result: results })
     .catch((error) => {
       console.error('Unable to get raw metadata: ', error);

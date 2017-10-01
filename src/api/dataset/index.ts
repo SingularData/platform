@@ -23,10 +23,6 @@ export default function attachDatasetAPI(app) {
    * @apiGroup Dataset
    *
    * @apiParam (Parameter) {Number}  identifier  Dataset identifier
-   * @apiParam (Query)     {Boolean} [latest]    A boolean value indicating whether
-   *                                             the requested dataset is a latest
-   *                                             version. If so, it will retrieve
-   *                                             data from the cache directly
    *
    * @apiExample {GET} Example
    *    GET datarea.io/api/dataset/1220f33599569d4155e4efd5401d2e61e55ab17cf9f90c2125a5409f4dcf253a94d3
@@ -98,8 +94,8 @@ export default function attachDatasetAPI(app) {
    * @apiName GetDatasetHistory
    * @apiGroup Dataset
    *
-   * @apiParam (Body) {String} portal   Dataset portal
-   * @apiParam (Body) {String} title    Dataset title
+   * @apiParam {String} portalId           Dataset portal id
+   * @apiParam {String} portalDatasetId    Dataset portal id
    *
    * @apoSuccessExample {JSON} Success-Response:
    *    {
@@ -124,5 +120,5 @@ export default function attachDatasetAPI(app) {
    *      "message": "reason"
    *    }
    */
-  app.post('/api/dataset/history', d.getDatasetHistory);
+  app.get('/api/dataset/history/:portalId/:portalDatasetId', d.getDatasetHistory);
 }
