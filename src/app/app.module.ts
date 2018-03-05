@@ -5,7 +5,6 @@ import { NgMaterialModule } from "./ng-material/ng-material.module";
 import { NgRoutingModule } from "./ng-routing/ng-routing.module";
 import { HttpClientModule } from "@angular/common/http";
 import { HttpClient } from "@angular/common/http";
-import { EllipsisModule } from "ngx-ellipsis";
 import { MarkdownModule } from "ngx-markdown";
 
 import { AppComponent } from "./app.component";
@@ -32,7 +31,6 @@ import "leaflet";
     NgMaterialModule,
     NgRoutingModule,
     HttpClientModule,
-    EllipsisModule,
     MarkdownModule.forRoot()
   ],
   providers: [HttpClient, DatasetService],

@@ -27,7 +27,7 @@
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content *ngIf="dataset.dcat.description">
-          <markdown ellipsis [data]="dataset.dcat.description"></markdown>
+          <markdown [data]="dataset.dcat.description"></markdown>
         </mat-card-content>
         <mat-card-actions>
           <a mat-button [routerLink]="['/datasets', dataset.dcat.identifier]">
