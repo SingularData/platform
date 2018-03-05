@@ -1,0 +1,89 @@
+<section class="page-section-1 background-primary mat-typography box-frame"
+     fxLayout="column"
+     fxLayoutAlign="center none">
+  <h1 class="color-white text-center">
+    Open Data in One Box
+  </h1>
+  <form fxLayout="column" fxLayoutAlign="center center" onSubmit="return false;">
+    <mat-form-field class="main-search-box color-white">
+      <input matInput
+             #searchInput
+             (keyup.enter)="search(searchInput.value)"
+             placeholder="dataset name, keywords, tags, topics, etc">
+    </mat-form-field>
+  </form>
+</section>
+<a id="about"></a>
+<section class="page-section-x mat-typography" fxLayout="column" fxLayoutAlign="none center">
+  <div class="page-content">
+    <h1>
+      What is Singular Data Net?
+    </h1>
+    <p>
+      <strong>Singular Data Net</strong> is an experimental project to provide one
+      single search box for datasets from multiple data providers. With a data
+      engine that constantly monitor the update of data providers, we are able to
+      build a unified search index with standarized open data metadata. The user
+      is able to search data from all supported data providers at one click and
+      see results in one format.
+    </p>
+    <p>
+      Currently, the project supports a variety of open data platforms:
+    </p>
+    <ul>
+      <li><a href="https://hub.arcgis.com/pages/open-data" target="_blank">ArcGIS Open Data</a></li>
+      <li><a href="https://ckan.org/" target="_blank">CKAN</a></li>
+      <li><a href="https://getdkan.org/" target="_blank">DKAN</a></li>
+      <li><a href="http://geonode.org/" target="_blank">GeoNode</a></li>
+      <li><a href="http://junar.com/" target="_blank">Junar</a></li>
+      <li><a href="https://socrata.com/" target="_blank">Socrata</a></li>
+    </ul>
+    <p>
+      A full list of supported open data portals (100+) could be found
+      <a href="https://github.com/SingularData/data-source/blob/master/data-sources.json" target="_blank">
+        here
+      </a>.
+    </p>
+    <h1>
+      Why is it developed?
+    </h1>
+    <p>
+      Open data is not open if it cannot be discovered by the user.
+    </p>
+    <p>
+      Every data analyst has experienced the pain of finding the correct open data.
+      Though open data is becoming a popular concept and more action is being taken,
+      the discovery of data doesn't seem as easy as it looks like. Of many factors
+      that contributes to this problems, there are two significant factors:
+    </p>
+    <ul>
+      <li>
+        Open data is a highly popular field that attracts many governments and
+        organizations to participate. The increasing number of data providers
+        also increases the difficulty for a user to identify the source of a
+        particular dataset.
+      </li>
+      <li>
+        Since it is still an reapidly developing area, many different standards
+        and practices co-exist. The various ways to search and present data result
+        in confusion and therefore makes the data discovery again uneasy.
+      </li>
+    </ul>
+    <h1>
+      How does it work?
+    </h1>
+    <p>
+      test
+    </p>
+    <h1>
+      What is the current state?
+    </h1>
+    <p>
+      Since my participation into the team behind ArcGIS Open Data, I
+      have been focusing on developing ArcGIS Open Data to be a superior data
+      discovery platform for uers. This project will be alive as a place to
+      collect data and experienment open data ideas after work, but less activity
+      may be expected.
+    </p>
+  </div>
+</section>
