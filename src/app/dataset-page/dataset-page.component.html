@@ -24,9 +24,9 @@
                 <a [href]="dcat.landingPage" target="_blank">{{ dcat.landingPage }}</a>
               </div>
             </mat-list-item>
-            <mat-list-item *ngIf="dcat.description">
+            <mat-list-item *ngIf="dcat.description" style="height: 100%;">
               <h4 mat-line>Description</h4>
-              <markdown mat-line [data]="dcat.description"></markdown>
+              <markdown mat-line [data]="dcat.description" style="white-space: normal;"></markdown>
             </mat-list-item>
             <mat-list-item *ngIf="dcat.issued">
               <h4 mat-line>Issued</h4>
@@ -58,8 +58,13 @@
             </mat-list-item>
             <mat-list-item *ngIf="dcat.license">
               <h4 mat-line>License</h4>
-              <p mat-line>{{ dcat.license }}</p>
+              <markdown mat-line [data]="dcat.license"></markdown>
             </mat-list-item>
+            <div *ngIf="dcat.spatial">
+              <mat-divider></mat-divider>
+              <h3 mat-subheader>Spatial</h3>
+              <div id="dataset-map" #datasetMap class="box-frame"></div>
+            </div>
             <div *ngIf="dcat.distribution && dcat.distribution.length > 0">
               <mat-divider></mat-divider>
               <h3 mat-subheader>Distributions</h3>
