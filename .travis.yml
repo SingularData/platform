@@ -12,6 +12,8 @@ deploy:
   github-token: $GITHUB_TOKEN
   skip-cleanup: true
   keep-history: true
+  repo: SingularData/singulardata.github.io
+  target-branch: master
   on:
     branch: master
   # provider: s3
