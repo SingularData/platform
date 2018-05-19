@@ -1,6 +1,6 @@
 # SingularData
 
-[SingularData](https://singulardata.github.io/) is a platform to connect hundreds of open data portals and provide cross-portal dataset search service.
+[SingularData](https://singulardata.github.io/platform) is a platform to connect hundreds of open data portals and provide cross-portal dataset search service.
 
 ![preview](image/preview.png)
 
